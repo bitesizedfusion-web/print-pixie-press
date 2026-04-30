@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { products, paperTypes, quantities, calculatePrice } from "@/lib/pricing";
 import { useCart } from "@/lib/cart";
 import { ArtworkUpload, emptyArtwork, type ArtworkResult } from "@/components/ArtworkUpload";
+import { ARCameraView } from "@/components/ARCameraView";
 import {
   CheckCircle, ShieldCheck, Package, FileCheck, ShoppingCart,
   Info, HelpCircle, ChevronDown, ChevronLeft, ChevronRight, Truck,
-  Calendar, Sparkles, RotateCcw, MessageCircle, Phone, AlertTriangle,
+  Calendar, Sparkles, RotateCcw, MessageCircle, Phone, AlertTriangle, Camera,
 } from "lucide-react";
 
 export const Route = createFileRoute("/order/$product")({
