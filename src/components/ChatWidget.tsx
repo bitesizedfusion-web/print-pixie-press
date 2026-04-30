@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { MessageCircle, X, Send, Loader2, Sparkles } from "lucide-react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { MessageCircle, X, Send, Loader2, Sparkles, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
+import { useVoiceInput } from "@/hooks/use-voice-input";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -16,15 +17,37 @@ const STARTERS = [
 const GREETING: Msg = {
   role: "assistant",
   content:
-    "Hi! 👋 I'm **PrintBot** — your AI printing assistant. Ask me about prices, sizes, paper types, or how to order.\n\nI speak English, বাংলা, हिन्दी and 中文.",
+    "Hi! 👋 I'm **PrintBot** — your AI printing assistant. Ask me about prices, sizes, paper types, or how to order.\n\n🎤 Tap the mic to talk, 🔊 toggle voice replies on/off.\n\nI speak English, বাংলা, हिन्दी and 中文.",
 };
+
+// Strip markdown so TTS reads cleanly
+function stripMarkdown(s: string): string {
+  return s
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/[*_~#>]/g, "")
+    .replace(/\n{2,}/g, ". ")
+    .replace(/\n/g, " ")
+    .trim();
+}
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Msg[]>([GREETING]);
   const [isStreaming, setIsStreaming] = useState(false);
+  const [voiceReplies, setVoiceReplies] = useState(true);
+  const [speaking, setSpeaking] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const lastSpokenRef = useRef<string>("");
+
+  const { supported: voiceSupported, listening, start: startListening, stop: stopListening } =
+    useVoiceInput({ lang: "en-AU" });
+
+  // Initial TTS support detection
+  const ttsSupported = typeof window !== "undefined" && "speechSynthesis" in window;
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -32,9 +55,41 @@ export function ChatWidget() {
     }
   }, [messages, open]);
 
+  const speak = useCallback(
+    (text: string) => {
+      if (!ttsSupported || !voiceReplies) return;
+      try {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(stripMarkdown(text));
+        utter.rate = 1.05;
+        utter.pitch = 1;
+        utter.volume = 1;
+        utter.onstart = () => setSpeaking(true);
+        utter.onend = () => setSpeaking(false);
+        utter.onerror = () => setSpeaking(false);
+        window.speechSynthesis.speak(utter);
+      } catch {
+        /* ignore */
+      }
+    },
+    [ttsSupported, voiceReplies],
+  );
+
+  const stopSpeaking = useCallback(() => {
+    if (!ttsSupported) return;
+    window.speechSynthesis.cancel();
+    setSpeaking(false);
+  }, [ttsSupported]);
+
+  // When voice replies disabled, kill any in-flight TTS
+  useEffect(() => {
+    if (!voiceReplies) stopSpeaking();
+  }, [voiceReplies, stopSpeaking]);
+
   const send = async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || isStreaming) return;
+    stopSpeaking();
 
     const userMsg: Msg = { role: "user", content: trimmed };
     const nextMessages = [...messages, userMsg];
@@ -56,7 +111,6 @@ export function ChatWidget() {
     };
 
     try {
-      // Strip greeting from history sent to API
       const apiHistory = nextMessages.filter((m) => m !== GREETING);
       const resp = await fetch(url, {
         method: "POST",
@@ -68,13 +122,9 @@ export function ChatWidget() {
       });
 
       if (!resp.ok || !resp.body) {
-        if (resp.status === 429) {
-          toast.error("Too many requests — try again in a moment.");
-        } else if (resp.status === 402) {
-          toast.error("PrintBot is temporarily unavailable.");
-        } else {
-          toast.error("PrintBot couldn't reply. Try again.");
-        }
+        if (resp.status === 429) toast.error("Too many requests — try again in a moment.");
+        else if (resp.status === 402) toast.error("PrintBot is temporarily unavailable.");
+        else toast.error("PrintBot couldn't reply. Try again.");
         setIsStreaming(false);
         return;
       }
@@ -110,12 +160,33 @@ export function ChatWidget() {
           }
         }
       }
+
+      // Speak the final assistant message once streaming completes
+      if (assistantBuf && assistantBuf !== lastSpokenRef.current) {
+        lastSpokenRef.current = assistantBuf;
+        speak(assistantBuf);
+      }
     } catch (err) {
       console.error("chat error", err);
       toast.error("Network error — please try again.");
     } finally {
       setIsStreaming(false);
     }
+  };
+
+  const handleMic = () => {
+    if (!voiceSupported) {
+      toast.error("Voice input isn't supported in this browser. Try Chrome on Android or Safari on iOS.");
+      return;
+    }
+    if (listening) {
+      stopListening();
+      return;
+    }
+    stopSpeaking();
+    startListening((finalText) => {
+      if (finalText) send(finalText);
+    });
   };
 
   return (
@@ -137,20 +208,35 @@ export function ChatWidget() {
                   <Sparkles className="h-4 w-4" />
                 </div>
                 <div>
-                  <div className="font-heading font-bold text-sm">PrintBot AI</div>
+                  <div className="font-heading font-bold text-sm">PrintBot AI · Voice</div>
                   <div className="text-xs text-cta-foreground/80 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                    Online · 24/7
+                    <span className={`w-1.5 h-1.5 rounded-full ${speaking ? "bg-yellow-300 animate-pulse" : listening ? "bg-red-400 animate-pulse" : "bg-green-400 animate-pulse"}`} />
+                    {speaking ? "Speaking…" : listening ? "Listening…" : "Online · 24/7"}
                   </div>
                 </div>
               </div>
-              <button
-                onClick={() => setOpen(false)}
-                aria-label="Close chat"
-                className="p-1.5 rounded-md hover:bg-white/10 transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <div className="flex items-center gap-1">
+                {ttsSupported && (
+                  <button
+                    onClick={() => setVoiceReplies((v) => !v)}
+                    aria-label={voiceReplies ? "Mute voice replies" : "Enable voice replies"}
+                    title={voiceReplies ? "Mute voice replies" : "Enable voice replies"}
+                    className="p-1.5 rounded-md hover:bg-white/10 transition-colors"
+                  >
+                    {voiceReplies ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    stopSpeaking();
+                    setOpen(false);
+                  }}
+                  aria-label="Close chat"
+                  className="p-1.5 rounded-md hover:bg-white/10 transition-colors"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
             {/* Messages */}
@@ -210,11 +296,25 @@ export function ChatWidget() {
               }}
               className="p-3 border-t border-border bg-card flex items-center gap-2"
             >
+              <button
+                type="button"
+                onClick={handleMic}
+                disabled={isStreaming}
+                aria-label={listening ? "Stop listening" : "Start voice input"}
+                title={listening ? "Stop listening" : "Talk to PrintBot"}
+                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shrink-0 ${
+                  listening
+                    ? "bg-red-500 text-white animate-pulse"
+                    : "bg-accent text-foreground hover:bg-accent/80"
+                } disabled:opacity-50`}
+              >
+                {listening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+              </button>
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message..."
+                placeholder={listening ? "Listening…" : "Type or tap the mic…"}
                 disabled={isStreaming}
                 className="flex-1 bg-background border border-border rounded-full px-4 py-2 text-sm focus:outline-none focus:border-cta transition-colors disabled:opacity-50"
               />
