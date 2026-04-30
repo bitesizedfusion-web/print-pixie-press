@@ -132,63 +132,6 @@ function HomePage() {
               </motion.div>
             </motion.div>
           </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease, delay: 0.2 }}
-              className="lg:col-span-4 lg:pb-4"
-            >
-              <p className="text-[15px] lg:text-base text-muted-foreground leading-relaxed max-w-sm">
-                A small studio printing flyers, posters, brochures and banners
-                on premium stocks. Instant quotes, free file checks, shipped
-                Australia-wide in as little as twenty-four hours.
-              </p>
-              <div className="mt-8 flex items-center gap-6">
-                <Link
-                  to="/order/$product"
-                  params={{ product: "flyers" }}
-                  className="group inline-flex items-center h-11 px-6 rounded-full bg-foreground text-background text-sm font-medium hover:bg-foreground/85 transition-all"
-                >
-                  Get a quote
-                  <ArrowUpRight className="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </Link>
-                <Link
-                  to="/products"
-                  className="text-sm text-foreground underline underline-offset-[6px] decoration-border hover:decoration-foreground transition-colors"
-                >
-                  Browse work
-                </Link>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Hero image — wide, single, premium */}
-          <motion.div
-            style={{ y: heroY }}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease, delay: 0.3 }}
-            className="mt-20 lg:mt-28 relative"
-          >
-            <div className="aspect-[16/8] w-full overflow-hidden rounded-2xl bg-muted">
-              <img
-                src={heroImage}
-                alt="Premium printed materials"
-                className="w-full h-full object-cover"
-                loading="eager"
-              />
-            </div>
-            {/* Caption */}
-            <div className="mt-6 flex items-baseline justify-between border-t border-border pt-6">
-              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                Fig. 01 — Selected works, 2024
-              </span>
-              <span className="hidden sm:block font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                Sydney · Melbourne · Brisbane
-              </span>
-            </div>
-          </motion.div>
         </div>
       </section>
 
