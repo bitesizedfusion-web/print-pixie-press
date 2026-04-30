@@ -556,6 +556,13 @@ function OrderPage() {
           </div>
         </div>
       </section>
+
+      <ARCameraView
+        open={arOpen}
+        onClose={() => setArOpen(false)}
+        imageUrl={artworkImageUrl}
+        sizeLabel={`${product.name} · ${size}`}
+      />
     </div>
   );
 }
