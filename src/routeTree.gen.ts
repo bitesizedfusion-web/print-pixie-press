@@ -15,6 +15,7 @@ import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PosterDesignerRouteImport } from './routes/poster-designer'
 import { Route as OrderConfirmationRouteImport } from './routes/order-confirmation'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as DesignerRouteImport } from './routes/designer'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CartRouteImport } from './routes/cart'
@@ -62,6 +63,11 @@ const OrderConfirmationRoute = OrderConfirmationRouteImport.update({
 const HowItWorksRoute = HowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesignerRoute = DesignerRouteImport.update({
+  id: '/designer',
+  path: '/designer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
+  '/designer': typeof DesignerRoute
   '/how-it-works': typeof HowItWorksRoute
   '/order-confirmation': typeof OrderConfirmationRoute
   '/poster-designer': typeof PosterDesignerRoute
@@ -188,6 +195,7 @@ export interface FileRoutesByTo {
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
+  '/designer': typeof DesignerRoute
   '/how-it-works': typeof HowItWorksRoute
   '/order-confirmation': typeof OrderConfirmationRoute
   '/poster-designer': typeof PosterDesignerRoute
@@ -215,6 +223,7 @@ export interface FileRoutesById {
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
+  '/designer': typeof DesignerRoute
   '/how-it-works': typeof HowItWorksRoute
   '/order-confirmation': typeof OrderConfirmationRoute
   '/poster-designer': typeof PosterDesignerRoute
@@ -243,6 +252,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/checkout'
     | '/contact'
+    | '/designer'
     | '/how-it-works'
     | '/order-confirmation'
     | '/poster-designer'
@@ -268,6 +278,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/checkout'
     | '/contact'
+    | '/designer'
     | '/how-it-works'
     | '/order-confirmation'
     | '/poster-designer'
@@ -294,6 +305,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/checkout'
     | '/contact'
+    | '/designer'
     | '/how-it-works'
     | '/order-confirmation'
     | '/poster-designer'
@@ -321,6 +333,7 @@ export interface RootRouteChildren {
   CartRoute: typeof CartRoute
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
+  DesignerRoute: typeof DesignerRoute
   HowItWorksRoute: typeof HowItWorksRoute
   OrderConfirmationRoute: typeof OrderConfirmationRoute
   PosterDesignerRoute: typeof PosterDesignerRoute
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       path: '/how-it-works'
       fullPath: '/how-it-works'
       preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/designer': {
+      id: '/designer'
+      path: '/designer'
+      fullPath: '/designer'
+      preLoaderRoute: typeof DesignerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -539,6 +559,7 @@ const rootRouteChildren: RootRouteChildren = {
   CartRoute: CartRoute,
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
+  DesignerRoute: DesignerRoute,
   HowItWorksRoute: HowItWorksRoute,
   OrderConfirmationRoute: OrderConfirmationRoute,
   PosterDesignerRoute: PosterDesignerRoute,
@@ -550,12 +571,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

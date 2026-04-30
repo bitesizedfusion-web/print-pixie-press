@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button";
 import { products, paperTypes, quantities, calculatePrice } from "@/lib/pricing";
 import { useCart } from "@/lib/cart";
 import { ArtworkUpload, emptyArtwork, type ArtworkResult } from "@/components/ArtworkUpload";
+import { ARCameraView } from "@/components/ARCameraView";
 import {
   CheckCircle, ShieldCheck, Package, FileCheck, ShoppingCart,
   Info, HelpCircle, ChevronDown, ChevronLeft, ChevronRight, Truck,
-  Calendar, Sparkles, RotateCcw, MessageCircle, Phone, AlertTriangle,
+  Calendar, Sparkles, RotateCcw, MessageCircle, Phone, AlertTriangle, Camera,
 } from "lucide-react";
 
 export const Route = createFileRoute("/order/$product")({
@@ -95,6 +96,13 @@ function OrderPage() {
 
   const fileName = artwork.file?.name ?? "";
   const artworkBlocked = artwork.status === "checking" || artwork.status === "invalid";
+
+  // AR preview — only when uploaded artwork is an image
+  const [arOpen, setArOpen] = useState(false);
+  const artworkImageUrl = useMemo(() => {
+    if (!artwork.file || !artwork.file.type.startsWith("image/")) return null;
+    return URL.createObjectURL(artwork.file);
+  }, [artwork.file]);
 
   // Gallery images — reuse product image varied
   const gallery = [product.image, product.image, product.image, product.image];
@@ -434,7 +442,18 @@ function OrderPage() {
                         placeholder="Design notes (optional)..."
                         className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2 text-xs focus:ring-2 focus:ring-cta/40 focus:border-cta outline-none resize-none"
                       />
+                      {artworkImageUrl && (
+                        <button
+                          type="button"
+                          onClick={() => setArOpen(true)}
+                          className="mt-2 w-full inline-flex items-center justify-center gap-2 h-10 rounded-lg bg-gradient-cta text-cta-foreground text-xs font-semibold hover:opacity-90 transition-all"
+                        >
+                          <Camera className="h-3.5 w-3.5" />
+                          Preview in your room (AR)
+                        </button>
+                      )}
                     </Step>
+
 
                     {/* Price summary */}
                     <div className="bg-gradient-to-br from-accent/40 to-card border border-border rounded-2xl p-4">
@@ -537,6 +556,13 @@ function OrderPage() {
           </div>
         </div>
       </section>
+
+      <ARCameraView
+        open={arOpen}
+        onClose={() => setArOpen(false)}
+        imageUrl={artworkImageUrl}
+        sizeLabel={`${product.name} · ${size}`}
+      />
     </div>
   );
 }
