@@ -97,6 +97,13 @@ function OrderPage() {
   const fileName = artwork.file?.name ?? "";
   const artworkBlocked = artwork.status === "checking" || artwork.status === "invalid";
 
+  // AR preview — only when uploaded artwork is an image
+  const [arOpen, setArOpen] = useState(false);
+  const artworkImageUrl = useMemo(() => {
+    if (!artwork.file || !artwork.file.type.startsWith("image/")) return null;
+    return URL.createObjectURL(artwork.file);
+  }, [artwork.file]);
+
   // Gallery images — reuse product image varied
   const gallery = [product.image, product.image, product.image, product.image];
 
