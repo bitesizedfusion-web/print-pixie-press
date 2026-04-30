@@ -39,100 +39,21 @@ function HomePage() {
 
   return (
     <div className="overflow-x-clip bg-background">
-      {/* ============== HERO — full-bleed video background ============== */}
+      {/* ============== HERO — video only ============== */}
       <section
         ref={heroRef}
-        className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-32 min-h-[100svh] flex items-center"
+        className="relative overflow-hidden min-h-[100svh] w-full bg-black"
       >
-        {/* Video background */}
         <video
           autoPlay
           muted
           loop
           playsInline
           poster={heroImage}
-          className="absolute inset-0 w-full h-full object-cover z-0"
-          style={{ opacity: 0.55 }}
+          className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
-        {/* Dark overlay for readability */}
-        <div
-          aria-hidden
-          className="absolute inset-0 z-[1]"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(13,27,53,0.88) 0%, rgba(13,27,53,0.55) 100%)",
-          }}
-        />
-        <div className="relative z-[2] w-full max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 text-hero-foreground">
-          {/* Eyebrow / floating badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease }}
-            className="flex items-center gap-3 mb-12 lg:mb-16 hero-badge-float"
-          >
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-white/90">
-              🇦🇺 Australia-Wide Printing · Est. 2015
-            </span>
-          </motion.div>
-
-          {/* Display headline */}
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-end">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease, delay: 0.2 }}
-              className="lg:col-span-8"
-            >
-              <h1 className="hero-headline font-heading font-light tracking-[-0.045em] leading-[0.92] text-[clamp(3rem,9vw,8.5rem)] text-white">
-                Considered
-                <br />
-                printing for
-                <br />
-                <em className="hero-shimmer not-italic font-light">
-                  considered
-                </em>{" "}
-                brands.
-              </h1>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease, delay: 0.4 }}
-              className="lg:col-span-4 lg:pb-4"
-            >
-              <p className="text-[15px] lg:text-base text-white/80 leading-relaxed max-w-sm">
-                A small studio printing flyers, posters, brochures and banners
-                on premium stocks. Instant quotes, free file checks, shipped
-                Australia-wide in as little as twenty-four hours.
-              </p>
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease, delay: 0.6 }}
-                className="mt-8 flex items-center gap-6"
-              >
-                <Link
-                  to="/order/$product"
-                  params={{ product: "flyers" }}
-                  className="hero-cta-pulse group inline-flex items-center h-11 px-6 rounded-full bg-cta text-cta-foreground text-sm font-medium hover:bg-cta-hover transition-all"
-                >
-                  Get instant quote
-                  <ArrowUpRight className="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </Link>
-                <Link
-                  to="/products"
-                  className="text-sm text-white underline underline-offset-[6px] decoration-white/40 hover:decoration-white transition-colors"
-                >
-                  View all products
-                </Link>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
       </section>
 
       {/* ============== INDEX — quiet stats ============== */}
