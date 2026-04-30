@@ -39,22 +39,42 @@ function HomePage() {
 
   return (
     <div className="overflow-x-clip bg-background">
-      {/* ============== HERO — editorial split ============== */}
+      {/* ============== HERO — full-bleed video background ============== */}
       <section
         ref={heroRef}
-        className="relative bg-background pt-32 pb-20 lg:pt-40 lg:pb-32"
+        className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-32 min-h-[100svh] flex items-center"
       >
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
-          {/* Eyebrow */}
+        {/* Video background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={heroImage}
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          style={{ opacity: 0.55 }}
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
+        {/* Dark overlay for readability */}
+        <div
+          aria-hidden
+          className="absolute inset-0 z-[1]"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(13,27,53,0.88) 0%, rgba(13,27,53,0.55) 100%)",
+          }}
+        />
+        <div className="relative z-[2] w-full max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 text-hero-foreground">
+          {/* Eyebrow / floating badge */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease }}
-            className="flex items-center gap-3 mb-12 lg:mb-16"
+            className="flex items-center gap-3 mb-12 lg:mb-16 hero-badge-float"
           >
-            <span className="h-px w-8 bg-foreground/30" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-              Est. 2015 · Sydney
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-white/90">
+              🇦🇺 Australia-Wide Printing · Est. 2015
             </span>
           </motion.div>
 
@@ -63,17 +83,17 @@ function HomePage() {
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease, delay: 0.05 }}
+              transition={{ duration: 0.9, ease, delay: 0.2 }}
               className="lg:col-span-8"
             >
-              <h1 className="font-heading font-light tracking-[-0.045em] leading-[0.92] text-[clamp(3rem,9vw,8.5rem)] text-foreground">
+              <h1 className="hero-headline font-heading font-light tracking-[-0.045em] leading-[0.92] text-[clamp(3rem,9vw,8.5rem)] text-white">
                 Considered
                 <br />
                 printing for
                 <br />
-                <span className="italic font-light text-muted-foreground">
+                <em className="hero-shimmer not-italic font-light">
                   considered
-                </span>{" "}
+                </em>{" "}
                 brands.
               </h1>
             </motion.div>
@@ -81,59 +101,37 @@ function HomePage() {
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease, delay: 0.2 }}
+              transition={{ duration: 0.9, ease, delay: 0.4 }}
               className="lg:col-span-4 lg:pb-4"
             >
-              <p className="text-[15px] lg:text-base text-muted-foreground leading-relaxed max-w-sm">
+              <p className="text-[15px] lg:text-base text-white/80 leading-relaxed max-w-sm">
                 A small studio printing flyers, posters, brochures and banners
                 on premium stocks. Instant quotes, free file checks, shipped
                 Australia-wide in as little as twenty-four hours.
               </p>
-              <div className="mt-8 flex items-center gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease, delay: 0.6 }}
+                className="mt-8 flex items-center gap-6"
+              >
                 <Link
                   to="/order/$product"
                   params={{ product: "flyers" }}
-                  className="group inline-flex items-center h-11 px-6 rounded-full bg-foreground text-background text-sm font-medium hover:bg-foreground/85 transition-all"
+                  className="hero-cta-pulse group inline-flex items-center h-11 px-6 rounded-full bg-cta text-cta-foreground text-sm font-medium hover:bg-cta-hover transition-all"
                 >
-                  Get a quote
+                  Get instant quote
                   <ArrowUpRight className="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </Link>
                 <Link
                   to="/products"
-                  className="text-sm text-foreground underline underline-offset-[6px] decoration-border hover:decoration-foreground transition-colors"
+                  className="text-sm text-white underline underline-offset-[6px] decoration-white/40 hover:decoration-white transition-colors"
                 >
-                  Browse work
+                  View all products
                 </Link>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
-
-          {/* Hero image — wide, single, premium */}
-          <motion.div
-            style={{ y: heroY }}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease, delay: 0.3 }}
-            className="mt-20 lg:mt-28 relative"
-          >
-            <div className="aspect-[16/8] w-full overflow-hidden rounded-2xl bg-muted">
-              <img
-                src={heroImage}
-                alt="Premium printed materials"
-                className="w-full h-full object-cover"
-                loading="eager"
-              />
-            </div>
-            {/* Caption */}
-            <div className="mt-6 flex items-baseline justify-between border-t border-border pt-6">
-              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                Fig. 01 — Selected works, 2024
-              </span>
-              <span className="hidden sm:block font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                Sydney · Melbourne · Brisbane
-              </span>
-            </div>
-          </motion.div>
         </div>
       </section>
 

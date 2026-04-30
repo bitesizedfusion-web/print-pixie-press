@@ -355,3 +355,29 @@
   outline-offset: 3px;
   border-radius: var(--radius);
 }
+
+/* ============= Hero video background animations ============= */
+@keyframes heroFloatUp {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+@keyframes heroPulseRed {
+  0% { box-shadow: 0 0 0 0 oklch(0.52 0.13 35 / 0.55); }
+  70% { box-shadow: 0 0 0 16px oklch(0.52 0.13 35 / 0); }
+  100% { box-shadow: 0 0 0 0 oklch(0.52 0.13 35 / 0); }
+}
+@keyframes heroShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.hero-badge-float { animation: heroFloatUp 3s ease-in-out infinite; }
+.hero-cta-pulse { animation: heroPulseRed 2s infinite; }
+.hero-shimmer {
+  background: linear-gradient(90deg, oklch(0.62 0.18 30), oklch(0.85 0.10 25), oklch(0.62 0.18 30));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: heroShimmer 3s linear infinite;
+}
