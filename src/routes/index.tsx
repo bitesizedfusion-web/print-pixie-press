@@ -39,12 +39,33 @@ function HomePage() {
 
   return (
     <div className="overflow-x-clip bg-background">
-      {/* ============== HERO — editorial split ============== */}
+      {/* ============== HERO — full-bleed video background ============== */}
       <section
         ref={heroRef}
-        className="relative bg-background pt-32 pb-20 lg:pt-40 lg:pb-32"
+        className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-32 min-h-[100svh] flex items-center"
       >
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
+        {/* Video background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={heroImage}
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          style={{ opacity: 0.55 }}
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
+        {/* Dark overlay for readability */}
+        <div
+          aria-hidden
+          className="absolute inset-0 z-[1]"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(13,27,53,0.88) 0%, rgba(13,27,53,0.55) 100%)",
+          }}
+        />
+        <div className="relative z-[2] w-full max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 text-hero-foreground">
           {/* Eyebrow */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
