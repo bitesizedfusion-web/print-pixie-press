@@ -99,10 +99,56 @@ function OrderPage() {
 
   // AR preview — only when uploaded artwork is an image
   const [arOpen, setArOpen] = useState(false);
+  const [arAutoPrompt, setArAutoPrompt] = useState(false);
+  const [detectedAspect, setDetectedAspect] = useState<number | null>(null);
+  const [detectedFrame, setDetectedFrame] = useState<string | null>(null);
+
   const artworkImageUrl = useMemo(() => {
     if (!artwork.file || !artwork.file.type.startsWith("image/")) return null;
     return URL.createObjectURL(artwork.file);
   }, [artwork.file]);
+
+  // Auto-detect frame size from artwork dimensions whenever a new image is uploaded.
+  // Matches the image's aspect to the closest standard frame and pops an AR prompt.
+  useMemo(() => {
+    if (!artworkImageUrl) {
+      setDetectedAspect(null);
+      setDetectedFrame(null);
+      setArAutoPrompt(false);
+      return;
+    }
+    const img = new Image();
+    img.onload = () => {
+      const aspect = img.naturalWidth / img.naturalHeight;
+      setDetectedAspect(aspect);
+
+      const FRAMES: { id: string; label: string; aspect: number }[] = [
+        { id: "a4-portrait", label: "A4 Portrait", aspect: 210 / 297 },
+        { id: "a3-portrait", label: "A3 Portrait", aspect: 297 / 420 },
+        { id: "a2-portrait", label: "A2 Portrait", aspect: 420 / 594 },
+        { id: "a4-landscape", label: "A4 Landscape", aspect: 297 / 210 },
+        { id: "a3-landscape", label: "A3 Landscape", aspect: 420 / 297 },
+        { id: "square", label: "Square Print", aspect: 1 },
+        { id: "16-9", label: "16:9 Banner", aspect: 16 / 9 },
+        { id: "4-5", label: "4:5 Poster", aspect: 4 / 5 },
+      ];
+      let best = FRAMES[0];
+      let bestDiff = Math.abs(Math.log(aspect / best.aspect));
+      for (const f of FRAMES.slice(1)) {
+        const d = Math.abs(Math.log(aspect / f.aspect));
+        if (d < bestDiff) {
+          bestDiff = d;
+          best = f;
+        }
+      }
+      setDetectedFrame(best.label);
+      // Auto-set orientation to match artwork
+      setOrientation(aspect >= 1 ? "landscape" : "portrait");
+      // Pop the AR prompt once per upload
+      setArAutoPrompt(true);
+    };
+    img.src = artworkImageUrl;
+  }, [artworkImageUrl]);
 
   // Gallery images — reuse product image varied
   const gallery = [product.image, product.image, product.image, product.image];
@@ -443,14 +489,25 @@ function OrderPage() {
                         className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2 text-xs focus:ring-2 focus:ring-cta/40 focus:border-cta outline-none resize-none"
                       />
                       {artworkImageUrl && (
-                        <button
-                          type="button"
-                          onClick={() => setArOpen(true)}
-                          className="mt-2 w-full inline-flex items-center justify-center gap-2 h-10 rounded-lg bg-gradient-cta text-cta-foreground text-xs font-semibold hover:opacity-90 transition-all"
-                        >
-                          <Camera className="h-3.5 w-3.5" />
-                          Preview in your room (AR)
-                        </button>
+                        <div className="mt-2 space-y-2">
+                          {detectedFrame && (
+                            <div className="flex items-center gap-2 text-[11px] bg-success/10 border border-success/30 text-success rounded-lg px-3 py-2">
+                              <Sparkles className="h-3.5 w-3.5 flex-shrink-0" />
+                              <span>
+                                Auto-detected: <strong>{detectedFrame}</strong>
+                                {detectedAspect && ` (${detectedAspect.toFixed(2)}:1)`} — orientation matched ✓
+                              </span>
+                            </div>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => setArOpen(true)}
+                            className="w-full inline-flex items-center justify-center gap-2 h-10 rounded-lg bg-gradient-cta text-cta-foreground text-xs font-semibold hover:opacity-90 transition-all"
+                          >
+                            <Camera className="h-3.5 w-3.5" />
+                            Preview in your room (AR)
+                          </button>
+                        </div>
                       )}
                     </Step>
 
@@ -561,8 +618,70 @@ function OrderPage() {
         open={arOpen}
         onClose={() => setArOpen(false)}
         imageUrl={artworkImageUrl}
-        sizeLabel={`${product.name} · ${size}`}
+        aspectRatio={detectedAspect ?? undefined}
+        sizeLabel={`${product.name} · ${detectedFrame ?? size}`}
       />
+
+      {/* Auto-pop "see it on your wall" prompt after upload finishes */}
+      <AnimatePresence>
+        {arAutoPrompt && artworkImageUrl && !arOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[80] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setArAutoPrompt(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-card border border-border rounded-2xl p-6 max-w-md w-full shadow-2xl"
+            >
+              <div className="flex items-start gap-3 mb-4">
+                <div className="h-12 w-12 rounded-full bg-cta/10 text-cta flex items-center justify-center flex-shrink-0">
+                  <Camera className="h-6 w-6" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-heading text-lg font-bold text-foreground">
+                    See it on your wall
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    We auto-detected your artwork as <strong className="text-foreground">{detectedFrame}</strong>.
+                    Open the AR preview to see exactly how it'll look framed in your room.
+                  </p>
+                </div>
+              </div>
+              <div className="aspect-video rounded-lg overflow-hidden bg-black/40 border border-border mb-4">
+                <img
+                  src={artworkImageUrl}
+                  alt="Your artwork"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setArAutoPrompt(false);
+                    setArOpen(true);
+                  }}
+                  className="flex-1 inline-flex items-center justify-center gap-2 h-11 rounded-full bg-cta text-cta-foreground text-sm font-semibold hover:bg-cta-hover transition-colors"
+                >
+                  <Camera className="h-4 w-4" />
+                  Open AR Preview
+                </button>
+                <button
+                  onClick={() => setArAutoPrompt(false)}
+                  className="px-5 h-11 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors"
+                >
+                  Skip
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
