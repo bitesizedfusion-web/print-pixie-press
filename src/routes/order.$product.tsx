@@ -618,8 +618,70 @@ function OrderPage() {
         open={arOpen}
         onClose={() => setArOpen(false)}
         imageUrl={artworkImageUrl}
-        sizeLabel={`${product.name} · ${size}`}
+        aspectRatio={detectedAspect ?? undefined}
+        sizeLabel={`${product.name} · ${detectedFrame ?? size}`}
       />
+
+      {/* Auto-pop "see it on your wall" prompt after upload finishes */}
+      <AnimatePresence>
+        {arAutoPrompt && artworkImageUrl && !arOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[80] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setArAutoPrompt(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-card border border-border rounded-2xl p-6 max-w-md w-full shadow-2xl"
+            >
+              <div className="flex items-start gap-3 mb-4">
+                <div className="h-12 w-12 rounded-full bg-cta/10 text-cta flex items-center justify-center flex-shrink-0">
+                  <Camera className="h-6 w-6" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-heading text-lg font-bold text-foreground">
+                    See it on your wall
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    We auto-detected your artwork as <strong className="text-foreground">{detectedFrame}</strong>.
+                    Open the AR preview to see exactly how it'll look framed in your room.
+                  </p>
+                </div>
+              </div>
+              <div className="aspect-video rounded-lg overflow-hidden bg-black/40 border border-border mb-4">
+                <img
+                  src={artworkImageUrl}
+                  alt="Your artwork"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setArAutoPrompt(false);
+                    setArOpen(true);
+                  }}
+                  className="flex-1 inline-flex items-center justify-center gap-2 h-11 rounded-full bg-cta text-cta-foreground text-sm font-semibold hover:bg-cta-hover transition-colors"
+                >
+                  <Camera className="h-4 w-4" />
+                  Open AR Preview
+                </button>
+                <button
+                  onClick={() => setArAutoPrompt(false)}
+                  className="px-5 h-11 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors"
+                >
+                  Skip
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
