@@ -489,14 +489,25 @@ function OrderPage() {
                         className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2 text-xs focus:ring-2 focus:ring-cta/40 focus:border-cta outline-none resize-none"
                       />
                       {artworkImageUrl && (
-                        <button
-                          type="button"
-                          onClick={() => setArOpen(true)}
-                          className="mt-2 w-full inline-flex items-center justify-center gap-2 h-10 rounded-lg bg-gradient-cta text-cta-foreground text-xs font-semibold hover:opacity-90 transition-all"
-                        >
-                          <Camera className="h-3.5 w-3.5" />
-                          Preview in your room (AR)
-                        </button>
+                        <div className="mt-2 space-y-2">
+                          {detectedFrame && (
+                            <div className="flex items-center gap-2 text-[11px] bg-success/10 border border-success/30 text-success rounded-lg px-3 py-2">
+                              <Sparkles className="h-3.5 w-3.5 flex-shrink-0" />
+                              <span>
+                                Auto-detected: <strong>{detectedFrame}</strong>
+                                {detectedAspect && ` (${detectedAspect.toFixed(2)}:1)`} — orientation matched ✓
+                              </span>
+                            </div>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => setArOpen(true)}
+                            className="w-full inline-flex items-center justify-center gap-2 h-10 rounded-lg bg-gradient-cta text-cta-foreground text-xs font-semibold hover:opacity-90 transition-all"
+                          >
+                            <Camera className="h-3.5 w-3.5" />
+                            Preview in your room (AR)
+                          </button>
+                        </div>
                       )}
                     </Step>
 
