@@ -99,10 +99,56 @@ function OrderPage() {
 
   // AR preview — only when uploaded artwork is an image
   const [arOpen, setArOpen] = useState(false);
+  const [arAutoPrompt, setArAutoPrompt] = useState(false);
+  const [detectedAspect, setDetectedAspect] = useState<number | null>(null);
+  const [detectedFrame, setDetectedFrame] = useState<string | null>(null);
+
   const artworkImageUrl = useMemo(() => {
     if (!artwork.file || !artwork.file.type.startsWith("image/")) return null;
     return URL.createObjectURL(artwork.file);
   }, [artwork.file]);
+
+  // Auto-detect frame size from artwork dimensions whenever a new image is uploaded.
+  // Matches the image's aspect to the closest standard frame and pops an AR prompt.
+  useMemo(() => {
+    if (!artworkImageUrl) {
+      setDetectedAspect(null);
+      setDetectedFrame(null);
+      setArAutoPrompt(false);
+      return;
+    }
+    const img = new Image();
+    img.onload = () => {
+      const aspect = img.naturalWidth / img.naturalHeight;
+      setDetectedAspect(aspect);
+
+      const FRAMES: { id: string; label: string; aspect: number }[] = [
+        { id: "a4-portrait", label: "A4 Portrait", aspect: 210 / 297 },
+        { id: "a3-portrait", label: "A3 Portrait", aspect: 297 / 420 },
+        { id: "a2-portrait", label: "A2 Portrait", aspect: 420 / 594 },
+        { id: "a4-landscape", label: "A4 Landscape", aspect: 297 / 210 },
+        { id: "a3-landscape", label: "A3 Landscape", aspect: 420 / 297 },
+        { id: "square", label: "Square Print", aspect: 1 },
+        { id: "16-9", label: "16:9 Banner", aspect: 16 / 9 },
+        { id: "4-5", label: "4:5 Poster", aspect: 4 / 5 },
+      ];
+      let best = FRAMES[0];
+      let bestDiff = Math.abs(Math.log(aspect / best.aspect));
+      for (const f of FRAMES.slice(1)) {
+        const d = Math.abs(Math.log(aspect / f.aspect));
+        if (d < bestDiff) {
+          bestDiff = d;
+          best = f;
+        }
+      }
+      setDetectedFrame(best.label);
+      // Auto-set orientation to match artwork
+      setOrientation(aspect >= 1 ? "landscape" : "portrait");
+      // Pop the AR prompt once per upload
+      setArAutoPrompt(true);
+    };
+    img.src = artworkImageUrl;
+  }, [artworkImageUrl]);
 
   // Gallery images — reuse product image varied
   const gallery = [product.image, product.image, product.image, product.image];
