@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { products } from "@/lib/pricing";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Camera, Upload } from "lucide-react";
 import heroImage from "@/assets/hero-printing.jpg";
+import { ARCameraView } from "@/components/ARCameraView";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -29,6 +31,14 @@ const fadeUp = {
   transition: { duration: 0.8, ease },
 };
 
+const FRAME_SIZES = [
+  { id: "a4", label: "A4 Frame", sizeLabel: "A4 • 210 × 297 mm", aspect: 210 / 297 },
+  { id: "a3", label: "A3 Poster", sizeLabel: "A3 • 297 × 420 mm", aspect: 297 / 420 },
+  { id: "a2", label: "A2 Poster", sizeLabel: "A2 • 420 × 594 mm", aspect: 420 / 594 },
+  { id: "square", label: "Square Print", sizeLabel: "Square • 500 × 500 mm", aspect: 1 },
+  { id: "landscape", label: "Landscape", sizeLabel: "Landscape • 16:9", aspect: 16 / 9 },
+] as const;
+
 function HomePage() {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -36,6 +46,28 @@ function HomePage() {
     offset: ["start start", "end start"],
   });
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 80]);
+
+  const [arOpen, setArOpen] = useState(false);
+  const [arPickerOpen, setArPickerOpen] = useState(false);
+  const [arImageUrl, setArImageUrl] = useState<string | null>(null);
+  const [arFrame, setArFrame] = useState<(typeof FRAME_SIZES)[number]>(FRAME_SIZES[1]);
+
+  const handleArUpload = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file");
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    setArImageUrl(url);
+    setArPickerOpen(false);
+    setArOpen(true);
+  };
+
+  const handleArSample = () => {
+    setArImageUrl(heroImage);
+    setArPickerOpen(false);
+    setArOpen(true);
+  };
 
   return (
     <div className="overflow-x-clip bg-background">
@@ -84,6 +116,14 @@ function HomePage() {
           >
             Open Designer
           </Link>
+          <button
+            type="button"
+            onClick={() => setArPickerOpen(true)}
+            className="inline-flex items-center justify-center h-14 px-8 rounded-full bg-white/10 backdrop-blur-md border border-white/30 text-white text-base font-semibold hover:bg-white/20 transition-all"
+          >
+            <Camera className="h-5 w-5 mr-2" />
+            AR Preview
+          </button>
           <Link
             to="/products"
             className="text-sm text-white/85 underline underline-offset-[6px] decoration-white/40 hover:decoration-white transition-colors px-2"
@@ -92,6 +132,88 @@ function HomePage() {
           </Link>
         </motion.div>
       </section>
+
+      {/* ============== AR FRAME PICKER MODAL ============== */}
+      {arPickerOpen && (
+        <div
+          className="fixed inset-0 z-[90] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setArPickerOpen(false)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-card border border-border rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <Camera className="h-5 w-5 text-cta" />
+              <h3 className="font-heading text-2xl font-light tracking-tight text-foreground">
+                See it on your wall
+              </h3>
+            </div>
+            <p className="text-sm text-muted-foreground mb-6">
+              Pick a frame size, then point your camera at the wall to preview before ordering.
+            </p>
+
+            <div className="mb-6">
+              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground mb-3">
+                Frame size
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {FRAME_SIZES.map((f) => (
+                  <button
+                    key={f.id}
+                    onClick={() => setArFrame(f)}
+                    className={`px-3 py-2.5 rounded-lg text-sm font-medium border transition-all ${
+                      arFrame.id === f.id
+                        ? "bg-foreground text-background border-foreground"
+                        : "bg-background text-foreground border-border hover:border-foreground/40"
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="flex items-center justify-center gap-2 w-full h-12 rounded-full bg-cta text-cta-foreground text-sm font-semibold hover:bg-cta-hover transition-colors cursor-pointer">
+                <Upload className="h-4 w-4" />
+                Upload your artwork
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleArUpload(file);
+                  }}
+                />
+              </label>
+              <button
+                onClick={handleArSample}
+                className="w-full h-12 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-colors"
+              >
+                Try with a sample image
+              </button>
+              <button
+                onClick={() => setArPickerOpen(false)}
+                className="w-full h-10 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      <ARCameraView
+        open={arOpen}
+        onClose={() => setArOpen(false)}
+        imageUrl={arImageUrl}
+        aspectRatio={arFrame.aspect}
+        sizeLabel={arFrame.sizeLabel}
+      />
 
       {/* ============== INDEX — quiet stats ============== */}
       <section className="border-t border-border bg-background">
