@@ -232,110 +232,96 @@ function GetQuotePage() {
                   <div className="space-y-8">
                     <h3 className="font-heading text-2xl border-b border-border pb-4">Contact Details</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                            <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Full Name *</label>
-                            <input required placeholder="Your name" value={formData.firstName} onChange={e => setFormData(p => ({...p, firstName: e.target.value}))} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Company Name</label>
-                            <input placeholder="If applicable" value={formData.companyName} onChange={e => setFormData(p => ({...p, companyName: e.target.value}))} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Email Address *</label>
-                            <input required type="email" placeholder="email@example.com" value={formData.email} onChange={e => setFormData(p => ({...p, email: e.target.value}))} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Phone / WhatsApp *</label>
-                            <div className="relative flex items-center">
-                              <div className="absolute left-3 flex items-center gap-1.5 pointer-events-none pr-2 border-r border-border">
-                                <span className="text-base">🇦🇺</span>
-                                <span className="text-[12px] font-medium text-muted-foreground">+61</span>
-                              </div>
-                              <input required type="tel" placeholder="412 345 678" value={formData.mobile} onChange={e => setFormData(p => ({...p, mobile: e.target.value}))} className="w-full h-12 pl-[72px] pr-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
-                            </div>
+                        <input required placeholder="Full Name *" value={formData.firstName} onChange={e => setFormData(p => ({...p, firstName: e.target.value}))} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
+                    </div>
+                    <div className="space-y-2">
+                        <input placeholder="Company Name" value={formData.companyName} onChange={e => setFormData(p => ({...p, companyName: e.target.value}))} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
+                    </div>
+                    <div className="space-y-2">
+                        <input required type="email" placeholder="Email Address *" value={formData.email} onChange={e => setFormData(p => ({...p, email: e.target.value}))} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
+                    </div>
+                    <div className="space-y-2">
+                        <div className="relative flex items-center">
+                          <div className="absolute left-4 flex items-center gap-1.5 pointer-events-none pr-3 border-r border-border">
+                            <span className="text-base">🇦🇺</span>
+                            <span className="text-[12px] font-medium text-muted-foreground">+61</span>
+                          </div>
+                          <input required type="tel" placeholder="Mobile / WhatsApp *" value={formData.mobile} onChange={e => setFormData(p => ({...p, mobile: e.target.value}))} className="w-full h-14 pl-[84px] pr-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
                         </div>
                     </div>
-                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
-                  <div className="space-y-8">
-                    <h3 className="font-heading text-2xl border-b border-border pb-4">Product Specifications</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div className="space-y-2 sm:col-span-2">
-                            <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Product Name *</label>
-                            <input required placeholder="please type your product name" value={formData.productName} onChange={e => setFormData(p => ({...p, productName: e.target.value}))} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Quantity *</label>
-                            <input required type="number" placeholder="0" value={formData.quantity} onChange={e => setFormData(p => ({...p, quantity: e.target.value}))} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Material / Quality</label>
-                            <input placeholder="e.g. 350gsm Silk" value={formData.material} onChange={e => setFormData(p => ({...p, material: e.target.value}))} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
-                        </div>
+          {currentStep === 2 && (
+            <motion.div 
+                key="step2"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-16"
+            >
+              <div className="space-y-8">
+                <h3 className="font-heading text-2xl border-b border-border pb-4 text-center">Project Specifications</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="space-y-2 sm:col-span-2">
+                        <input required placeholder="What product do you need? *" value={formData.productName} onChange={e => setFormData(p => ({...p, productName: e.target.value}))} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
                     </div>
-                  </div>
-                </motion.div>
-              )}
+                    <div className="space-y-2">
+                        <input required type="number" placeholder="Quantity *" value={formData.quantity} onChange={e => setFormData(p => ({...p, quantity: e.target.value}))} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
+                    </div>
+                    <div className="space-y-2">
+                        <input placeholder="Material / Quality (e.g. 350gsm Silk)" value={formData.material} onChange={e => setFormData(p => ({...p, material: e.target.value}))} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
+                    </div>
+                </div>
+                
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    {['width', 'length', 'height', 'depth'].map((dim) => (
+                        <input key={dim} type="number" placeholder={`${dim.charAt(0).toUpperCase() + dim.slice(1)} (cm)`} value={(formData as any)[dim]} onChange={e => setFormData(p => ({...p, [dim]: e.target.value}))} className="w-full h-14 px-4 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
+                    ))}
+                </div>
 
-              {currentStep === 2 && (
-                <motion.div 
-                    key="step2"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="space-y-16"
-                >
-                  <div className="space-y-8">
-                    <h3 className="font-heading text-2xl border-b border-border pb-4">Dimensions & Logistics</h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-                        {['width', 'length', 'height', 'depth'].map((dim) => (
-                            <div key={dim} className="space-y-2">
-                                <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">{dim} (cm)</label>
-                                <input type="number" placeholder="0" value={(formData as any)[dim]} onChange={e => setFormData(p => ({...p, [dim]: e.target.value}))} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
-                            </div>
-                        ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 pt-4">
+                    <div className="space-y-4">
+                        <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground text-center mb-2">Delivery Option</div>
+                        <div className="space-y-2">
+                            {deliveryOptions.map(o => (
+                                <button key={o.id} type="button" onClick={() => setFormData(p => ({...p, delivery: o.id}))} className={`w-full text-left p-4 rounded-xl border transition-all ${formData.delivery === o.id ? "bg-foreground text-background border-foreground shadow-lg" : "bg-card border-border hover:border-foreground/30"}`}>
+                                    <div className="text-sm font-semibold">{o.label}</div>
+                                    <div className={`text-[10px] mt-1 ${formData.delivery === o.id ? "text-background/70" : "text-muted-foreground"}`}>{o.desc}</div>
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
-                        <div className="space-y-4">
-                            <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Delivery Option</label>
-                            <div className="space-y-2">
-                                {deliveryOptions.map(o => (
-                                    <button key={o.id} type="button" onClick={() => setFormData(p => ({...p, delivery: o.id}))} className={`w-full text-left p-4 rounded-xl border transition-all ${formData.delivery === o.id ? "bg-foreground text-background border-foreground shadow-lg" : "bg-card border-border hover:border-foreground/30"}`}>
+                    <div className="space-y-4">
+                        <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground text-center mb-2">Urgency / Deadline</div>
+                        <div className="space-y-2">
+                            {urgencyOptions.map(o => (
+                                <div key={o.id} className="space-y-2">
+                                    <button type="button" onClick={() => setFormData(p => ({...p, urgency: o.id}))} className={`w-full text-left p-4 rounded-xl border transition-all ${formData.urgency === o.id ? "bg-foreground text-background border-foreground shadow-lg" : "bg-card border-border hover:border-foreground/30"}`}>
                                         <div className="text-sm font-semibold">{o.label}</div>
-                                        <div className={`text-[10px] mt-1 ${formData.delivery === o.id ? "text-background/70" : "text-muted-foreground"}`}>{o.desc}</div>
+                                        <div className={`text-[10px] mt-1 ${formData.urgency === o.id ? "text-background/70" : "text-muted-foreground"}`}>{o.desc}</div>
                                     </button>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="space-y-4">
-                            <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Urgency / Deadline</label>
-                            <div className="space-y-2">
-                                {urgencyOptions.map(o => (
-                                    <div key={o.id} className="space-y-2">
-                                        <button type="button" onClick={() => setFormData(p => ({...p, urgency: o.id}))} className={`w-full text-left p-4 rounded-xl border transition-all ${formData.urgency === o.id ? "bg-foreground text-background border-foreground shadow-lg" : "bg-card border-border hover:border-foreground/30"}`}>
-                                            <div className="text-sm font-semibold">{o.label}</div>
-                                            <div className={`text-[10px] mt-1 ${formData.urgency === o.id ? "text-background/70" : "text-muted-foreground"}`}>{o.desc}</div>
-                                        </button>
-                                        {o.id === 'required' && formData.urgency === 'required' && (
-                                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden -mt-1">
-                                                <div className="relative group px-1 pb-2">
-                                                    <input type="date" required value={formData.requiredDate} onChange={e => setFormData(p => ({...p, requiredDate: e.target.value}))} className="w-full h-14 pl-5 pr-12 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium text-foreground appearance-none cursor-pointer shadow-sm" />
-                                                    <Calendar className="absolute right-5 top-1/2 -translate-y-1/2 -mt-1 h-5 w-5 text-muted-foreground pointer-events-none" />
-                                                </div>
-                                            </motion.div>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
+                                    {o.id === 'required' && formData.urgency === 'required' && (
+                                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden -mt-1">
+                                            <div className="relative group px-1 pb-2">
+                                                <input type="date" required value={formData.requiredDate} onChange={e => setFormData(p => ({...p, requiredDate: e.target.value}))} className="w-full h-14 pl-5 pr-12 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium text-foreground appearance-none cursor-pointer shadow-sm" />
+                                                <Calendar className="absolute right-5 top-1/2 -translate-y-1/2 -mt-1 h-5 w-5 text-muted-foreground pointer-events-none" />
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </div>
+                            ))}
                         </div>
                     </div>
-                  </div>
-                  <div className="space-y-8">
-                    <h3 className="font-heading text-2xl border-b border-border pb-4">Special Instructions</h3>
-                    <textarea rows={4} placeholder="Any other details..." value={formData.details} onChange={e => setFormData(p => ({...p, details: e.target.value}))} className="w-full p-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all resize-none font-medium" />
-                  </div>
-                </motion.div>
-              )}
+                </div>
+                <div className="space-y-4">
+                  <textarea rows={4} placeholder="Additional Details / Special Instructions..." value={formData.details} onChange={e => setFormData(p => ({...p, details: e.target.value}))} className="w-full p-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all resize-none font-medium" />
+                </div>
+              </div>
+            </motion.div>
+          )}
 
               {currentStep === 3 && (
                 <motion.div 
