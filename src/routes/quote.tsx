@@ -44,8 +44,13 @@ const imageSlots = [
   { id: "left", label: "Left Side" }, { id: "right", label: "Right Side" }
 ];
 
+import { Loader2, MailCheck, ShieldCheck, RefreshCw } from "lucide-react";
+
 function GetQuotePage() {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'verifying' | 'submitting' | 'success'>('idle');
+  const [otp, setOtp] = useState("");
+  const [generatedOtp, setGeneratedOtp] = useState("");
+  
   const [formData, setFormData] = useState({
     firstName: "", surname: "", companyName: "", email: "", mobile: "", state: "", postcode: "",
     productName: "", width: "", length: "", height: "", depth: "", quantity: "",
@@ -72,24 +77,95 @@ function GetQuotePage() {
     }
   };
 
+  const generateAndSendOtp = () => {
+    const code = Math.floor(1000 + Math.random() * 9000).toString();
+    setGeneratedOtp(code);
+    // In a real app, you would call an email API here
+    console.log("OTP Sent to " + formData.email + ": " + code);
+    toast.success("Verification code sent to " + formData.email);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (!formData.email) {
+      toast.error("Please provide an email address");
+      return;
+    }
+    setStatus('verifying');
+    generateAndSendOtp();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  if (submitted) {
+  const handleVerify = () => {
+    if (otp === generatedOtp) {
+      setStatus('submitting');
+      // Simulate API call for 2 seconds
+      setTimeout(() => {
+        setStatus('success');
+        toast.success("Quote request submitted successfully!");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 2000);
+    } else {
+      toast.error("Invalid verification code. Please try again.");
+    }
+  };
+
+  if (status === 'success') {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl w-full bg-card border border-border rounded-3xl p-10 lg:p-16 text-center shadow-xl">
-          <div className="w-20 h-20 rounded-full bg-success/10 text-success flex items-center justify-center mx-auto mb-8"><CheckCircle2 className="w-10 h-10" /></div>
-          <h1 className="font-heading text-4xl mb-4">Thank you.</h1>
-          <p className="text-muted-foreground text-lg mb-12">We have received your quote request. Our team will contact you shortly.</p>
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl w-full bg-card border border-border rounded-3xl p-10 lg:p-16 text-center shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-brand" />
+          <div className="w-24 h-24 rounded-full bg-success/10 text-success flex items-center justify-center mx-auto mb-8 shadow-inner"><CheckCircle2 className="w-12 h-12" /></div>
+          <h1 className="font-heading text-5xl mb-6">Quote Received!</h1>
+          <p className="text-muted-foreground text-lg mb-12 leading-relaxed">
+            Thank you for choosing S&S Printing and Packaging. We have received your verified request and a confirmation has been sent to <span className="text-foreground font-semibold">{formData.email}</span>.
+            <br/><br/>
+            Our team will review your specifications and contact you with a formal quotation shortly.
+          </p>
           <div className="space-y-4">
-            <Link to="/" className="flex items-center justify-center gap-3 w-full h-14 rounded-full bg-foreground text-background font-medium hover:bg-foreground/90 transition-all"><Home className="w-4 h-4" /> Back to Home</Link>
+            <Link to="/" className="flex items-center justify-center gap-3 w-full h-14 rounded-full bg-foreground text-background font-medium hover:bg-foreground/90 transition-all shadow-lg hover:shadow-xl"><Home className="w-4 h-4" /> Back to Home</Link>
+            <p className="text-[11px] text-muted-foreground uppercase tracking-widest">Business hours: Mon - Fri, 9am - 6pm</p>
           </div>
         </motion.div>
       </div>
+    );
+  }
+
+  if (status === 'verifying') {
+    return (
+        <div className="min-h-screen bg-background flex items-center justify-center p-6">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md w-full bg-card border border-border rounded-3xl p-10 lg:p-12 text-center shadow-2xl border-t-4 border-t-brand">
+                <div className="w-16 h-16 rounded-2xl bg-brand/10 text-brand flex items-center justify-center mx-auto mb-6"><MailCheck className="w-8 h-8" /></div>
+                <h2 className="font-heading text-3xl mb-4">Verify your Email</h2>
+                <p className="text-muted-foreground mb-8">We've sent a 4-digit verification code to <span className="text-foreground font-medium">{formData.email}</span>. Please enter it below to submit your quote.</p>
+                
+                <div className="space-y-6">
+                    <input 
+                        type="text" 
+                        maxLength={4}
+                        placeholder="0000"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                        className="w-full h-16 text-center text-3xl font-mono tracking-[0.5em] rounded-2xl border-2 border-border bg-muted/30 focus:border-brand focus:ring-0 transition-all outline-none"
+                    />
+                    
+                    <button 
+                        onClick={handleVerify}
+                        disabled={otp.length !== 4}
+                        className="w-full h-14 rounded-full bg-gradient-brand text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale transition-all shadow-lg"
+                    >
+                        {status === 'submitting' ? <Loader2 className="w-5 h-5 animate-spin" /> : <><ShieldCheck className="w-5 h-5"/> Verify & Submit</>}
+                    </button>
+
+                    <button 
+                        onClick={generateAndSendOtp}
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-2 mx-auto"
+                    >
+                        <RefreshCw className="w-3 h-3" /> Resend Code
+                    </button>
+                </div>
+            </motion.div>
+        </div>
     );
   }
 
