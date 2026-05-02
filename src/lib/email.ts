@@ -9,7 +9,7 @@ export const sendVerificationEmail = async (email: string, code: string) => {
         'Authorization': `Bearer ${import.meta.env.VITE_RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'S&S Printing and Packaging <onboarding@resend.dev>',
+        from: 'S&S Printing and Packaging <noreply@phonefixandmore.com>',
         to: [email],
         subject: 'Your Quote Verification Code',
         html: `
@@ -54,7 +54,7 @@ export const sendQuoteToAdmin = async (formData: any) => {
         'Authorization': `Bearer ${import.meta.env.VITE_RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'S&S Quote System <onboarding@resend.dev>',
+        from: 'S&S Quote System <noreply@phonefixandmore.com>',
         to: ['sandsprinters26@gmail.com'],
         subject: `New Quote Request: ${formData.productName}`,
         html: `
