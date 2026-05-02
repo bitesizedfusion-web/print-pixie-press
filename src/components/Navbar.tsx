@@ -130,34 +130,77 @@ export function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="lg:hidden bg-background border-t border-border overflow-hidden absolute w-full shadow-xl"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 lg:hidden bg-background/95 backdrop-blur-xl"
           >
-            <div className="px-6 py-8 space-y-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setMobileOpen(false)}
-                  className={`block px-4 py-3 text-[16px] font-medium rounded-xl ${
-                    location.pathname === link.to ? "bg-muted text-foreground" : "text-muted-foreground"
-                  }`}
+            <div className="flex flex-col h-full pt-24 px-8 pb-10">
+              {/* Close Button */}
+              <button 
+                onClick={() => setMobileOpen(false)}
+                className="absolute top-6 right-6 p-3 rounded-full bg-muted text-foreground"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              {/* Logo in Menu */}
+              <div className="mb-12">
+                <img src="/logo.jpg" alt="Logo" className="h-10 w-auto mix-blend-multiply" />
+              </div>
+
+              {/* Navigation Links */}
+              <div className="flex-1 space-y-6">
+                {navLinks.map((link, idx) => (
+                  <motion.div
+                    key={link.to}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + idx * 0.05 }}
+                  >
+                    <Link
+                      to={link.to}
+                      onClick={() => setMobileOpen(false)}
+                      className={`text-3xl font-heading tracking-tight ${
+                        location.pathname === link.to ? "text-foreground" : "text-muted-foreground"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Bottom Actions & Contacts */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="space-y-8"
+              >
+                <Link 
+                  to="/quote" 
+                  onClick={() => setMobileOpen(false)} 
+                  className="h-14 w-full flex items-center justify-center rounded-2xl bg-gradient-brand text-white font-semibold text-lg shadow-xl shadow-brand/20"
                 >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="pt-6 grid grid-cols-1 gap-3">
-                <Link to="/quote" onClick={() => setMobileOpen(false)} className="h-12 flex items-center justify-center rounded-xl bg-gradient-brand text-white font-medium">
                   Get a Quote
                 </Link>
-                <div className="flex items-center justify-center gap-6 pt-4 text-muted-foreground border-t border-border mt-4">
-                  <a href="tel:0412345678"><Phone className="w-5 h-5" /></a>
-                  <a href="mailto:sandsprinters26@gmail.com"><Mail className="w-5 h-5" /></a>
-                  <a href="https://wa.me/61412345678"><MessageCircle className="w-5 h-5" /></a>
+
+                <div className="space-y-4">
+                  <div className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Get in touch</div>
+                  <div className="flex items-center gap-6 text-foreground">
+                    <a href="tel:0412345678" className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                      <Phone className="w-5 h-5" />
+                    </a>
+                    <a href="mailto:sandsprinters26@gmail.com" className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                      <Mail className="w-5 h-5" />
+                    </a>
+                    <a href="https://wa.me/61412345678" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                      <MessageCircle className="w-5 h-5" />
+                    </a>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         )}
