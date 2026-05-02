@@ -230,7 +230,7 @@ function GetQuotePage() {
                         <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Product Name *</label>
                         <input 
                             required 
-                            placeholder="e.g. Luxury Gift Box, Premium Business Cards" 
+                            placeholder="please type your product name" 
                             value={formData.productName} 
                             onChange={e => setFormData(p => ({...p, productName: e.target.value}))} 
                             className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" 
