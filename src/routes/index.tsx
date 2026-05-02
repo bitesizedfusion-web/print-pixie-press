@@ -71,67 +71,8 @@ function HomePage() {
 
   return (
     <div className="overflow-x-clip bg-background">
-      {/* ============== HERO — full-bleed video with CTAs ============== */}
-      <section
-        ref={heroRef}
-        className="relative overflow-hidden min-h-[100svh] w-full bg-black flex items-center justify-center"
-      >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster={heroImage}
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/hero-video.mp4" type="video/mp4" />
-        </video>
-        {/* Subtle vignette so buttons remain legible without obscuring the video */}
-        <div
-          aria-hidden
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse at center, rgba(0,0,0,0) 35%, rgba(0,0,0,0.55) 100%)",
-          }}
-        />
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease, delay: 0.4 }}
-          className="relative z-10 flex flex-col sm:flex-row items-center gap-4 px-6"
-        >
-          <Link
-            to="/order/$product"
-            params={{ product: "flyers" }}
-            className="hero-cta-pulse group inline-flex items-center justify-center h-14 px-8 rounded-full bg-cta text-cta-foreground text-base font-semibold shadow-2xl hover:bg-cta-hover transition-all"
-          >
-            Get Instant Quote
-            <ArrowUpRight className="h-5 w-5 ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
-          <Link
-            to="/designer"
-            className="inline-flex items-center justify-center h-14 px-8 rounded-full bg-white/10 backdrop-blur-md border border-white/30 text-white text-base font-semibold hover:bg-white/20 transition-all"
-          >
-            Open Designer
-          </Link>
-          <button
-            type="button"
-            onClick={() => setArPickerOpen(true)}
-            className="inline-flex items-center justify-center h-14 px-8 rounded-full bg-white/10 backdrop-blur-md border border-white/30 text-white text-base font-semibold hover:bg-white/20 transition-all"
-          >
-            <Camera className="h-5 w-5 mr-2" />
-            AR Preview
-          </button>
-          <Link
-            to="/products"
-            className="text-sm text-white/85 underline underline-offset-[6px] decoration-white/40 hover:decoration-white transition-colors px-2"
-          >
-            View all products →
-          </Link>
-        </motion.div>
-      </section>
+      {/* ============== HERO — VEX-style with bg video ============== */}
+      <VexHero />
 
       {/* ============== AR FRAME PICKER MODAL ============== */}
       {arPickerOpen && (
