@@ -11,7 +11,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/checkout")({
   head: () => ({
     meta: [
-      { title: "Checkout — PrintMaster Australia" },
+      { title: "Checkout — S&S Printing and Packaging" },
       { name: "description", content: "Complete your print order securely." },
     ],
   }),

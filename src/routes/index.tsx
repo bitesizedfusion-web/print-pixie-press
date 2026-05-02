@@ -10,7 +10,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Printmaster — Considered printing for considered brands" },
+      { title: "S&S Printing and Packaging — Considered printing for considered brands" },
       {
         name: "description",
         content:

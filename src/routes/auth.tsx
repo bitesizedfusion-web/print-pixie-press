@@ -13,7 +13,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign In — PrintMaster Australia" },
+      { title: "Sign In — S&S Printing and Packaging" },
       { name: "description", content: "Sign in or create an account to manage your print orders." },
     ],
   }),
@@ -89,7 +89,7 @@ function AuthPage() {
               <Printer className="h-5 w-5 text-cta-foreground" />
             </div>
             <span className="font-heading text-xl font-bold">
-              PrintMaster <span className="text-gradient">Australia</span>
+              S&S Printing and Packaging <span className="text-gradient">Australia</span>
             </span>
           </Link>
         </div>

@@ -8,13 +8,13 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Printmaster" },
+      { title: "Contact — S&S Printing and Packaging" },
       {
         name: "description",
         content:
           "Get in touch about a custom quote, bulk order or general enquiry. We respond within 24 hours.",
       },
-      { property: "og:title", content: "Contact — Printmaster" },
+      { property: "og:title", content: "Contact — S&S Printing and Packaging" },
       { property: "og:description", content: "Talk to a printer. We respond within 24 hours." },
     ],
   }),
@@ -199,7 +199,7 @@ function ContactPage() {
               Find us
             </div>
             {[
-              { label: "Email", value: "info@printmaster.com.au", href: "mailto:info@printmaster.com.au" },
+              { label: "Email", value: "info@ssprinting.com.au", href: "mailto:info@ssprinting.com.au" },
               { label: "Phone", value: "1300 555 123", href: "tel:1300555123" },
               { label: "Studio", value: "Level 2, 123 Print St,\nSydney NSW 2000" },
               { label: "Hours", value: "Monday – Friday\n8am – 6pm AEST" },

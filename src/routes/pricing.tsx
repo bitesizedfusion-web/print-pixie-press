@@ -7,13 +7,13 @@ import { ArrowUpRight } from "lucide-react";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — Printmaster" },
+      { title: "Pricing — S&S Printing and Packaging" },
       {
         name: "description",
         content:
           "Transparent pricing for every product. Flyers from $35, posters from $45. All prices include GST.",
       },
-      { property: "og:title", content: "Pricing — Printmaster" },
+      { property: "og:title", content: "Pricing — S&S Printing and Packaging" },
       { property: "og:description", content: "Transparent printing pricing." },
     ],
   }),
