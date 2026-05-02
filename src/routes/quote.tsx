@@ -233,14 +233,8 @@ function GetQuotePage() {
                     <h3 className="font-heading text-2xl border-b border-border pb-4">Contact Details</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <input required placeholder="Full Name *" value={formData.firstName} onChange={e => setFormData(p => ({...p, firstName: e.target.value}))} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
-                    </div>
-                    <div className="space-y-2">
                         <input placeholder="Company Name" value={formData.companyName} onChange={e => setFormData(p => ({...p, companyName: e.target.value}))} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
-                    </div>
-                    <div className="space-y-2">
                         <input required type="email" placeholder="Email Address *" value={formData.email} onChange={e => setFormData(p => ({...p, email: e.target.value}))} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
-                    </div>
-                    <div className="space-y-2">
                         <div className="relative flex items-center">
                           <div className="absolute left-4 flex items-center gap-1.5 pointer-events-none pr-3 border-r border-border">
                             <span className="text-base">🇦🇺</span>
@@ -249,10 +243,9 @@ function GetQuotePage() {
                           <input required type="tel" placeholder="Mobile / WhatsApp *" value={formData.mobile} onChange={e => setFormData(p => ({...p, mobile: e.target.value}))} className="w-full h-14 pl-[84px] pr-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
                         </div>
                     </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
+                  </div>
+                </motion.div>
+              )}
 
           {currentStep === 2 && (
             <motion.div 
