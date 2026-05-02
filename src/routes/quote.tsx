@@ -300,18 +300,17 @@ function GetQuotePage() {
                                             <motion.div 
                                                 initial={{ opacity: 0, height: 0 }} 
                                                 animate={{ opacity: 1, height: 'auto' }}
-                                                className="space-y-2 pt-1 pb-2 overflow-hidden"
+                                                className="overflow-hidden -mt-1"
                                             >
-                                                <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground pl-1">Select Deadline *</label>
-                                                <div className="relative group">
+                                                <div className="relative group px-1 pb-2">
                                                     <input 
                                                         type="date" 
                                                         required={formData.urgency === 'required'}
                                                         value={formData.requiredDate} 
                                                         onChange={e => setFormData(p => ({...p, requiredDate: e.target.value}))} 
-                                                        className="w-full h-14 pl-5 pr-12 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium text-foreground appearance-none cursor-pointer"
+                                                        className="w-full h-14 pl-5 pr-12 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium text-foreground appearance-none cursor-pointer shadow-sm"
                                                     />
-                                                    <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors pointer-events-none" />
+                                                    <Calendar className="absolute right-5 top-1/2 -translate-y-1/2 -mt-1 h-5 w-5 text-muted-foreground group-hover:text-foreground transition-colors pointer-events-none" />
                                                 </div>
                                             </motion.div>
                                         )}
