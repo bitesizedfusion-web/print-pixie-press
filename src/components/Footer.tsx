@@ -2,12 +2,19 @@ import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
-    <footer className="bg-background border-t border-border">
-      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-24 pb-10">
+    <footer className="bg-gradient-footer text-white relative overflow-hidden">
+      {/* Top accent bar */}
+      <div className="h-[3px] w-full bg-gradient-brand" />
+      {/* Soft glow */}
+      <div className="pointer-events-none absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-gradient-brand opacity-20 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-gradient-brand opacity-15 blur-[120px]" />
+
+      <div className="relative max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-24 pb-10">
         {/* Big wordmark */}
-        <div className="border-b border-border pb-12 mb-12">
-          <div className="font-heading text-[clamp(3rem,12vw,10rem)] font-light leading-[0.85] tracking-[-0.05em] text-foreground">
-            S&S Printing and Packaging<span className="italic text-muted-foreground">.</span>
+        <div className="border-b border-white/10 pb-12 mb-12">
+          <div className="font-heading text-[clamp(2.5rem,10vw,8rem)] font-light leading-[0.9] tracking-[-0.05em] text-white">
+            S<span className="text-gradient-brand">&</span>S Printing
+            <span className="italic text-white/50"> & Packaging.</span>
           </div>
         </div>
 
