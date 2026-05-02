@@ -197,15 +197,33 @@ function GetQuotePage() {
                     </div>
                     <div className="space-y-4">
                         <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Urgency / Deadline</label>
-                        <div className="space-y-2">
-                            {urgencyOptions.map(o => (
-                                <button key={o.id} type="button" onClick={() => setFormData(p => ({...p, urgency: o.id}))} className={`w-full text-left p-4 rounded-xl border transition-all ${formData.urgency === o.id ? "bg-foreground text-background border-foreground shadow-lg" : "bg-card border-border hover:border-foreground/30"}`}>
-                                    <div className="text-sm font-semibold">{o.label}</div>
-                                    <div className={`text-[10px] mt-1 ${formData.urgency === o.id ? "text-background/70" : "text-muted-foreground"}`}>{o.desc}</div>
-                                </button>
-                            ))}
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                {urgencyOptions.map(o => (
+                                    <button key={o.id} type="button" onClick={() => setFormData(p => ({...p, urgency: o.id}))} className={`w-full text-left p-4 rounded-xl border transition-all ${formData.urgency === o.id ? "bg-foreground text-background border-foreground shadow-lg" : "bg-card border-border hover:border-foreground/30"}`}>
+                                        <div className="text-sm font-semibold">{o.label}</div>
+                                        <div className={`text-[10px] mt-1 ${formData.urgency === o.id ? "text-background/70" : "text-muted-foreground"}`}>{o.desc}</div>
+                                    </button>
+                                ))}
+                            </div>
+                            
                             {formData.urgency === 'required' && (
-                                <input type="date" value={formData.requiredDate} onChange={e => setFormData(p => ({...p, requiredDate: e.target.value}))} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none mt-2" />
+                                <motion.div 
+                                    initial={{ opacity: 0, y: -10 }} 
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="space-y-2 pt-2"
+                                >
+                                    <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground pl-1">Select Deadline *</label>
+                                    <div className="relative">
+                                        <input 
+                                            type="date" 
+                                            required={formData.urgency === 'required'}
+                                            value={formData.requiredDate} 
+                                            onChange={e => setFormData(p => ({...p, requiredDate: e.target.value}))} 
+                                            className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium text-foreground appearance-none cursor-pointer"
+                                        />
+                                    </div>
+                                </motion.div>
                             )}
                         </div>
                     </div>
