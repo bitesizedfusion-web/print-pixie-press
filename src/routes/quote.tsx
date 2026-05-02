@@ -46,6 +46,8 @@ const imageSlots = [
 
 import { Loader2, MailCheck, ShieldCheck, RefreshCw } from "lucide-react";
 
+import { sendVerificationEmail, sendQuoteToAdmin } from "@/lib/email";
+
 function GetQuotePage() {
   const [status, setStatus] = useState<'idle' | 'verifying' | 'submitting' | 'success'>('idle');
   const [otp, setOtp] = useState("");
@@ -77,12 +79,17 @@ function GetQuotePage() {
     }
   };
 
-  const generateAndSendOtp = () => {
+  const generateAndSendOtp = async () => {
     const code = Math.floor(1000 + Math.random() * 9000).toString();
     setGeneratedOtp(code);
-    // In a real app, you would call an email API here
-    console.log("OTP Sent to " + formData.email + ": " + code);
-    toast.success("Verification code sent to " + formData.email);
+    
+    const success = await sendVerificationEmail(formData.email, code);
+    if (success) {
+        console.log("OTP Sent to " + formData.email + ": " + code);
+        toast.success("Verification code sent to your email from our domain.");
+    } else {
+        toast.error("Failed to send verification email. Please try again.");
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -96,13 +103,17 @@ function GetQuotePage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     if (otp === generatedOtp) {
       setStatus('submitting');
-      // Simulate API call for 2 seconds
+      
+      // Send data to Admin and Confirmation to Client
+      const adminSuccess = await sendQuoteToAdmin(formData);
+      
+      // Simulate API processing
       setTimeout(() => {
         setStatus('success');
-        toast.success("Quote request submitted successfully!");
+        toast.success("Quote request submitted and verified!");
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 2000);
     } else {
