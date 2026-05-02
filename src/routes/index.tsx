@@ -66,7 +66,7 @@ function HomePage() {
       <section className="py-24 lg:py-32 overflow-hidden border-b border-border">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
           <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto mb-20">
-            <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-6">Expertise</div>
+
             <h2 className="font-heading text-4xl lg:text-6xl font-light mb-8">Why Choose S&S Printing and Packaging?</h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
               We make printing and packaging simple, professional and affordable.
@@ -117,12 +117,7 @@ function HomePage() {
               </div>
             </div>
 
-            <Link to="/quote" className="inline-flex items-center gap-4 group">
-              <span className="w-12 h-12 rounded-full bg-foreground text-background flex items-center justify-center group-hover:bg-gradient-brand transition-colors">
-                <ArrowRight className="w-5 h-5" />
-              </span>
-              <span className="font-medium border-b border-foreground/30 group-hover:border-foreground transition-colors">Calculate Delivery Time</span>
-            </Link>
+
           </motion.div>
 
           <motion.div 
