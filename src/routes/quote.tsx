@@ -98,7 +98,6 @@ function GetQuotePage() {
       <section className="pt-32 pb-12 border-b border-border">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 text-center">
           <motion.div {...fadeUp}>
-            <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-6">Quotation Form</div>
             <h1 className="font-heading text-[clamp(2.5rem,6vw,5rem)] font-light tracking-[-0.04em] leading-none text-foreground">Get a Quote</h1>
           </motion.div>
         </div>
