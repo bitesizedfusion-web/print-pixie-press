@@ -56,13 +56,15 @@ function RootComponent() {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith("/admin");
   const isAuth = location.pathname.startsWith("/auth");
+  const isHome = location.pathname === "/";
   const hideChrome = isAdmin || isAuth;
+  const hideNavbar = hideChrome || isHome;
 
   return (
     <AuthProvider>
       <CartProvider>
-        {!hideChrome && <Navbar />}
-        <main className={hideChrome ? "" : "pt-16"}>
+        {!hideNavbar && <Navbar />}
+        <main className={hideNavbar ? "" : "pt-16"}>
           <Outlet />
         </main>
         {!hideChrome && <Footer />}
