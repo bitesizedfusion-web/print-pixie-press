@@ -354,19 +354,13 @@ function GetQuotePage() {
               )}
             </AnimatePresence>
 
-            <div className="mt-16 flex items-center justify-between gap-6 pt-8 border-t border-border">
-                {currentStep > 1 ? (
-                    <button type="button" onClick={prevStep} className="flex-1 h-16 rounded-full border border-border text-foreground font-semibold hover:bg-muted transition-all flex items-center justify-center gap-3">
-                        Back
-                    </button>
-                ) : <div className="flex-1" />}
-                
+            <div className="mt-16 flex items-center justify-center gap-6 pt-8 border-t border-border">
                 {currentStep < 3 ? (
-                    <button type="button" onClick={nextStep} className="flex-1 h-16 rounded-full bg-foreground text-background font-semibold hover:bg-foreground/90 transition-all flex items-center justify-center gap-3 shadow-xl">
+                    <button type="button" onClick={nextStep} className="max-w-md w-full h-16 rounded-full bg-foreground text-background font-semibold hover:bg-foreground/90 transition-all flex items-center justify-center gap-3 shadow-xl">
                         Next Step <ChevronRight className="h-5 w-5" />
                     </button>
                 ) : (
-                    <button type="submit" className="flex-[2] h-16 rounded-full bg-gradient-brand text-white font-semibold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
+                    <button type="submit" className="max-w-md w-full h-16 rounded-full bg-gradient-brand text-white font-semibold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
                         {status === 'submitting' ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Submit Quote Request <ArrowRight className="h-5 w-5" /></>}
                     </button>
                 )}
