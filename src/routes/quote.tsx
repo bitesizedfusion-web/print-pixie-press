@@ -109,7 +109,7 @@ function GetQuotePage() {
             <div className="lg:col-span-7 space-y-16">
               
               <div className="space-y-8">
-                <h3 className="font-heading text-2xl border-b border-border pb-4">1. Contact Details</h3>
+                <h3 className="font-heading text-2xl border-b border-border pb-4">Contact Details</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
                         <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Full Name *</label>
@@ -137,7 +137,7 @@ function GetQuotePage() {
               </div>
 
               <div className="space-y-8">
-                <h3 className="font-heading text-2xl border-b border-border pb-4">2. Product Specifications</h3>
+                <h3 className="font-heading text-2xl border-b border-border pb-4">Product Specifications</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2 sm:col-span-2">
                         <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Product Type *</label>
@@ -182,7 +182,7 @@ function GetQuotePage() {
               </div>
 
               <div className="space-y-8">
-                <h3 className="font-heading text-2xl border-b border-border pb-4">3. Logistics & Timeline</h3>
+                <h3 className="font-heading text-2xl border-b border-border pb-4">Logistics & Timeline</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
                     <div className="space-y-4">
                         <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Delivery Option</label>
