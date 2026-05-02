@@ -10,11 +10,11 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "S&S Printing and Packaging — Considered printing for considered brands" },
+      { title: "S&S Printing and Packaging — Custom printing & packaging made easy" },
       {
         name: "description",
         content:
-          "Premium online printing for brands that care. Flyers, posters, brochures and banners — quoted instantly, printed on archival stocks, shipped Australia-wide.",
+          "Custom printing and packaging made easy. Flyers, business cards, brochures, paper bags, boxes, labels, stickers and more — premium quality with fast Australia-wide delivery.",
       },
       { property: "og:image", content: heroImage },
     ],
