@@ -102,7 +102,7 @@ function SettingsPage() {
       <div className="bg-card border border-border rounded-xl p-5">
         <h3 className="font-heading font-bold mb-2">Business Info</h3>
         <p className="text-xs text-muted-foreground mb-4">
-          PrintMaster Australia — Online printing serving Australia-wide.
+          S&S Printing and Packaging — Online printing serving Australia-wide.
         </p>
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>

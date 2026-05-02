@@ -47,7 +47,7 @@ export function Navbar() {
                 onDark ? "text-hero-foreground" : "text-foreground"
               }`}
             >
-              Printmaster
+              S&S Printing and Packaging
             </span>
             <span
               className={`ml-px text-[22px] font-heading italic font-light transition-colors ${

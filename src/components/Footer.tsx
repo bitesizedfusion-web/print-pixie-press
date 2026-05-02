@@ -7,7 +7,7 @@ export function Footer() {
         {/* Big wordmark */}
         <div className="border-b border-border pb-12 mb-12">
           <div className="font-heading text-[clamp(3rem,12vw,10rem)] font-light leading-[0.85] tracking-[-0.05em] text-foreground">
-            Printmaster<span className="italic text-muted-foreground">.</span>
+            S&S Printing and Packaging<span className="italic text-muted-foreground">.</span>
           </div>
         </div>
 
@@ -65,10 +65,10 @@ export function Footer() {
                 </Link>
               ))}
               <a
-                href="mailto:info@printmaster.com.au"
+                href="mailto:info@ssprinting.com.au"
                 className="block text-sm text-foreground hover:text-muted-foreground transition-colors"
               >
-                info@printmaster.com.au
+                info@ssprinting.com.au
               </a>
               <a
                 href="tel:1300555123"
@@ -105,7 +105,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-20 pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-            © 2025 Printmaster Studio · Sydney, Australia
+            © 2025 S&S Printing and Packaging · Sydney, Australia
           </p>
           <div className="flex gap-6">
             {["Privacy", "Terms", "Shipping"].map((l) => (

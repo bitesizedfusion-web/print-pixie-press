@@ -24,7 +24,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "Admin Dashboard — PrintMaster Australia" },
+      { title: "Admin Dashboard — S&S Printing and Packaging" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -123,7 +123,7 @@ function AdminLayout() {
               <Printer className="h-5 w-5 text-cta-foreground" />
             </div>
             <div>
-              <p className="font-heading font-bold text-sm text-foreground leading-tight">PrintMaster</p>
+              <p className="font-heading font-bold text-sm text-foreground leading-tight">S&S Printing and Packaging</p>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Admin CRM</p>
             </div>
           </Link>

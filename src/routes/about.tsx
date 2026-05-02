@@ -6,13 +6,13 @@ import aboutFacility from "@/assets/about-facility.jpg";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "Studio — Printmaster" },
+      { title: "Studio — S&S Printing and Packaging" },
       {
         name: "description",
         content:
           "A small Sydney studio printing for considered brands. Quality, speed and reliability since 2015.",
       },
-      { property: "og:title", content: "Studio — Printmaster" },
+      { property: "og:title", content: "Studio — S&S Printing and Packaging" },
       { property: "og:description", content: "A small studio with high standards." },
       { property: "og:image", content: aboutFacility },
     ],
@@ -54,7 +54,7 @@ function AboutPage() {
             <div className="aspect-[16/8] w-full overflow-hidden rounded-2xl bg-muted">
               <img
                 src={aboutFacility}
-                alt="Printmaster studio facility"
+                alt="S&S Printing and Packaging studio facility"
                 loading="lazy"
                 className="w-full h-full object-cover"
               />
@@ -79,7 +79,7 @@ function AboutPage() {
               Letter from the studio
             </div>
             <h2 className="font-heading text-3xl lg:text-4xl font-light tracking-[-0.03em] text-foreground leading-[1.1]">
-              We started Printmaster
+              We started S&S Printing and Packaging
               <br />
               <span className="italic text-muted-foreground">
                 because we kept being disappointed.
@@ -103,7 +103,7 @@ function AboutPage() {
               archival inks, considered finishes. Brands we love use us
               because we treat their print like our own.
             </p>
-            <p className="text-foreground">— The Printmaster studio, Sydney</p>
+            <p className="text-foreground">— The S&S Printing and Packaging studio, Sydney</p>
           </motion.div>
         </div>
       </section>
