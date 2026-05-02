@@ -140,11 +140,14 @@ function GetQuotePage() {
                 <h3 className="font-heading text-2xl border-b border-border pb-4">Product Specifications</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2 sm:col-span-2">
-                        <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Product Type *</label>
-                        <select required value={formData.productName} onChange={e => setFormData(p => ({...p, productName: e.target.value}))} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all appearance-none">
-                            <option value="">Select a product</option>
-                            {products.map(p => <option key={p} value={p}>{p}</option>)}
-                        </select>
+                        <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Product Name *</label>
+                        <input 
+                            required 
+                            placeholder="e.g. Luxury Gift Box, Premium Business Cards" 
+                            value={formData.productName} 
+                            onChange={e => setFormData(p => ({...p, productName: e.target.value}))} 
+                            className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" 
+                        />
                     </div>
                     <div className="space-y-2">
                         <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Width (cm)</label>
