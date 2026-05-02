@@ -33,10 +33,10 @@ export function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-background/85 backdrop-blur-xl border-b border-border/60 shadow-sm"
+          ? "bg-white border-b border-border shadow-md"
           : isHeroPage
           ? "bg-transparent border-b border-transparent"
-          : "bg-background/85 backdrop-blur-xl border-b border-border/60"
+          : "bg-white border-b border-border"
       }`}
     >
       {/* Top accent bar */}
