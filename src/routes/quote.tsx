@@ -100,7 +100,8 @@ function GetQuotePage() {
     }
     setStatus('verifying');
     generateAndSendOtp();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Use instant scroll for better mobile UX
+    window.scrollTo({ top: 0, behavior: 'auto' });
   };
 
   const handleVerify = async () => {
@@ -114,7 +115,7 @@ function GetQuotePage() {
       setTimeout(() => {
         setStatus('success');
         toast.success("Quote request submitted and verified!");
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'auto' });
       }, 2000);
     } else {
       toast.error("Invalid verification code. Please try again.");
@@ -123,7 +124,7 @@ function GetQuotePage() {
 
   if (status === 'success') {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 pt-32">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-xl w-full bg-card border border-border rounded-3xl p-10 lg:p-16 text-center shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-2 bg-gradient-brand" />
           <div className="w-24 h-24 rounded-full bg-success/10 text-success flex items-center justify-center mx-auto mb-8 shadow-inner"><CheckCircle2 className="w-12 h-12" /></div>
@@ -144,7 +145,7 @@ function GetQuotePage() {
 
   if (status === 'verifying') {
     return (
-        <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <div className="min-h-screen bg-background flex flex-col items-center pt-24 md:pt-40 p-6">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md w-full bg-card border border-border rounded-3xl p-10 lg:p-12 text-center shadow-2xl border-t-4 border-t-brand">
                 <div className="w-16 h-16 rounded-2xl bg-brand/10 text-brand flex items-center justify-center mx-auto mb-6"><MailCheck className="w-8 h-8" /></div>
                 <h2 className="font-heading text-3xl mb-4">Verify your Email</h2>
