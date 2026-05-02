@@ -1,16 +1,16 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, ShoppingBag, Phone, Mail, MessageCircle } from "lucide-react";
+import { Menu, X, ShoppingBag, Phone, Mail, MessageCircle, Home, Info, Package, FileText, Image, PhoneCall, Send } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { to: "/" as const, label: "Home" },
-  { to: "/about" as const, label: "About Us" },
-  { to: "/products" as const, label: "Products & Services" },
-  { to: "/quote" as const, label: "Get a Quote" },
-  { to: "/gallery" as const, label: "Gallery" },
-  { to: "/contact" as const, label: "Contact Us" },
+  { to: "/" as const, label: "Home", icon: Home },
+  { to: "/about" as const, label: "About Us", icon: Info },
+  { to: "/products" as const, label: "Products & Services", icon: Package },
+  { to: "/quote" as const, label: "Get a Quote", icon: FileText },
+  { to: "/gallery" as const, label: "Gallery", icon: Image },
+  { to: "/contact" as const, label: "Contact Us", icon: PhoneCall },
 ];
 
 export function Navbar() {
@@ -161,10 +161,11 @@ export function Navbar() {
                     <Link
                       to={link.to}
                       onClick={() => setMobileOpen(false)}
-                      className={`text-3xl font-heading tracking-tight ${
+                      className={`flex items-center gap-4 text-3xl font-heading tracking-tight transition-all active:scale-95 ${
                         location.pathname === link.to ? "text-foreground" : "text-muted-foreground"
                       }`}
                     >
+                      <link.icon className={`w-8 h-8 ${location.pathname === link.to ? "text-gradient-brand" : "text-muted-foreground/40"}`} strokeWidth={1.5} />
                       {link.label}
                     </Link>
                   </motion.div>
