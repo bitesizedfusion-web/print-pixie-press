@@ -95,10 +95,14 @@ function GetQuotePage() {
 
   const nextStep = () => {
     if (currentStep === 1) {
-        if (!formData.firstName || !formData.email || !formData.productName || !formData.quantity) {
-            toast.error("Please fill in all required fields.");
+        if (!formData.firstName || !formData.email || !formData.mobile) {
+            toast.error("Please fill in all contact details.");
             return;
         }
+        // Trigger verification immediately after Step 1
+        setStatus('verifying');
+        generateAndSendOtp();
+        return;
     }
     setCurrentStep(p => Math.min(p + 1, 3));
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -109,28 +113,26 @@ function GetQuotePage() {
     window.scrollTo({ top: 0, behavior: 'auto' });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.email) {
-      toast.error("Please provide an email address");
-      return;
-    }
-    setStatus('verifying');
-    generateAndSendOtp();
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    setStatus('submitting');
+    
+    // Identity is already verified, so we submit directly
+    const adminSuccess = await sendQuoteToAdmin(formData);
+    
+    setTimeout(() => {
+      setStatus('success');
+      toast.success("Verified quote request submitted!");
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }, 2000);
   };
 
   const handleVerify = async () => {
     if (otp === generatedOtp) {
-      setStatus('submitting');
-      
-      const adminSuccess = await sendQuoteToAdmin(formData);
-      
-      setTimeout(() => {
-        setStatus('success');
-        toast.success("Quote request submitted and verified!");
-        window.scrollTo({ top: 0, behavior: 'auto' });
-      }, 2000);
+      toast.success("Email verified successfully!");
+      setStatus('idle');
+      setCurrentStep(2); // Unlock Step 2
+      window.scrollTo({ top: 0, behavior: 'auto' });
     } else {
       toast.error("Invalid verification code. Please try again.");
     }
@@ -162,8 +164,8 @@ function GetQuotePage() {
         <div className="min-h-screen bg-background flex flex-col items-center pt-24 md:pt-40 p-6">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md w-full bg-card border border-border rounded-3xl p-10 lg:p-12 text-center shadow-2xl border-t-4 border-t-brand">
                 <div className="w-16 h-16 rounded-2xl bg-brand/10 text-brand flex items-center justify-center mx-auto mb-6"><MailCheck className="w-8 h-8" /></div>
-                <h2 className="font-heading text-3xl mb-4">Verify your Email</h2>
-                <p className="text-muted-foreground mb-8">We've sent a 4-digit verification code to <span className="text-foreground font-medium">{formData.email}</span>. Please enter it below to submit your quote.</p>
+                <h2 className="font-heading text-3xl mb-4">Verify Identity</h2>
+                <p className="text-muted-foreground mb-8">To continue your quote, please enter the 4-digit code sent to <span className="text-foreground font-medium">{formData.email}</span>.</p>
                 
                 <div className="space-y-6">
                     <input 
@@ -180,7 +182,7 @@ function GetQuotePage() {
                         disabled={otp.length !== 4}
                         className="w-full h-14 rounded-full bg-gradient-brand text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale transition-all shadow-lg"
                     >
-                        {status === 'submitting' ? <Loader2 className="w-5 h-5 animate-spin" /> : <><ShieldCheck className="w-5 h-5"/> Verify & Submit</>}
+                        <ShieldCheck className="w-5 h-5"/> Verify & Continue
                     </button>
 
                     <button 
