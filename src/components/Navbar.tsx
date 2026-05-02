@@ -32,29 +32,31 @@ export function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-background/80 backdrop-blur-xl border-b border-border/60"
+          ? "bg-background/85 backdrop-blur-xl border-b border-border/60 shadow-sm"
           : isHeroPage
           ? "bg-transparent border-b border-transparent"
-          : "bg-background/80 backdrop-blur-xl border-b border-border/60"
+          : "bg-background/85 backdrop-blur-xl border-b border-border/60"
       }`}
     >
+      {/* Top accent bar — vibrant brand gradient */}
+      <div className="h-[3px] w-full bg-gradient-brand" />
+
       <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-[72px]">
           {/* Wordmark */}
-          <Link to="/" className="group flex items-baseline">
+          <Link to="/" className="group flex items-baseline gap-2">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-brand text-white font-heading text-[15px] font-semibold shadow-md">
+              S
+            </span>
             <span
-              className={`font-heading text-[22px] tracking-[-0.04em] transition-colors ${
+              className={`font-heading text-[20px] tracking-[-0.04em] transition-colors ${
                 onDark ? "text-hero-foreground" : "text-foreground"
               }`}
             >
-              S&S Printing and Packaging
-            </span>
-            <span
-              className={`ml-px text-[22px] font-heading italic font-light transition-colors ${
-                onDark ? "text-hero-foreground/50" : "text-muted-foreground"
-              }`}
-            >
-              ™
+              S<span className="text-gradient-brand">&</span>S
+              <span className={`ml-1.5 text-[15px] font-light ${onDark ? "text-hero-foreground/70" : "text-muted-foreground"}`}>
+                Printing & Packaging
+              </span>
             </span>
           </Link>
 
@@ -70,7 +72,7 @@ export function Navbar() {
                     onDark
                       ? active
                         ? "text-hero-foreground"
-                        : "text-hero-foreground/60 hover:text-hero-foreground"
+                        : "text-hero-foreground/65 hover:text-hero-foreground"
                       : active
                       ? "text-foreground"
                       : "text-muted-foreground hover:text-foreground"
@@ -80,9 +82,7 @@ export function Navbar() {
                   {active && (
                     <motion.span
                       layoutId="nav-active"
-                      className={`absolute left-1/2 -translate-x-1/2 bottom-0 h-px w-6 ${
-                        onDark ? "bg-hero-foreground" : "bg-foreground"
-                      }`}
+                      className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[2px] w-8 rounded-full bg-gradient-brand"
                     />
                   )}
                 </Link>
@@ -103,7 +103,7 @@ export function Navbar() {
             >
               <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={1.5} />
               {totalItems > 0 && (
-                <span className="absolute top-1 right-1 bg-cta text-cta-foreground text-[10px] min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center font-medium">
+                <span className="absolute top-1 right-1 bg-gradient-brand text-white text-[10px] min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center font-medium shadow">
                   {totalItems}
                 </span>
               )}
@@ -111,11 +111,7 @@ export function Navbar() {
             <Link
               to="/order/$product"
               params={{ product: "flyers" }}
-              className={`ml-2 inline-flex items-center h-9 px-5 rounded-full text-[13px] font-medium transition-all ${
-                onDark
-                  ? "bg-hero-foreground text-hero-bg hover:bg-hero-foreground/90"
-                  : "bg-foreground text-background hover:bg-foreground/85"
-              }`}
+              className="ml-2 inline-flex items-center h-9 px-5 rounded-full text-[13px] font-medium text-white bg-gradient-brand shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
               Get a quote
             </Link>
