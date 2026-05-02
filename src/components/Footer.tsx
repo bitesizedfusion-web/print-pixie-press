@@ -22,18 +22,14 @@ export function Footer() {
         {/* Columns */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-16">
           <div className="col-span-2 md:col-span-1">
-            <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/55 mb-5">
-              Studio
-            </div>
+
             <p className="text-sm text-white/85 leading-relaxed max-w-xs">
               Your trusted partner for high-quality custom printing and packaging solutions across Australia.
             </p>
           </div>
 
           <div>
-            <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/55 mb-5">
-              Browse
-            </div>
+
             <div className="space-y-3">
               {[
                 { to: "/" as const, label: "Home" },
@@ -53,9 +49,7 @@ export function Footer() {
           </div>
 
           <div>
-            <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/55 mb-5">
-              Information
-            </div>
+
             <div className="space-y-3">
               {[
                 { to: "/about" as const, label: "About Us" },

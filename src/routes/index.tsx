@@ -99,7 +99,7 @@ function HomePage() {
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 grid lg:grid-cols-2 gap-20 items-center">
           <motion.div {...fadeUp} className="space-y-10">
             <div>
-              <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground mb-6">Logistics</div>
+
               <h2 className="font-heading text-4xl lg:text-6xl leading-[0.95] mb-8 italic">Australia-Wide Delivery</h2>
               <p className="text-xl text-muted-foreground leading-relaxed">
                 No matter where you are, we ensure your orders reach you safely and on time. We partner with Australia's leading logistics providers.
@@ -139,7 +139,7 @@ function HomePage() {
                     <Globe className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-mono uppercase tracking-widest opacity-70">Service Area</div>
+        
                     <div className="font-semibold">All Australian States & Territories</div>
                   </div>
                </div>
