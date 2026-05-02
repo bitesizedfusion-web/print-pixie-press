@@ -290,31 +290,33 @@ function GetQuotePage() {
                         <div className="space-y-4">
                             <div className="space-y-2">
                                 {urgencyOptions.map(o => (
-                                    <button key={o.id} type="button" onClick={() => setFormData(p => ({...p, urgency: o.id}))} className={`w-full text-left p-4 rounded-xl border transition-all ${formData.urgency === o.id ? "bg-foreground text-background border-foreground shadow-lg" : "bg-card border-border hover:border-foreground/30"}`}>
-                                        <div className="text-sm font-semibold">{o.label}</div>
-                                        <div className={`text-[10px] mt-1 ${formData.urgency === o.id ? "text-background/70" : "text-muted-foreground"}`}>{o.desc}</div>
-                                    </button>
+                                    <div key={o.id} className="space-y-2">
+                                        <button type="button" onClick={() => setFormData(p => ({...p, urgency: o.id}))} className={`w-full text-left p-4 rounded-xl border transition-all ${formData.urgency === o.id ? "bg-foreground text-background border-foreground shadow-lg" : "bg-card border-border hover:border-foreground/30"}`}>
+                                            <div className="text-sm font-semibold">{o.label}</div>
+                                            <div className={`text-[10px] mt-1 ${formData.urgency === o.id ? "text-background/70" : "text-muted-foreground"}`}>{o.desc}</div>
+                                        </button>
+                                        
+                                        {o.id === 'required' && formData.urgency === 'required' && (
+                                            <motion.div 
+                                                initial={{ opacity: 0, height: 0 }} 
+                                                animate={{ opacity: 1, height: 'auto' }}
+                                                className="space-y-2 pt-1 pb-2 overflow-hidden"
+                                            >
+                                                <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground pl-1">Select Deadline *</label>
+                                                <div className="relative">
+                                                    <input 
+                                                        type="date" 
+                                                        required={formData.urgency === 'required'}
+                                                        value={formData.requiredDate} 
+                                                        onChange={e => setFormData(p => ({...p, requiredDate: e.target.value}))} 
+                                                        className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium text-foreground appearance-none cursor-pointer"
+                                                    />
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </div>
                                 ))}
                             </div>
-                            
-                            {formData.urgency === 'required' && (
-                                <motion.div 
-                                    initial={{ opacity: 0, y: -10 }} 
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="space-y-2 pt-2"
-                                >
-                                    <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground pl-1">Select Deadline *</label>
-                                    <div className="relative">
-                                        <input 
-                                            type="date" 
-                                            required={formData.urgency === 'required'}
-                                            value={formData.requiredDate} 
-                                            onChange={e => setFormData(p => ({...p, requiredDate: e.target.value}))} 
-                                            className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium text-foreground appearance-none cursor-pointer"
-                                        />
-                                    </div>
-                                </motion.div>
-                            )}
                         </div>
                     </div>
                 </div>
