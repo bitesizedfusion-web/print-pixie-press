@@ -12,10 +12,11 @@ export function Footer() {
       <div className="relative max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-24 pb-10">
         {/* Big wordmark */}
         <div className="border-b border-white/10 pb-12 mb-12">
-          <div className="font-heading text-[clamp(2.5rem,10vw,8rem)] font-light leading-[0.9] tracking-[-0.05em] text-white">
-            S<span className="text-gradient-brand">&</span>S Printing
-            <span className="italic text-white/50"> & Packaging.</span>
-          </div>
+          <img 
+            src="/logo.jpg" 
+            alt="S&S Printing and Packaging" 
+            className="h-16 w-auto invert mix-blend-screen" 
+          />
         </div>
 
         {/* Columns */}
@@ -25,10 +26,7 @@ export function Footer() {
               Studio
             </div>
             <p className="text-sm text-white/85 leading-relaxed max-w-xs">
-              A small Sydney studio printing for considered brands since 2015.
-            </p>
-            <p className="mt-6 text-[11px] text-white/55 font-mono uppercase tracking-[0.14em]">
-              ABN 12 345 678 901
+              Your trusted partner for high-quality custom printing and packaging solutions across Australia.
             </p>
           </div>
 
@@ -38,10 +36,10 @@ export function Footer() {
             </div>
             <div className="space-y-3">
               {[
-                { to: "/products" as const, label: "Products" },
-                { to: "/pricing" as const, label: "Pricing" },
-                { to: "/how-it-works" as const, label: "Process" },
-                { to: "/track" as const, label: "Track order" },
+                { to: "/" as const, label: "Home" },
+                { to: "/products" as const, label: "Products & Services" },
+                { to: "/quote" as const, label: "Get a Quote" },
+                { to: "/gallery" as const, label: "Gallery" },
               ].map((l) => (
                 <Link
                   key={l.to}
@@ -56,12 +54,12 @@ export function Footer() {
 
           <div>
             <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/55 mb-5">
-              Studio
+              Information
             </div>
             <div className="space-y-3">
               {[
-                { to: "/about" as const, label: "About" },
-                { to: "/contact" as const, label: "Contact" },
+                { to: "/about" as const, label: "About Us" },
+                { to: "/contact" as const, label: "Contact Us" },
               ].map((l) => (
                 <Link
                   key={l.to}
@@ -72,16 +70,10 @@ export function Footer() {
                 </Link>
               ))}
               <a
-                href="mailto:info@ssprinting.com.au"
+                href="mailto:sandsprinters26@gmail.com"
                 className="block text-sm text-white/85 hover:text-white/55 transition-colors"
               >
-                info@ssprinting.com.au
-              </a>
-              <a
-                href="tel:1300555123"
-                className="block text-sm text-white/85 hover:text-white/55 transition-colors"
-              >
-                1300 555 123
+                sandsprinters26@gmail.com
               </a>
             </div>
           </div>
@@ -91,12 +83,12 @@ export function Footer() {
               Newsletter
             </div>
             <p className="text-sm text-white/55 leading-relaxed mb-4">
-              Studio updates, new stocks, occasional offers. No spam.
+              Studio updates, new stocks, and occasional offers.
             </p>
             <form className="flex items-center border-b border-white/10 focus-within:border-foreground transition-colors">
               <input
                 type="email"
-                placeholder="you@studio.com"
+                placeholder="you@email.com"
                 className="flex-1 bg-transparent h-10 text-sm text-white/85 placeholder:text-white/55 focus:outline-none"
               />
               <button
@@ -112,18 +104,27 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/55">
-            © 2025 S&S Printing and Packaging · Sydney, Australia
+            © 2026 S&S Printing and Packaging · Australia
           </p>
           <div className="flex gap-6">
-            {["Privacy", "Terms", "Shipping"].map((l) => (
-              <a
-                key={l}
-                href="#"
-                className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/55 hover:text-white/85 transition-colors"
-              >
-                {l}
-              </a>
-            ))}
+            <Link
+              to="/privacy"
+              className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/55 hover:text-white/85 transition-colors"
+            >
+              Privacy
+            </Link>
+            <Link
+              to="/terms"
+              className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/55 hover:text-white/85 transition-colors"
+            >
+              Terms
+            </Link>
+            <a
+              href="#"
+              className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/55 hover:text-white/85 transition-colors"
+            >
+              Shipping
+            </a>
           </div>
         </div>
       </div>

@@ -23,15 +23,19 @@ export function VexHero() {
       <div className="relative z-10 flex flex-col min-h-[100svh] px-6 md:px-12 lg:px-16 pt-6">
         {/* Navbar */}
         <nav className="liquid-glass rounded-xl px-4 py-2 flex items-center justify-between">
-          <Link to="/" className="text-2xl font-semibold tracking-tight text-white">
-            S&S
+          <Link to="/" className="group flex items-center gap-2">
+            <img 
+              src="/logo.jpg" 
+              alt="S&S Printing and Packaging" 
+              className="h-10 w-auto invert mix-blend-screen" 
+            />
           </Link>
           <div className="hidden md:flex items-center gap-8">
             {[
-              { to: "/about" as const, label: "Story" },
-              { to: "/products" as const, label: "Products" },
-              { to: "/how-it-works" as const, label: "Process" },
-              { to: "/pricing" as const, label: "Pricing" },
+              { to: "/" as const, label: "Home" },
+              { to: "/about" as const, label: "About Us" },
+              { to: "/products" as const, label: "Products & Services" },
+              { to: "/gallery" as const, label: "Gallery" },
             ].map((l) => (
               <Link
                 key={l.to}
@@ -54,23 +58,22 @@ export function VexHero() {
         <div className="flex-1 flex flex-col justify-end pb-12 lg:pb-16 lg:grid lg:grid-cols-2 lg:items-end gap-8">
           <div>
             <AnimatedHeading
-              text={"Custom printing\nmade beautifully easy."}
+              text={"S&S Printing\nand Packaging"}
               className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-normal mb-4 text-white"
               style={{ letterSpacing: "-0.04em" }}
             />
             <FadeIn delay={800} duration={1000}>
               <p className="text-base md:text-lg text-gray-300 mb-5 max-w-xl">
-                Flyers, business cards, brochures, paper bags, boxes, labels and stickers — premium quality, fast Australia-wide delivery.
+                We print flyers, business cards, brochures, stickers, labels, paper bags, pizza boxes, packaging boxes, books and more. Quality work, fast service and Australia-wide delivery.
               </p>
             </FadeIn>
             <FadeIn delay={1200} duration={1000}>
               <div className="flex flex-wrap gap-4">
                 <Link
-                  to="/order/$product"
-                  params={{ product: "flyers" }}
+                  to="/quote"
                   className="bg-white text-black px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors"
                 >
-                  Start a Quote
+                  Get a Quote
                 </Link>
                 <Link
                   to="/products"

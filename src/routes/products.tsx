@@ -1,117 +1,181 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { products } from "@/lib/pricing";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/products")({
-  head: () => ({
-    meta: [
-      { title: "Products — S&S Printing and Packaging" },
-      {
-        name: "description",
-        content:
-          "Browse our full catalogue: flyers, posters, brochures, banners, calendars and certificates. Premium printing, shipped Australia-wide.",
-      },
-      { property: "og:title", content: "Products — S&S Printing and Packaging" },
-      { property: "og:description", content: "Premium printing for considered brands." },
-    ],
-  }),
   component: ProductsPage,
 });
 
-const categories = ["All", "Flyers", "Posters", "Brochures", "Banners", "Calendars", "Certificates"];
-const ease = [0.32, 0.72, 0, 1] as const;
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-50px" },
+  transition: { duration: 0.7 }
+};
+
+const productList = [
+  {
+    name: "Flyers & Leaflets",
+    desc: "Promote your business, event or offer with high-quality flyers and leaflets. Available in different sizes, paper types and finishes.",
+    suitable: ["Business promotion", "Events", "Restaurant offers", "Real estate", "Education", "Community notices"],
+    options: ["A6, A5, A4, DL size", "Single side or double side printing", "Glossy, matte or standard paper"],
+    image: "/products/flyers.png"
+  },
+  {
+    name: "Business Cards",
+    desc: "Make a strong first impression with professional business cards for your brand or company.",
+    suitable: ["Business owners", "Professionals", "Sales teams", "Consultants", "Contractors"],
+    options: ["Standard or premium cards", "Matte, glossy or laminated finish", "Single or double side printing"],
+    image: "/products/cards.png"
+  },
+  {
+    name: "Brochures & Booklets",
+    desc: "Show your products, services or company information with professionally printed brochures and booklets.",
+    suitable: ["Company profiles", "Product catalogues", "Service guides", "Training materials"],
+    options: ["Bi-fold, tri-fold or booklet style", "Different page numbers", "Stapled or folded finish"],
+    image: "/products/brochures.png"
+  },
+  {
+    name: "Stickers & Labels",
+    desc: "Custom stickers and labels for packaging, branding, products and promotions.",
+    suitable: ["Food labels", "Product labels", "Bottle labels", "Logo stickers", "Address labels"],
+    options: ["Round, square, rectangle or custom shape", "Glossy or matte finish", "Paper or waterproof material"],
+    image: "/products/stickers.png"
+  },
+  {
+    name: "Paper Bags",
+    desc: "Custom printed paper bags to promote your brand and give your customers a professional packaging experience.",
+    suitable: ["Retail shops", "Restaurants", "Takeaway", "Gifts", "Fashion stores", "Events"],
+    options: ["Different sizes", "With or without handle", "Kraft, white or coloured paper", "Front, back and side printing"],
+    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    name: "Pizza Boxes",
+    desc: "Custom printed pizza boxes for restaurants, cafés and takeaway businesses.",
+    suitable: ["Pizza shops", "Food delivery", "Takeaway restaurants", "Catering"],
+    options: ["Different box sizes", "Logo and brand printing", "Top, front, side and back printing"],
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    name: "Packaging Boxes",
+    desc: "Custom packaging boxes for products, gifts, retail and online business orders.",
+    suitable: ["Retail products", "Gift boxes", "Shipping boxes", "Cosmetic boxes", "Food packaging"],
+    options: ["Custom size", "Cardboard or kraft material", "Front, back, top, bottom, left and right side printing"],
+    image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    name: "Books & Magazines",
+    desc: "Professional printing for books, magazines, catalogues and manuals.",
+    suitable: ["Books", "Magazines", "Company catalogues", "Instruction manuals", "School materials"],
+    options: ["Different page sizes", "Colour or black-and-white printing", "Stapled, perfect bound or spiral binding"],
+    image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    name: "Posters & Banners",
+    desc: "Large-format printing for advertising, events and business promotion.",
+    suitable: ["Shop displays", "Events", "Promotions", "Exhibitions", "Notices"],
+    options: ["A3, A2, A1 and custom sizes", "Indoor and outdoor options", "Glossy or matte finish"],
+    image: "https://images.unsplash.com/photo-1516245834210-c4c142787335?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    name: "Menus",
+    desc: "Custom printed menus for restaurants, cafés, takeaway shops and food businesses.",
+    suitable: ["Restaurant menus", "Takeaway menus", "Café menus", "Table menus"],
+    options: ["Single page or folded menu", "Laminated or standard finish", "Custom size and design"],
+    image: "https://images.unsplash.com/photo-1546241072-48010ad28c2c?q=80&w=1000&auto=format&fit=crop"
+  },
+  {
+    name: "Custom Printing & Packaging",
+    desc: "Need something special? We can help with custom printing and packaging based on your product, size, design and quantity.",
+    suitable: ["Special business orders", "Branded packaging", "Promotional items", "Custom product boxes"],
+    options: ["Custom size", "Custom material", "Custom design", "Small or bulk quantity"],
+    image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?q=80&w=1000&auto=format&fit=crop"
+  }
+];
 
 function ProductsPage() {
-  const [filter, setFilter] = useState("All");
-  const filtered = filter === "All" ? products : products.filter((p) => p.category === filter);
-
   return (
     <div className="bg-background">
-      {/* Header */}
-      <section className="pt-32 pb-16 lg:pt-40 lg:pb-24 border-b border-border">
+      <section className="pt-32 pb-20 border-b border-border">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
           <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-6">
-            Index — Catalogue
+            Catalog — Products & Services
           </div>
-          <h1 className="font-heading text-[clamp(2.75rem,8vw,7rem)] font-light leading-[0.95] tracking-[-0.045em] text-foreground max-w-5xl">
-            Everything we
+          <h1 className="font-heading text-[clamp(2.75rem,8vw,6rem)] font-light leading-[0.95] tracking-[-0.045em] text-foreground max-w-5xl">
+            Professional printing
             <br />
-            <span className="italic text-muted-foreground">print, well.</span>
+            <span className="italic text-muted-foreground">solutions for every need.</span>
           </h1>
-          <p className="mt-10 max-w-xl text-base text-muted-foreground leading-relaxed">
-            A small, focused range. Each product made on archival stocks,
-            checked by hand, shipped tracked.
-          </p>
         </div>
       </section>
 
-      {/* Filter */}
-      <section className="sticky top-[72px] z-30 bg-background/85 backdrop-blur-xl border-b border-border">
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-4 flex gap-1 overflow-x-auto">
-          {categories.map((c) => (
-            <button
-              key={c}
-              onClick={() => setFilter(c)}
-              className={`shrink-0 px-4 py-2 rounded-full text-[13px] font-medium transition-all ${
-                filter === c
-                  ? "bg-foreground text-background"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {c}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Grid */}
-      <section className="py-20 lg:py-28">
+      <section className="py-16 lg:py-24">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 lg:gap-y-20">
-            {filtered.map((p, i) => (
-              <motion.div
-                key={p.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease, delay: i * 0.05 }}
+          <div className="space-y-32">
+            {productList.map((p, i) => (
+              <motion.div 
+                key={p.name}
+                {...fadeUp}
+                className={`grid lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
               >
-                <Link to="/order/$product" params={{ product: p.id }} className="group block">
-                  <div className="aspect-[4/5] overflow-hidden rounded-xl bg-muted mb-5">
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[1200ms] ease-out"
-                    />
+                <div className={`space-y-8 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
+                  <div className="aspect-[4/3] overflow-hidden rounded-3xl bg-muted border border-border shadow-sm">
+                    <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <div>
-                      <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-                        № {String(i + 1).padStart(2, "0")}
-                      </div>
-                      <h3 className="mt-2 font-heading text-2xl font-light tracking-[-0.02em] text-foreground">
-                        {p.name}
-                      </h3>
+                </div>
+                <div className={`space-y-10 ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
+                  <div>
+                    <h2 className="font-heading text-4xl lg:text-5xl mb-6">{p.name}</h2>
+                    <p className="text-xl text-muted-foreground leading-relaxed">{p.desc}</p>
+                  </div>
+                  
+                  <div className="grid sm:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                      <h4 className="text-[11px] font-mono uppercase tracking-widest text-foreground">Suitable for:</h4>
+                      <ul className="space-y-2">
+                        {p.suitable.map(s => (
+                          <li key={s} className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-success" />
+                            {s}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
+                    <div className="space-y-4">
+                      <h4 className="text-[11px] font-mono uppercase tracking-widest text-foreground">Options:</h4>
+                      <ul className="space-y-2">
+                        {p.options.map(o => (
+                          <li key={o} className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <div className="w-1 h-1 rounded-full bg-border" />
+                            {o}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                    {p.description}
-                  </p>
-                  <div className="mt-5 pt-5 border-t border-border flex items-baseline justify-between">
-                    <span className="text-[13px] text-muted-foreground">
-                      {p.sizes.join(" · ")}
-                    </span>
-                    <span className="font-heading text-lg font-light text-foreground">
-                      ${p.startingPrice}
-                    </span>
-                  </div>
-                </Link>
+                  
+                  <Link to="/quote" className="inline-flex items-center gap-2 text-sm font-medium text-foreground underline underline-offset-[6px] decoration-border hover:decoration-foreground transition-colors">
+                    Request a Quote for {p.name}
+                    <ArrowUpRight className="w-4 h-4" />
+                  </Link>
+                </div>
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="bg-hero-bg text-hero-foreground py-24 lg:py-32">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 text-center space-y-12">
+          <div className="max-w-2xl mx-auto space-y-6">
+            <h2 className="font-heading text-4xl lg:text-6xl">Need a custom quote?</h2>
+            <p className="text-xl text-hero-foreground/70 font-light">
+              Send us your product name, size, quantity, material and delivery details.
+            </p>
+          </div>
+          <Link to="/quote" className="inline-flex items-center h-14 px-10 rounded-full bg-hero-foreground text-hero-bg font-semibold hover:bg-hero-foreground/90 transition-all shadow-xl">
+            Get a Quote
+          </Link>
         </div>
       </section>
     </div>

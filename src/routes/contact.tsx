@@ -1,228 +1,123 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { useState } from "react";
+import { Mail, Phone, MapPin, Send, CheckCircle2, MessageSquare } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — S&S Printing and Packaging" },
-      {
-        name: "description",
-        content:
-          "Get in touch about a custom quote, bulk order or general enquiry. We respond within 24 hours.",
-      },
-      { property: "og:title", content: "Contact — S&S Printing and Packaging" },
-      { property: "og:description", content: "Talk to a printer. We respond within 24 hours." },
-    ],
-  }),
   component: ContactPage,
 });
 
-const subjects = [
-  "Custom Print Quote",
-  "Bulk / Wholesale Order",
-  "Flyers & Brochures",
-  "Posters & Banners",
-  "Business Cards",
-  "General Enquiry",
-  "Technical Help",
-  "Order Issue",
-];
-
-const ease = [0.32, 0.72, 0, 1] as const;
-
 function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: ""
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setBusy(true);
-    try {
-      const { error } = await supabase.from("print_inquiries").insert({
-        name: form.name,
-        email: form.email,
-        phone: form.phone || null,
-        subject: form.subject,
-        message: form.message,
-      });
-      if (error) throw error;
-      setSubmitted(true);
-      toast.success("Inquiry sent. We'll respond within 24 hours.");
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to send inquiry");
-    } finally {
-      setBusy(false);
-    }
+    setSubmitted(true);
   };
 
-  const inputCls =
-    "w-full h-11 border-0 border-b border-border bg-transparent px-0 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground transition-colors";
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-xl w-full bg-card border border-border rounded-3xl p-10 text-center shadow-xl"
+        >
+          <div className="w-16 h-16 rounded-full bg-success/10 text-success flex items-center justify-center mx-auto mb-6">
+            <CheckCircle2 className="w-8 h-8" />
+          </div>
+          <h1 className="font-heading text-3xl mb-4">Message Sent</h1>
+          <p className="text-muted-foreground mb-8">
+            Thank you for contacting S&S Printing and Packaging. We have received your message and will get back to you shortly.
+          </p>
+          <button 
+            onClick={() => setSubmitted(false)}
+            className="h-12 px-8 rounded-full bg-foreground text-background font-medium hover:bg-foreground/90 transition-all"
+          >
+            Send Another Message
+          </button>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-background">
-      {/* Header */}
-      <section className="pt-32 pb-20 lg:pt-40 lg:pb-32 border-b border-border">
+    <div className="min-h-screen bg-background">
+      <section className="pt-32 pb-16 border-b border-border">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
           <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-6">
-            Contact
+            Contact Us
           </div>
-          <h1 className="font-heading text-[clamp(2.75rem,8vw,7rem)] font-light leading-[0.95] tracking-[-0.045em] text-foreground max-w-5xl">
-            Talk to a
+          <h1 className="font-heading text-[clamp(2.5rem,6vw,5rem)] font-light leading-[0.96] tracking-[-0.04em] text-foreground max-w-3xl">
+            Have a question?
             <br />
-            <span className="italic text-muted-foreground">printer.</span>
+            <span className="italic text-muted-foreground">Send us a message.</span>
           </h1>
-          <p className="mt-10 max-w-xl text-base text-muted-foreground leading-relaxed">
-            For custom quotes, bulk orders, or anything else. We answer the
-            phone and reply to every email within 24 hours.
-          </p>
         </div>
       </section>
 
-      {/* Form + info */}
-      <section className="py-20 lg:py-28">
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 grid lg:grid-cols-12 gap-12 lg:gap-20">
-          {/* Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease }}
-            className="lg:col-span-7"
-          >
-            <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-8">
-              Send a message
-            </div>
-            {submitted ? (
-              <div className="border border-border rounded-2xl p-12 text-center">
-                <div className="font-heading text-3xl font-light tracking-[-0.02em] text-foreground">
-                  Message received.
+      <section className="py-16 lg:py-24">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 grid lg:grid-cols-12 gap-16">
+          <div className="lg:col-span-7">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Name*</label>
+                  <input required placeholder="Your name" value={formData.name} onChange={e => setFormData(p => ({...p, name: e.target.value}))} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
                 </div>
-                <p className="mt-4 text-muted-foreground">
-                  We'll get back to you within 24 hours.
-                </p>
+                <div className="space-y-2">
+                  <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Email*</label>
+                  <input required type="email" placeholder="Your email address" value={formData.email} onChange={e => setFormData(p => ({...p, email: e.target.value}))} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
+                </div>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-10">
-                <div className="grid sm:grid-cols-2 gap-x-8 gap-y-10">
-                  <div>
-                    <label className="block font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground mb-3">
-                      Name
-                    </label>
-                    <input
-                      required
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      placeholder="Your full name"
-                      className={inputCls}
-                    />
+              <div className="space-y-2">
+                <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Phone / WhatsApp</label>
+                <div className="relative flex items-center">
+                  <div className="absolute left-3 flex items-center gap-1.5 pointer-events-none pr-2 border-r border-border">
+                    <span className="text-base">🇦🇺</span>
+                    <span className="text-[12px] font-medium text-muted-foreground">+61</span>
                   </div>
-                  <div>
-                    <label className="block font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground mb-3">
-                      Email
-                    </label>
-                    <input
-                      required
-                      type="email"
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      placeholder="you@studio.com"
-                      className={inputCls}
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground mb-3">
-                      Phone (optional)
-                    </label>
-                    <input
-                      value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      placeholder="04xx xxx xxx"
-                      className={inputCls}
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground mb-3">
-                      Subject
-                    </label>
-                    <select
-                      required
-                      value={form.subject}
-                      onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      className={`${inputCls} cursor-pointer`}
-                    >
-                      <option value="">Choose a subject</option>
-                      {subjects.map((s) => (
-                        <option key={s} value={s}>
-                          {s}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <input placeholder="412 345 678" value={formData.phone} onChange={e => setFormData(p => ({...p, phone: e.target.value}))} className="w-full h-12 pl-[72px] pr-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Message*</label>
+                <textarea required rows={5} placeholder="Write your message here" value={formData.message} onChange={e => setFormData(p => ({...p, message: e.target.value}))} className="w-full p-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all resize-none" />
+              </div>
+              <button type="submit" className="h-14 px-10 rounded-full bg-gradient-brand text-white font-semibold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all flex items-center gap-3">
+                Submit
+                <Send className="w-4 h-4" />
+              </button>
+            </form>
+          </div>
+
+          <div className="lg:col-span-4 lg:col-start-9 space-y-12">
+            <div className="space-y-6">
+              <h3 className="font-heading text-2xl">Or Email Us</h3>
+              <a href="mailto:sandsprinters26@gmail.com" className="flex items-center gap-4 p-6 rounded-2xl border border-border bg-card hover:border-foreground/20 transition-all group">
+                <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center group-hover:bg-foreground group-hover:text-background transition-colors">
+                  <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <label className="block font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground mb-3">
-                    Message
-                  </label>
-                  <textarea
-                    required
-                    rows={5}
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    placeholder="Tell us about your project — quantity, size, deadline, anything we should know."
-                    className="w-full border-0 border-b border-border bg-transparent px-0 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground transition-colors resize-none"
-                  />
+                  <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-1">Direct Email</div>
+                  <div className="font-medium">sandsprinters26@gmail.com</div>
                 </div>
-                <button
-                  type="submit"
-                  disabled={busy}
-                  className="inline-flex items-center h-12 px-8 rounded-full bg-foreground text-background text-sm font-medium hover:bg-foreground/85 transition-all disabled:opacity-50"
-                >
-                  {busy && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                  Send message
-                </button>
-              </form>
-            )}
-          </motion.div>
-
-          {/* Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease, delay: 0.15 }}
-            className="lg:col-span-4 lg:col-start-9 space-y-10"
-          >
-            <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-              Find us
+              </a>
             </div>
-            {[
-              { label: "Email", value: "info@ssprinting.com.au", href: "mailto:info@ssprinting.com.au" },
-              { label: "Phone", value: "1300 555 123", href: "tel:1300555123" },
-              { label: "Studio", value: "Level 2, 123 Print St,\nSydney NSW 2000" },
-              { label: "Hours", value: "Monday – Friday\n8am – 6pm AEST" },
-            ].map((info) => (
-              <div key={info.label} className="border-t border-border pt-6">
-                <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground mb-2">
-                  {info.label}
-                </div>
-                {info.href ? (
-                  <a
-                    href={info.href}
-                    className="font-heading text-xl font-light tracking-[-0.02em] text-foreground hover:text-cta transition-colors whitespace-pre-line"
-                  >
-                    {info.value}
-                  </a>
-                ) : (
-                  <div className="font-heading text-xl font-light tracking-[-0.02em] text-foreground whitespace-pre-line">
-                    {info.value}
-                  </div>
-                )}
-              </div>
-            ))}
-          </motion.div>
+            
+            <div className="p-8 rounded-3xl bg-secondary/50 border border-border">
+              <MessageSquare className="w-8 h-8 text-muted-foreground mb-6" />
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Our team usually responds within 2-4 business hours. For urgent quotes, please use our <a href="/quote" className="text-foreground underline decoration-border hover:decoration-foreground">Get a Quote</a> form.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>

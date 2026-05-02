@@ -1,20 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
-import aboutFacility from "@/assets/about-facility.jpg";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "Studio — S&S Printing and Packaging" },
+      { title: "About Us — S&S Printing and Packaging" },
       {
         name: "description",
-        content:
-          "A small Sydney studio printing for considered brands. Quality, speed and reliability since 2015.",
+        content: "High-quality custom printing and packaging solutions in Australia. We print flyers, business cards, boxes, and more.",
       },
-      { property: "og:title", content: "Studio — S&S Printing and Packaging" },
-      { property: "og:description", content: "A small studio with high standards." },
-      { property: "og:image", content: aboutFacility },
     ],
   }),
   component: AboutPage,
@@ -28,163 +23,88 @@ const fadeUp = {
   transition: { duration: 0.7, ease },
 };
 
+const services = [
+  "Flyers and leaflets",
+  "Business cards",
+  "Brochures and booklets",
+  "Stickers and labels",
+  "Paper bags",
+  "Pizza boxes",
+  "Packaging boxes",
+  "Books and magazines",
+  "Posters and banners",
+  "Custom printing",
+  "Custom packaging"
+];
+
 function AboutPage() {
   return (
     <div className="bg-background">
-      {/* Header */}
       <section className="pt-32 pb-20 lg:pt-40 lg:pb-32 border-b border-border">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
-          <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-6">
-            Studio
-          </div>
-          <h1 className="font-heading text-[clamp(2.75rem,8vw,7rem)] font-light leading-[0.95] tracking-[-0.045em] text-foreground max-w-5xl">
-            A small studio
-            <br />
-            <span className="italic text-muted-foreground">
-              with high standards.
-            </span>
-          </h1>
-        </div>
-      </section>
-
-      {/* Image */}
-      <section className="border-b border-border">
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-20 lg:py-28">
           <motion.div {...fadeUp}>
-            <div className="aspect-[16/8] w-full overflow-hidden rounded-2xl bg-muted">
-              <img
-                src={aboutFacility}
-                alt="S&S Printing and Packaging studio facility"
-                loading="lazy"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="mt-6 flex items-baseline justify-between border-t border-border pt-6">
-              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                Fig. 02 — The studio, Sydney
-              </span>
-              <span className="hidden sm:block font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                Established 2015
-              </span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Story — two columns */}
-      <section className="border-b border-border py-24 lg:py-32">
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 grid lg:grid-cols-12 gap-12">
-          <motion.div {...fadeUp} className="lg:col-span-4">
             <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-6">
-              Letter from the studio
+              Who we are
             </div>
-            <h2 className="font-heading text-3xl lg:text-4xl font-light tracking-[-0.03em] text-foreground leading-[1.1]">
-              We started S&S Printing and Packaging
+            <h1 className="font-heading text-[clamp(2.75rem,8vw,7rem)] font-light leading-[0.95] tracking-[-0.045em] text-foreground max-w-5xl">
+              Your trusted partner for
               <br />
-              <span className="italic text-muted-foreground">
-                because we kept being disappointed.
-              </span>
-            </h2>
+              <span className="italic text-muted-foreground">printing & packaging.</span>
+            </h1>
           </motion.div>
-          <motion.div
-            {...fadeUp}
-            transition={{ duration: 0.7, ease, delay: 0.1 }}
-            className="lg:col-span-7 lg:col-start-6 space-y-6 text-base text-muted-foreground leading-[1.7] max-w-2xl"
+        </div>
+      </section>
+
+      <section className="py-24 lg:py-32">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 grid lg:grid-cols-12 gap-12">
+          <motion.div {...fadeUp} className="lg:col-span-6 space-y-8 text-lg text-muted-foreground leading-[1.7]">
+            <p className="text-foreground text-2xl font-light">
+              S&S Printing and Packaging is a printing and packaging service business in Australia.
+            </p>
+            <p>
+              We help businesses, shops, restaurants, events and individuals with high-quality custom printing and packaging solutions.
+            </p>
+            <p>
+              Our focus is to provide good quality, professional finishing, affordable pricing and fast service. Whether you need a small order or bulk printing, we are ready to help.
+            </p>
+          </motion.div>
+
+          <motion.div 
+            {...fadeUp} 
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-5 lg:col-start-8"
           >
-            <p>
-              Most online printers treat their work like a commodity — fast,
-              cheap, forgettable. We wanted something different. A studio
-              where every job is reviewed by a human, every stock is chosen
-              with care, and every parcel arrives looking exactly the way you
-              imagined it.
-            </p>
-            <p>
-              Ten years on, we still print the way we started: small batches,
-              archival inks, considered finishes. Brands we love use us
-              because we treat their print like our own.
-            </p>
-            <p className="text-foreground">— The S&S Printing and Packaging studio, Sydney</p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="border-b border-border">
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 py-20 lg:py-28">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
-            {[
-              { kpi: "10+", label: "Years operating", note: "Est. 2015" },
-              { kpi: "10K+", label: "Brands served", note: "Australia-wide" },
-              { kpi: "1.2M", label: "Items printed", note: "Per month" },
-              { kpi: "100%", label: "Carbon neutral", note: "Every parcel" },
-            ].map((s, i) => (
-              <motion.div
-                key={s.label}
-                {...fadeUp}
-                transition={{ duration: 0.6, ease, delay: i * 0.06 }}
-              >
-                <div className="font-heading text-[clamp(2.5rem,5vw,4rem)] font-light tracking-[-0.04em] leading-none text-foreground">
-                  {s.kpi}
-                </div>
-                <div className="mt-4 text-sm text-foreground">{s.label}</div>
-                <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-                  {s.note}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="border-b border-border py-24 lg:py-32">
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
-          <motion.div {...fadeUp} className="mb-16 max-w-2xl">
-            <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground mb-6">
-              Principles
+            <div className="bg-card border border-border rounded-2xl p-8 lg:p-10 shadow-sm relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-5">
+                <CheckCircle2 className="w-32 h-32" />
+              </div>
+              <h3 className="font-heading text-2xl mb-8">What we can print:</h3>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
+                {services.map(s => (
+                  <li key={s} className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gradient-brand" />
+                    {s}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <h2 className="font-heading text-[clamp(2rem,4.5vw,3.5rem)] font-light tracking-[-0.04em] leading-[1.05] text-foreground">
-              What we believe.
-            </h2>
           </motion.div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border rounded-xl overflow-hidden">
-            {[
-              { title: "Quality", desc: "Premium materials and precision printing on every order." },
-              { title: "Speed", desc: "Express turnaround when you need it. Standard when you don't." },
-              { title: "Reliability", desc: "Consistent results you can count on, every single time." },
-              { title: "Care", desc: "A friendly Sydney team that picks up the phone." },
-            ].map((v, i) => (
-              <motion.div
-                key={v.title}
-                {...fadeUp}
-                transition={{ duration: 0.6, ease, delay: i * 0.06 }}
-                className="bg-background p-8 lg:p-10"
-              >
-                <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground mb-6">
-                  0{i + 1}
-                </div>
-                <h3 className="font-heading text-xl font-normal tracking-[-0.02em] text-foreground">
-                  {v.title}
-                </h3>
-                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                  {v.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 lg:py-32 text-center">
-        <Link
-          to="/order/$product"
-          params={{ product: "flyers" }}
-          className="group inline-flex items-center h-12 px-7 rounded-full bg-foreground text-background text-sm font-medium hover:bg-foreground/85 transition-all"
-        >
-          Start your first order
-          <ArrowUpRight className="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-        </Link>
+      <section className="border-t border-border py-24 lg:py-32 text-center bg-secondary/30">
+        <motion.div {...fadeUp}>
+            <p className="font-heading text-3xl lg:text-4xl text-foreground mb-12">
+                "S&S Printing and Packaging — Your trusted partner for printing and packaging."
+            </p>
+            <Link
+                to="/quote"
+                className="group inline-flex items-center h-12 px-7 rounded-full bg-foreground text-background text-sm font-medium hover:bg-foreground/85 transition-all"
+            >
+                Get a Quote
+                <ArrowUpRight className="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+        </motion.div>
       </section>
     </div>
   );

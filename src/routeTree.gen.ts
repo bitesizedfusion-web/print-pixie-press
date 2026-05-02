@@ -10,11 +10,15 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TrackRouteImport } from './routes/track'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as QuoteRouteImport } from './routes/quote'
 import { Route as ProductsRouteImport } from './routes/products'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PosterDesignerRouteImport } from './routes/poster-designer'
 import { Route as OrderConfirmationRouteImport } from './routes/order-confirmation'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as DesignerRouteImport } from './routes/designer'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -40,9 +44,24 @@ const TrackRoute = TrackRouteImport.update({
   path: '/track',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuoteRoute = QuoteRouteImport.update({
+  id: '/quote',
+  path: '/quote',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -63,6 +82,11 @@ const OrderConfirmationRoute = OrderConfirmationRouteImport.update({
 const HowItWorksRoute = HowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DesignerRoute = DesignerRouteImport.update({
@@ -170,11 +194,15 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/designer': typeof DesignerRoute
+  '/gallery': typeof GalleryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/order-confirmation': typeof OrderConfirmationRoute
   '/poster-designer': typeof PosterDesignerRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRoute
+  '/quote': typeof QuoteRoute
+  '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
   '/admin/activity': typeof AdminActivityRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -196,11 +224,15 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/designer': typeof DesignerRoute
+  '/gallery': typeof GalleryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/order-confirmation': typeof OrderConfirmationRoute
   '/poster-designer': typeof PosterDesignerRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRoute
+  '/quote': typeof QuoteRoute
+  '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
   '/admin/activity': typeof AdminActivityRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -224,11 +256,15 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/designer': typeof DesignerRoute
+  '/gallery': typeof GalleryRoute
   '/how-it-works': typeof HowItWorksRoute
   '/order-confirmation': typeof OrderConfirmationRoute
   '/poster-designer': typeof PosterDesignerRoute
   '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/products': typeof ProductsRoute
+  '/quote': typeof QuoteRoute
+  '/terms': typeof TermsRoute
   '/track': typeof TrackRoute
   '/admin/activity': typeof AdminActivityRoute
   '/admin/customers': typeof AdminCustomersRoute
@@ -253,11 +289,15 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/designer'
+    | '/gallery'
     | '/how-it-works'
     | '/order-confirmation'
     | '/poster-designer'
     | '/pricing'
+    | '/privacy'
     | '/products'
+    | '/quote'
+    | '/terms'
     | '/track'
     | '/admin/activity'
     | '/admin/customers'
@@ -279,11 +319,15 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/designer'
+    | '/gallery'
     | '/how-it-works'
     | '/order-confirmation'
     | '/poster-designer'
     | '/pricing'
+    | '/privacy'
     | '/products'
+    | '/quote'
+    | '/terms'
     | '/track'
     | '/admin/activity'
     | '/admin/customers'
@@ -306,11 +350,15 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/designer'
+    | '/gallery'
     | '/how-it-works'
     | '/order-confirmation'
     | '/poster-designer'
     | '/pricing'
+    | '/privacy'
     | '/products'
+    | '/quote'
+    | '/terms'
     | '/track'
     | '/admin/activity'
     | '/admin/customers'
@@ -334,11 +382,15 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   DesignerRoute: typeof DesignerRoute
+  GalleryRoute: typeof GalleryRoute
   HowItWorksRoute: typeof HowItWorksRoute
   OrderConfirmationRoute: typeof OrderConfirmationRoute
   PosterDesignerRoute: typeof PosterDesignerRoute
   PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProductsRoute: typeof ProductsRoute
+  QuoteRoute: typeof QuoteRoute
+  TermsRoute: typeof TermsRoute
   TrackRoute: typeof TrackRoute
   OrderProductRoute: typeof OrderProductRoute
 }
@@ -352,11 +404,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quote': {
+      id: '/quote'
+      path: '/quote'
+      fullPath: '/quote'
+      preLoaderRoute: typeof QuoteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products': {
       id: '/products'
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -385,6 +458,13 @@ declare module '@tanstack/react-router' {
       path: '/how-it-works'
       fullPath: '/how-it-works'
       preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/designer': {
@@ -560,11 +640,15 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   DesignerRoute: DesignerRoute,
+  GalleryRoute: GalleryRoute,
   HowItWorksRoute: HowItWorksRoute,
   OrderConfirmationRoute: OrderConfirmationRoute,
   PosterDesignerRoute: PosterDesignerRoute,
   PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
   ProductsRoute: ProductsRoute,
+  QuoteRoute: QuoteRoute,
+  TermsRoute: TermsRoute,
   TrackRoute: TrackRoute,
   OrderProductRoute: OrderProductRoute,
 }
