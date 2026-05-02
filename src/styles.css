@@ -245,6 +245,16 @@
 .bg-mesh { background-image: var(--gradient-mesh); }
 .bg-gradient-hero { background: var(--gradient-hero); }
 .bg-gradient-cta { background: var(--gradient-cta); }
+.bg-gradient-brand { background: var(--gradient-brand); }
+.bg-gradient-brand-soft { background: var(--gradient-brand-soft); }
+.bg-gradient-footer { background: var(--gradient-footer); }
+.text-gradient-brand {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
 
 /* Animated gradient border (premium feature) */
 .border-gradient {
