@@ -5,6 +5,7 @@ import { products } from "@/lib/pricing";
 import { ArrowUpRight, Camera, Upload } from "lucide-react";
 import heroImage from "@/assets/hero-printing.jpg";
 import { ARCameraView } from "@/components/ARCameraView";
+import { VexHero } from "@/components/hero/VexHero";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/")({
