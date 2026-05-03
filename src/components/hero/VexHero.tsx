@@ -161,15 +161,16 @@ export function VexHero() {
               animate={{ opacity: 1, y: 0 }} 
               transition={{ duration: 1 }}
             >
-              <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-light leading-[0.9] tracking-tighter mb-8">
-                Premium Printing. <br />
-                <span className="italic text-white/50">Packaging Redefined.</span>
+              <h1 className="text-5xl md:text-7xl lg:text-[6.5rem] font-bold leading-[0.8] tracking-tighter mb-8">
+                PRINTING.<br />
+                PACKAGING.<br />
+                <span className="italic text-white/50">DELIVERED.</span>
               </h1>
             </motion.div>
             
             <FadeIn delay={800} duration={1000}>
               <p className="text-lg md:text-xl text-white/60 mb-10 leading-relaxed max-w-lg">
-                Crafting visual excellence for Australia's leading brands. From bespoke boxes to corporate stationery, we deliver precision in every print.
+                Your one-stop destination for premium printing and custom packaging solutions in Australia. Precision quality, every single time.
               </p>
             </FadeIn>
 
@@ -179,13 +180,13 @@ export function VexHero() {
                   to="/quote"
                   className="h-14 px-10 rounded-full bg-white text-black font-bold flex items-center gap-3 hover:scale-105 transition-transform shadow-2xl"
                 >
-                  Start Project <ArrowRight className="w-5 h-5" />
+                  Get Quote <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   to="/products"
                   className="h-14 px-10 rounded-full border border-white/20 text-white font-medium hover:bg-white/10 transition-all"
                 >
-                  Our Solutions
+                  Explore Now
                 </Link>
               </div>
             </FadeIn>
