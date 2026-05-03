@@ -767,31 +767,62 @@ function GetQuotePage() {
                         ))}
                     </div>
                   </div>
-                  <div className="p-8 rounded-3xl bg-secondary/30 border border-border">
-                    <h4 className="font-heading text-xl mb-6 text-center text-foreground">Final Review</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-3 text-sm">
-                        <div className="flex justify-between border-b border-border/50 pb-2">
+                  <div className="p-8 rounded-3xl bg-secondary/30 border border-border relative overflow-hidden group">
+                    <div className="absolute top-4 right-6 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button type="button" onClick={() => setCurrentStep(2)} className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center gap-1.5 py-2 px-3 rounded-full bg-background/50 backdrop-blur-sm border border-border/50">
+                           <Sparkles className="w-3 h-3" /> Edit Product
+                        </button>
+                        <button type="button" onClick={() => setCurrentStep(1)} className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center gap-1.5 py-2 px-3 rounded-full bg-background/50 backdrop-blur-sm border border-border/50">
+                           <User className="w-3 h-3" /> Edit Contact
+                        </button>
+                    </div>
+
+                    <h4 className="font-heading text-xl mb-8 text-center text-foreground flex items-center justify-center gap-3">
+                        Final Review
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-4 text-sm">
+                        <div className="flex justify-between border-b border-border/50 pb-3 group/row">
                             <span className="text-muted-foreground">Product:</span>
-                            <span className="font-semibold text-right">{formData.productName}</span>
+                            <div className="flex items-center gap-3">
+                                <span className="font-semibold text-right">{formData.productName}</span>
+                                <button type="button" onClick={() => setCurrentStep(2)} className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground md:opacity-0 group-hover/row:opacity-100 transition-opacity">
+                                    <Sparkles className="w-3.5 h-3.5" />
+                                </button>
+                            </div>
                         </div>
-                        <div className="flex justify-between border-b border-border/50 pb-2">
+                        <div className="flex justify-between border-b border-border/50 pb-3 group/row">
                             <span className="text-muted-foreground">Quantity:</span>
-                            <span className="font-semibold text-right">{formData.quantity}</span>
+                            <div className="flex items-center gap-3">
+                                <span className="font-semibold text-right">{formData.quantity}</span>
+                                <button type="button" onClick={() => setCurrentStep(2)} className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground md:opacity-0 group-hover/row:opacity-100 transition-opacity">
+                                    <Sparkles className="w-3.5 h-3.5" />
+                                </button>
+                            </div>
                         </div>
                         {Object.entries(formData).map(([key, value]) => {
                             const skip = ['firstName', 'surname', 'companyName', 'email', 'mobile', 'productName', 'quantity', 'details', 'requiredDate', 'delivery', 'urgency', 'state', 'postcode'];
                             if (skip.includes(key) || !value || value === "") return null;
                             const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
                             return (
-                                <div key={key} className="flex justify-between border-b border-border/50 pb-2">
+                                <div key={key} className="flex justify-between border-b border-border/50 pb-3 group/row">
                                     <span className="text-muted-foreground">{label}:</span>
-                                    <span className="font-semibold text-right">{String(value)}</span>
+                                    <div className="flex items-center gap-3">
+                                        <span className="font-semibold text-right">{String(value)}</span>
+                                        <button type="button" onClick={() => setCurrentStep(2)} className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground md:opacity-0 group-hover/row:opacity-100 transition-opacity">
+                                            <Sparkles className="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
                                 </div>
                             );
                         })}
-                        <div className="flex justify-between border-b border-border/50 pb-2">
+                        <div className="flex justify-between border-b border-border/50 pb-3 group/row">
                             <span className="text-muted-foreground">Contact:</span>
-                            <span className="font-semibold text-right">{formData.firstName}</span>
+                            <div className="flex items-center gap-3">
+                                <span className="font-semibold text-right">{formData.firstName} {formData.surname}</span>
+                                <button type="button" onClick={() => setCurrentStep(1)} className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground md:opacity-0 group-hover/row:opacity-100 transition-opacity">
+                                    <User className="w-3.5 h-3.5" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                   </div>
