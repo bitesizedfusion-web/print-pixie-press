@@ -188,17 +188,22 @@ export function VexHero() {
               </Link>
             </div>
 
-            {/* Floating Motto Box */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              className="inline-flex items-center px-8 py-4 rounded-2xl bg-black/40 backdrop-blur-2xl border border-white/10 shadow-2xl mt-4"
-            >
-              <span className="text-xl md:text-2xl font-medium tracking-tight">
-                Printing. Packaging. Delivered.
-              </span>
-            </motion.div>
+            {/* Floating Motto CTA Button */}
+            <Link to="/quote">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+                whileActive={{ scale: 0.95 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+                className="inline-flex items-center px-8 py-4 rounded-2xl bg-black/40 backdrop-blur-2xl border border-white/10 shadow-2xl mt-4 cursor-pointer group"
+              >
+                <span className="text-xl md:text-2xl font-medium tracking-tight flex items-center gap-3">
+                  Printing. Packaging. Delivered.
+                  <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                </span>
+              </motion.div>
+            </Link>
           </motion.div>
         </div>
       </div>
