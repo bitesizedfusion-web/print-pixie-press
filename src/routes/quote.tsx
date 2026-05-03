@@ -673,17 +673,20 @@ function GetQuotePage() {
                                             {config?.formats && renderEditableSelect("format", "Format", config.formats, "Select format...")}
                                             {config?.special && renderEditableSelect("specialFinish", "Special Finishings", config.special, "Add special finish...")}
                                             {config?.purposes && renderEditableSelect("purpose", "Purpose / Use Case", config.purposes, "Select purpose...")}
-                                
-                                {config?.dimensions && (
-                                    <div className="sm:col-span-2 grid grid-cols-3 gap-4">
-                                        {['width', 'length', 'height'].map(dim => (
-                                            <div key={dim} className="space-y-2">
-                                                <label className="text-[9px] font-mono uppercase text-muted-foreground ml-2">{dim} (cm)</label>
-                                                <input type="number" placeholder={dim} value={formData[dim]} onChange={e => handleInputChange(dim, e.target.value)} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
+                                            
+                                            {config?.dimensions && (
+                                                <div className="sm:col-span-2 grid grid-cols-3 gap-4">
+                                                    {['width', 'length', 'height'].map(dim => (
+                                                        <div key={dim} className="space-y-2">
+                                                            <label className="text-[9px] font-mono uppercase text-muted-foreground ml-2">{dim} (cm)</label>
+                                                            <input type="number" placeholder={dim} value={formData[dim]} onChange={e => handleInputChange(dim, e.target.value)} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </>
+                                    );
+                                })()}
                             </motion.div>
                         )}
                     </div>
