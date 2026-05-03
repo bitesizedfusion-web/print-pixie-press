@@ -6,7 +6,7 @@ const corsHeaders = {
 };
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-const FROM = "S&S Printing <onboarding@resend.dev>";
+const FROM = "S&S Printing and Packaging <noreply@phonefixandmore.com>";
 const ADMIN = "sandsprinters26@gmail.com";
 
 async function sendEmail(to: string, subject: string, html: string) {
