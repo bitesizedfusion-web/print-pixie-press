@@ -29,6 +29,8 @@ export function VexHero() {
         loop
         muted
         playsInline
+        preload="auto"
+        poster="/images/hero-poster.png"
         className="absolute inset-0 w-full h-full object-cover opacity-80"
       >
         <source src={VIDEO_URL} type="video/mp4" />
