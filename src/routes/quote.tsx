@@ -4,9 +4,25 @@ import { useState } from "react";
 import { 
   Upload, Ruler, Truck, Sparkles, Package, MapPin, 
   Image as ImageIcon, ChevronRight, User, Building, 
-  Mail, Phone, Layers, Clock, CheckCircle2, ArrowRight, Home, Palette, Calendar
+  Mail, MailCheck, ShieldCheck, Phone, Layers, Clock, CheckCircle2, ArrowRight, Home, Palette, Calendar, RefreshCw, Loader2
 } from "lucide-react";
 import { toast } from "sonner";
+import { sendVerificationEmail, sendQuoteToAdmin } from "@/lib/email";
+
+const urgencyOptions = [
+  { id: 'none', label: 'No Rush', desc: 'Standard turnaround time (3-5 business days)' },
+  { id: 'asap', label: 'As Soon As Possible', desc: 'Prioritize my order for faster delivery' },
+  { id: 'required', label: 'Specific Deadline', desc: 'I need this by a certain date' }
+];
+
+const imageSlots = [
+  { id: 'front', label: 'Front View' },
+  { id: 'back', label: 'Back View' },
+  { id: 'top', label: 'Top View' },
+  { id: 'bottom', label: 'Bottom View' },
+  { id: 'left', label: 'Side 1' },
+  { id: 'right', label: 'Side 2' }
+];
 
 export const Route = createFileRoute("/quote")({
   component: GetQuotePage,
@@ -153,6 +169,129 @@ const PRODUCT_CONFIGS: Record<string, any> = {
     thickness: ["250 GSM", "300 GSM", "350 GSM", "400 GSM", "Custom"],
     dimensions: true
   }
+};
+
+const CustomSelect = ({ label, options, value, onChange, placeholder, groups }: { 
+    label?: string, 
+    options?: string[], 
+    value: string, 
+    onChange: (val: string) => void, 
+    placeholder: string,
+    groups?: { name: string, items: string[] }[]
+}) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className="relative space-y-3">
+            {label && <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">{label}</label>}
+            <div className="relative">
+                <button
+                    type="button"
+                    onClick={() => setIsOpen(!isOpen)}
+                    className={`w-full h-16 px-6 rounded-2xl border transition-all duration-500 flex items-center justify-between text-left font-medium group ${
+                        isOpen ? "border-foreground bg-card shadow-2xl scale-[1.02]" : "border-border bg-card hover:border-foreground/30 hover:shadow-lg"
+                    }`}
+                >
+                    <span className={!value ? "text-muted-foreground" : "text-foreground font-semibold"}>
+                        {value || placeholder}
+                    </span>
+                    <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
+                        <ChevronRight className="w-5 h-5 text-muted-foreground rotate-90 group-hover:text-foreground transition-colors" />
+                    </motion.div>
+                </button>
+
+                <AnimatePresence>
+                    {isOpen && (
+                        <>
+                            {/* Full-screen Backdrop Blur */}
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={() => setIsOpen(false)}
+                                className="fixed inset-0 z-[100] bg-background/40 backdrop-blur-md"
+                            />
+                            
+                            {/* Pop Modal Content */}
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[101] w-[90%] max-w-lg max-h-[70vh] overflow-hidden rounded-[32px] border border-border bg-card shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2)] flex flex-col"
+                            >
+                                <div className="p-6 border-b border-border flex items-center justify-between bg-muted/20">
+                                    <div>
+                                        <h4 className="font-heading text-xl text-foreground">{label || "Select Option"}</h4>
+                                        <p className="text-xs text-muted-foreground mt-1">{placeholder}</p>
+                                    </div>
+                                    <button onClick={() => setIsOpen(false)} className="w-10 h-10 rounded-full hover:bg-muted flex items-center justify-center transition-colors">
+                                        <CheckCircle2 className="w-5 h-5 text-muted-foreground rotate-45" />
+                                    </button>
+                                </div>
+                                
+                                <div className="overflow-y-auto p-3 custom-scrollbar flex-1">
+                                    {groups ? (
+                                        groups.map((group) => (
+                                            <div key={group.name} className="mb-6 last:mb-0">
+                                                <div className="px-4 py-3 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60 bg-muted/30 rounded-xl mb-2">
+                                                    {group.name}
+                                                </div>
+                                                <div className="grid grid-cols-1 gap-1">
+                                                    {group.items.map((item) => (
+                                                        <button
+                                                            key={item}
+                                                            type="button"
+                                                            onClick={() => { onChange(item); setIsOpen(false); }}
+                                                            className={`w-full text-left px-5 py-4 rounded-2xl transition-all duration-200 flex items-center justify-between group ${
+                                                                value === item ? "bg-foreground text-background shadow-lg" : "hover:bg-foreground/5 text-foreground"
+                                                            }`}
+                                                        >
+                                                            <span className="font-semibold text-base">{item}</span>
+                                                            {value === item && (
+                                                                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
+                                                                    <CheckCircle2 className="w-5 h-5" />
+                                                                </motion.div>
+                                                            )}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="grid grid-cols-1 gap-1">
+                                            {options?.map((option) => (
+                                                <button
+                                                    key={option}
+                                                    type="button"
+                                                    onClick={() => { onChange(option); setIsOpen(false); }}
+                                                    className={`w-full text-left px-5 py-4 rounded-2xl transition-all duration-200 flex items-center justify-between group ${
+                                                        value === option ? "bg-foreground text-background shadow-lg" : "hover:bg-foreground/5 text-foreground"
+                                                    }`}
+                                                >
+                                                    <span className="font-semibold text-base">{option}</span>
+                                                    {value === option && (
+                                                        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
+                                                            <CheckCircle2 className="w-5 h-5" />
+                                                        </motion.div>
+                                                    )}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="p-4 bg-muted/10 border-t border-border">
+                                    <button onClick={() => setIsOpen(false)} className="w-full h-12 rounded-2xl bg-muted hover:bg-muted/80 text-foreground font-medium transition-colors">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </motion.div>
+                        </>
+                    )}
+                </AnimatePresence>
+            </div>
+        </div>
+    );
 };
 
 function GetQuotePage() {
@@ -341,24 +480,13 @@ function GetQuotePage() {
                     <h3 className="font-heading text-2xl border-b border-border pb-4 text-center">Project Specifications</h3>
                     
                     <div className="grid grid-cols-1 gap-6">
-                        <div className="space-y-3">
-                            <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Select Product Category</label>
-                            <select 
-                                required 
-                                value={formData.productName} 
-                                onChange={e => handleInputChange("productName", e.target.value)} 
-                                className="w-full h-16 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium appearance-none cursor-pointer"
-                            >
-                                <option value="">Choose a product...</option>
-                                {PRODUCT_CATEGORIES.map(cat => (
-                                    <optgroup key={cat.name} label={cat.name}>
-                                        {cat.items.map(item => (
-                                            <option key={item} value={item}>{item}</option>
-                                        ))}
-                                    </optgroup>
-                                ))}
-                            </select>
-                        </div>
+                        <CustomSelect 
+                            label="Select Product Category"
+                            groups={PRODUCT_CATEGORIES}
+                            value={formData.productName}
+                            onChange={(val) => handleInputChange("productName", val)}
+                            placeholder="Choose a product..."
+                        />
 
                         {formData.productName && (
                             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-8 rounded-3xl bg-muted/20 border border-border">
@@ -378,143 +506,59 @@ function GetQuotePage() {
                                 )}
 
                                 {config?.sizes && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Select Size</label>
-                                        <select value={formData.size} onChange={e => handleInputChange("size", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select size...</option>
-                                            {config.sizes.map((s: string) => <option key={s} value={s}>{s}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Select Size" options={config.sizes} value={formData.size} onChange={val => handleInputChange("size", val)} placeholder="Select size..." />
                                 )}
 
                                 {config?.folds && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Fold Type</label>
-                                        <select value={formData.fold} onChange={e => handleInputChange("fold", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select fold...</option>
-                                            {config.folds.map((f: string) => <option key={f} value={f}>{f}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Fold Type" options={config.folds} value={formData.fold} onChange={val => handleInputChange("fold", val)} placeholder="Select fold..." />
                                 )}
 
                                 {config?.bindings && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Binding Type</label>
-                                        <select value={formData.binding} onChange={e => handleInputChange("binding", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select binding...</option>
-                                            {config.bindings.map((b: string) => <option key={b} value={b}>{b}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Binding Type" options={config.bindings} value={formData.binding} onChange={val => handleInputChange("binding", val)} placeholder="Select binding..." />
                                 )}
 
                                 {config?.handles && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Handle Type</label>
-                                        <select value={formData.handle} onChange={e => handleInputChange("handle", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select handle...</option>
-                                            {config.handles.map((h: string) => <option key={h} value={h}>{h}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Handle Type" options={config.handles} value={formData.handle} onChange={val => handleInputChange("handle", val)} placeholder="Select handle..." />
                                 )}
 
                                 {config?.materials && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Material / Paper Type</label>
-                                        <select value={formData.material} onChange={e => handleInputChange("material", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select material...</option>
-                                            {config.materials.map((m: string) => <option key={m} value={m}>{m}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Material / Paper Type" options={config.materials} value={formData.material} onChange={val => handleInputChange("material", val)} placeholder="Select material..." />
                                 )}
 
                                 {config?.thickness && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Thickness (GSM)</label>
-                                        <select value={formData.thickness} onChange={e => handleInputChange("thickness", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select thickness...</option>
-                                            {config.thickness.map((t: string) => <option key={t} value={t}>{t}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Thickness (GSM)" options={config.thickness} value={formData.thickness} onChange={val => handleInputChange("thickness", val)} placeholder="Select thickness..." />
                                 )}
 
                                 {config?.finishes && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Finish Options</label>
-                                        <select value={formData.finish} onChange={e => handleInputChange("finish", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select finish...</option>
-                                            {config.finishes.map((f: string) => <option key={f} value={f}>{f}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Finish Options" options={config.finishes} value={formData.finish} onChange={val => handleInputChange("finish", val)} placeholder="Select finish..." />
                                 )}
 
                                 {config?.printTypes && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Printing Type</label>
-                                        <select value={formData.printType} onChange={e => handleInputChange("printType", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select printing type...</option>
-                                            {config.printTypes.map((pt: string) => <option key={pt} value={pt}>{pt}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Printing Type" options={config.printTypes} value={formData.printType} onChange={val => handleInputChange("printType", val)} placeholder="Select printing type..." />
                                 )}
 
                                 {config?.pagesPerPad && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Pages per Pad</label>
-                                        <select value={formData.pagesPerPad} onChange={e => handleInputChange("pagesPerPad", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select pages...</option>
-                                            {config.pagesPerPad.map((p: string) => <option key={p} value={p}>{p}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Pages per Pad" options={config.pagesPerPad} value={formData.pagesPerPad} onChange={val => handleInputChange("pagesPerPad", val)} placeholder="Select pages..." />
                                 )}
 
                                 {config?.shapes && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Select Shape</label>
-                                        <select value={formData.shape} onChange={e => handleInputChange("shape", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select shape...</option>
-                                            {config.shapes.map((s: string) => <option key={s} value={s}>{s}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Select Shape" options={config.shapes} value={formData.shape} onChange={val => handleInputChange("shape", val)} placeholder="Select shape..." />
                                 )}
 
                                 {config?.adhesives && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Adhesive Type</label>
-                                        <select value={formData.adhesive} onChange={e => handleInputChange("adhesive", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select adhesive...</option>
-                                            {config.adhesives.map((a: string) => <option key={a} value={a}>{a}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Adhesive Type" options={config.adhesives} value={formData.adhesive} onChange={val => handleInputChange("adhesive", val)} placeholder="Select adhesive..." />
                                 )}
 
                                 {config?.formats && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Format</label>
-                                        <select value={formData.format} onChange={e => handleInputChange("format", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select format...</option>
-                                            {config.formats.map((f: string) => <option key={f} value={f}>{f}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Format" options={config.formats} value={formData.format} onChange={val => handleInputChange("format", val)} placeholder="Select format..." />
                                 )}
 
                                 {config?.special && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Special Finishings</label>
-                                        <select value={formData.specialFinish} onChange={e => handleInputChange("specialFinish", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Add special finish...</option>
-                                            {config.special.map((s: string) => <option key={s} value={s}>{s}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Special Finishings" options={config.special} value={formData.specialFinish} onChange={val => handleInputChange("specialFinish", val)} placeholder="Add special finish..." />
                                 )}
 
                                 {config?.purposes && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Purpose / Use Case</label>
-                                        <select value={formData.purpose} onChange={e => handleInputChange("purpose", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select purpose...</option>
-                                            {config.purposes.map((p: string) => <option key={p} value={p}>{p}</option>)}
-                                        </select>
-                                    </div>
+                                    <CustomSelect label="Purpose / Use Case" options={config.purposes} value={formData.purpose} onChange={val => handleInputChange("purpose", val)} placeholder="Select purpose..." />
                                 )}
                                 
                                 {config?.dimensions && (
@@ -535,10 +579,12 @@ function GetQuotePage() {
                         <div className="space-y-4">
                             <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground text-center mb-2">Delivery Details</div>
                             <div className="grid grid-cols-1 gap-4">
-                                <select value={formData.state} onChange={e => handleInputChange("state", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                    <option value="">Select State (Australia)</option>
-                                    {["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"].map(s => <option key={s} value={s}>{s}</option>)}
-                                </select>
+                                <CustomSelect 
+                                    options={["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"]}
+                                    value={formData.state}
+                                    onChange={val => handleInputChange("state", val)}
+                                    placeholder="Select State (Australia)"
+                                />
                                 <input placeholder="Postcode" value={formData.postcode} onChange={e => handleInputChange("postcode", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
                             </div>
                         </div>
