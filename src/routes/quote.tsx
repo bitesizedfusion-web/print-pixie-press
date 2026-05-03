@@ -372,7 +372,35 @@ function GetQuotePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (currentStep !== 3) return; // Prevent submission from other steps
+    
     setStatus('submitting');
+    
+    // Upload images first
+    const uploadedUrls: Record<string, string> = {};
+    const uploadPromises = Object.entries(images).map(async ([key, file]) => {
+      if (!file) return;
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}-${Date.now()}.${fileExt}`;
+      const filePath = `${formData.email}/${fileName}`;
+
+      const { data, error: uploadError } = await supabase.storage
+        .from('quotes')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        console.error("Upload error:", uploadError);
+        return;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('quotes')
+        .getPublicUrl(filePath);
+      
+      uploadedUrls[key] = publicUrl;
+    });
+
+    await Promise.all(uploadPromises);
     
     // Save to database
     const { error: dbError } = await supabase.from("quotes").insert({
@@ -393,8 +421,10 @@ function GetQuotePage() {
         finish: formData.finish,
         binding: formData.binding,
         fold: formData.fold,
+        image_urls: uploadedUrls,
         ...formData
       },
+      file_url: Object.values(uploadedUrls)[0] || null, // Primary file link
       notes: formData.details,
       status: 'pending'
     });
@@ -405,13 +435,19 @@ function GetQuotePage() {
       return;
     }
 
-    const adminSuccess = await sendQuoteToAdmin(formData);
+    const adminSuccess = await sendQuoteToAdmin({ ...formData, images: uploadedUrls });
     
     setTimeout(() => {
       setStatus('success');
       toast.success("Verified quote request submitted!");
       window.scrollTo({ top: 0, behavior: 'auto' });
     }, 1000);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && e.target instanceof HTMLInputElement) {
+      e.preventDefault();
+    }
   };
 
   const handleVerify = async () => {
@@ -486,7 +522,7 @@ function GetQuotePage() {
 
       <section className="py-16">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
-          <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
+          <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} className="max-w-4xl mx-auto">
             <AnimatePresence mode="wait">
               {currentStep === 1 && (
                 <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-16">

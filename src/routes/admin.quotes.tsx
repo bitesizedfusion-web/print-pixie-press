@@ -218,6 +218,20 @@ function QuotesPage() {
                 </div>
               </div>
 
+              <div className="space-y-4">
+                <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-cta border-b border-cta/20 pb-2">Uploaded Files</h4>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {selected.specifications?.image_urls && Object.entries(selected.specifications.image_urls).map(([key, url]: [string, any]) => (
+                    <a key={key} href={url} target="_blank" rel="noreferrer" className="group relative aspect-square rounded-xl overflow-hidden border border-border bg-muted/20 hover:border-cta/50 transition-all">
+                      <img src={url} alt={key} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[10px] text-white font-bold uppercase">View Full</div>
+                      <div className="absolute bottom-0 left-0 right-0 p-1 bg-black/60 text-white text-[8px] text-center truncate">{key}</div>
+                    </a>
+                  ))}
+                  {!selected.specifications?.image_urls && <p className="text-xs text-muted-foreground col-span-full italic">No files uploaded</p>}
+                </div>
+              </div>
+
               {selected.notes && (
                 <div className="bg-accent/20 p-4 rounded-xl border border-border/50">
                   <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Additional Notes</p>
