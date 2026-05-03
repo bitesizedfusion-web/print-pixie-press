@@ -656,7 +656,7 @@ function GetQuotePage() {
                             return (
                                 <div key={key} className="flex justify-between border-b border-border/50 pb-2">
                                     <span className="text-muted-foreground">{label}:</span>
-                                    <span className="font-semibold text-right">{value}</span>
+                                    <span className="font-semibold text-right">{String(value)}</span>
                                 </div>
                             );
                         })}
