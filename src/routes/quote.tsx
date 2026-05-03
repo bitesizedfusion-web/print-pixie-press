@@ -226,7 +226,7 @@ const CustomSelect = ({ label, options, value, onChange, placeholder, groups }: 
                                         <h4 className="font-heading text-xl text-foreground">{label || "Select Option"}</h4>
                                         <p className="text-xs text-muted-foreground mt-1">{placeholder}</p>
                                     </div>
-                                    <button onClick={() => setIsOpen(false)} className="w-10 h-10 rounded-full hover:bg-muted flex items-center justify-center transition-colors">
+                                    <button type="button" onClick={() => setIsOpen(false)} className="w-10 h-10 rounded-full hover:bg-muted flex items-center justify-center transition-colors">
                                         <CheckCircle2 className="w-5 h-5 text-muted-foreground rotate-45" />
                                     </button>
                                 </div>
@@ -282,7 +282,7 @@ const CustomSelect = ({ label, options, value, onChange, placeholder, groups }: 
                                     )}
                                 </div>
                                 <div className="p-4 bg-muted/10 border-t border-border">
-                                    <button onClick={() => setIsOpen(false)} className="w-full h-12 rounded-2xl bg-muted hover:bg-muted/80 text-foreground font-medium transition-colors">
+                                    <button type="button" onClick={() => setIsOpen(false)} className="w-full h-12 rounded-2xl bg-muted hover:bg-muted/80 text-foreground font-medium transition-colors">
                                         Cancel
                                     </button>
                                 </div>
@@ -449,7 +449,8 @@ function GetQuotePage() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && e.target instanceof HTMLInputElement) {
+    // Prevent Enter from submitting the entire form
+    if (e.key === 'Enter') {
       e.preventDefault();
     }
   };
@@ -492,10 +493,10 @@ function GetQuotePage() {
                 <p className="text-muted-foreground mb-8">Enter the 4-digit code sent to <span className="text-foreground font-medium">{formData.email}</span>.</p>
                 <div className="space-y-6">
                     <input type="text" maxLength={4} placeholder="0000" value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))} className="w-full h-16 text-center text-3xl font-mono tracking-[0.5em] rounded-2xl border-2 border-border bg-muted/30 focus:border-foreground focus:ring-0 transition-all outline-none" />
-                    <button onClick={handleVerify} disabled={otp.length !== 4} className="w-full h-14 rounded-full bg-foreground text-background font-semibold flex items-center justify-center gap-2 disabled:opacity-50 transition-all shadow-lg">
+                    <button type="button" onClick={handleVerify} disabled={otp.length !== 4} className="w-full h-14 rounded-full bg-foreground text-background font-semibold flex items-center justify-center gap-2 disabled:opacity-50 transition-all shadow-lg">
                         <ShieldCheck className="w-5 h-5"/> Verify & Continue
                     </button>
-                    <button onClick={generateAndSendOtp} className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-2 mx-auto">
+                    <button type="button" onClick={generateAndSendOtp} className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-2 mx-auto">
                         <RefreshCw className="w-3 h-3" /> Resend Code
                     </button>
                 </div>
