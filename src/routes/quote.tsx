@@ -708,7 +708,7 @@ function GetQuotePage() {
                                         <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{s.label}</span>
                                     </>
                                 )}
-                                <input type="file" className="hidden" onChange={e => handleImageChange(s.id, e.target.files?.[0] || null)} />
+                                <input type="file" className="hidden" onClick={e => e.stopPropagation()} onChange={e => { e.stopPropagation(); handleImageChange(s.id, e.target.files?.[0] || null); }} />
                             </label>
                         ))}
                     </div>
