@@ -1,4 +1,14 @@
-import { useState } from "react";
+import os
+
+file_path = r"c:\Users\Mohammed Shishir\OneDrive\Desktop\websites\austlia prating busines 2\src\components\hero\VexHero.tsx"
+
+with open(file_path, "r", encoding="utf-8") as f:
+    content = f.read()
+
+# 1. Update the Main Headline and Sub-headline structure
+# We will match the image layout: Heading, Sub-heading, Buttons, Motto Box.
+
+new_content = """import { useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { AnimatedHeading } from "./AnimatedHeading";
 import { FadeIn } from "./FadeIn";
@@ -205,3 +215,9 @@ export function VexHero() {
     </section>
   );
 }
+"""
+
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(new_content)
+
+print("Hero section updated to match the reference image.")
