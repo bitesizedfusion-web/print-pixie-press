@@ -13,7 +13,7 @@ const navLinks = [
   { to: "/" as const, label: "Home", icon: Home },
   { to: "/about" as const, label: "About Us", icon: Info },
   { to: "/products" as const, label: "Products & Services", icon: Package },
-  { to: "/quote" as const, label: "Get a Quote", icon: FileText },
+  { to: "/quote" as const, label: "Get Quote", icon: FileText },
   { to: "/gallery" as const, label: "Gallery", icon: Image },
   { to: "/contact" as const, label: "Contact Us", icon: PhoneCall },
 ];
@@ -47,7 +47,7 @@ export function VexHero() {
             />
           </Link>
           <div className="hidden md:flex items-center gap-10">
-            {navLinks.filter(l => l.label !== "Get a Quote" && l.label !== "Contact Us").map((l) => (
+            {navLinks.filter(l => l.label !== "Get Quote" && l.label !== "Contact Us").map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
@@ -63,7 +63,7 @@ export function VexHero() {
                 to="/quote"
                 className="hidden sm:inline-flex bg-white text-black px-8 py-2.5 rounded-full text-sm font-bold hover:scale-105 active:scale-95 transition-all shadow-xl"
             >
-                Get a Quote
+                Get Quote
             </Link>
             <button 
                 onClick={() => setMobileOpen(true)}
@@ -133,7 +133,7 @@ export function VexHero() {
                     onClick={() => setMobileOpen(false)} 
                     className="h-16 w-full flex items-center justify-center rounded-2xl bg-white text-black font-bold text-xl shadow-2xl hover:scale-[1.02] transition-transform"
                     >
-                    Get a Quote
+                    Get Quote
                     </Link>
 
                     <div className="grid grid-cols-3 gap-4">
@@ -161,11 +161,21 @@ export function VexHero() {
               animate={{ opacity: 1, y: 0 }} 
               transition={{ duration: 1 }}
             >
-              <h1 className="text-5xl md:text-7xl lg:text-[6.5rem] font-bold leading-[0.8] tracking-tighter mb-8">
-                PRINTING.<br />
-                PACKAGING.<br />
-                <span className="italic text-white/50">DELIVERED.</span>
-              </h1>
+              <AnimatedHeading
+                text={"S&S Printing\n& Packaging"}
+                className="text-5xl md:text-7xl lg:text-[6.5rem] font-bold leading-[0.8] tracking-tighter mb-8"
+              />
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1000, duration: 1 }}
+                className="flex items-center gap-4 mb-8"
+              >
+                <div className="h-px w-12 bg-white/30" />
+                <span className="text-xl md:text-2xl font-light italic text-white/50 tracking-widest uppercase">
+                  Printing. Packaging. Delivered.
+                </span>
+              </motion.div>
             </motion.div>
             
             <FadeIn delay={800} duration={1000}>

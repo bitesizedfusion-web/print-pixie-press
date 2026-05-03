@@ -379,7 +379,7 @@ function HomePage() {
             </h2>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link to="/quote" className="h-14 px-8 rounded-full bg-foreground text-background font-bold text-base flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl">
-                Start a Project <ArrowRight className="w-4 h-4" />
+                Get Quote <ArrowRight className="w-4 h-4" />
               </Link>
               <Link to="/contact" className="h-14 px-8 rounded-full bg-background border-2 border-border text-foreground font-bold text-base flex items-center gap-3 hover:bg-muted transition-all">
                 Talk to Sales
