@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, Link, useNavigate, useLocation } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -15,6 +15,7 @@ import {
   Printer,
   ShieldCheck,
   Loader2,
+  MessageSquare
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -34,9 +35,12 @@ export const Route = createFileRoute("/admin")({
 const NAV = [
   { to: "/admin" as const, label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/orders" as const, label: "Orders", icon: ShoppingCart },
+  { to: "/admin/quotes" as const, label: "Quotes", icon: FileText },
+  { to: "/admin/inquiries" as const, label: "Messages", icon: MessageSquare },
   { to: "/admin/customers" as const, label: "Customers", icon: Users },
   { to: "/admin/products" as const, label: "Products", icon: Package },
   { to: "/admin/inventory" as const, label: "Inventory", icon: Boxes },
+  { to: "/admin/machines" as const, label: "Machines", icon: Printer },
   { to: "/admin/invoices" as const, label: "Invoices", icon: FileText },
   { to: "/admin/suppliers" as const, label: "Suppliers", icon: Truck },
   { to: "/admin/expenses" as const, label: "Expenses", icon: DollarSign },
@@ -48,6 +52,7 @@ function AdminLayout() {
   const { user, isAdmin, isStaff, loading, signOut, refreshRoles } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   // Redirect if not authed
   useEffect(() => {
@@ -56,7 +61,11 @@ function AdminLayout() {
     }
   }, [user, loading, navigate]);
 
-  // First-time admin claim: if no admin exists yet, allow current user to claim it
+  // Close sidebar on route change on mobile
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
   const claimAdmin = async () => {
     if (!user) return;
     const { count } = await supabase
@@ -94,8 +103,7 @@ function AdminLayout() {
           <h1 className="font-heading text-2xl font-bold text-foreground mb-2">Admin access required</h1>
           <p className="text-sm text-muted-foreground mb-6">
             You're signed in as <span className="font-mono">{user.email}</span> but don't have admin
-            permissions. If you're the business owner, claim the admin role below (only works if no
-            admin exists yet).
+            permissions. If you're the business owner, claim the admin role below.
           </p>
           <div className="flex flex-col gap-2">
             <Button variant="cta" onClick={claimAdmin}>
@@ -115,21 +123,35 @@ function AdminLayout() {
 
   return (
     <div className="min-h-screen flex bg-background">
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 bg-card border-r border-border flex flex-col fixed inset-y-0 left-0 z-30">
-        <div className="p-5 border-b border-border">
+      <aside className={`
+        fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border flex flex-col transition-transform duration-300
+        lg:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+      `}>
+        <div className="p-5 border-b border-border flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-gradient-cta flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-gradient-cta flex items-center justify-center shadow-lg shadow-cta/20">
               <Printer className="h-5 w-5 text-cta-foreground" />
             </div>
             <div>
-              <p className="font-heading font-bold text-sm text-foreground leading-tight">S&S Printing and Packaging</p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Admin CRM</p>
+              <p className="font-heading font-bold text-sm text-foreground leading-tight">S&S Printing</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Prime Admin</p>
             </div>
           </Link>
+          <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(false)}>
+            <Activity className="h-5 w-5" />
+          </Button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+        <nav className="flex-1 overflow-y-auto p-3 space-y-1 custom-scrollbar">
           {NAV.map((item) => {
             const active = item.exact
               ? location.pathname === item.to
@@ -141,7 +163,7 @@ function AdminLayout() {
                 to={item.to}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
                   active
-                    ? "bg-cta/10 text-cta font-semibold"
+                    ? "bg-cta text-cta-foreground font-semibold shadow-md shadow-cta/10"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 }`}
               >
@@ -152,7 +174,7 @@ function AdminLayout() {
           })}
         </nav>
 
-        <div className="p-3 border-t border-border">
+        <div className="p-3 border-t border-border bg-accent/10">
           <div className="px-3 py-2 mb-2">
             <p className="text-xs font-semibold text-foreground truncate">{user.email}</p>
             <p className="text-[10px] uppercase tracking-wider text-cta font-bold mt-0.5">
@@ -169,8 +191,23 @@ function AdminLayout() {
       </aside>
 
       {/* Main content */}
-      <div className="flex-1 ml-64">
-        <Outlet />
+      <div className="flex-1 lg:ml-64 flex flex-col min-h-screen">
+        {/* Mobile Header */}
+        <header className="lg:hidden h-16 border-b border-border bg-card flex items-center justify-between px-4 sticky top-0 z-30">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-cta flex items-center justify-center">
+              <Printer className="h-4 w-4 text-cta-foreground" />
+            </div>
+            <span className="font-heading font-bold text-sm">Prime Admin</span>
+          </div>
+          <Button variant="outline" size="icon" onClick={() => setSidebarOpen(true)}>
+            <Activity className="h-5 w-5" />
+          </Button>
+        </header>
+
+        <main className="flex-1 overflow-x-hidden">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

@@ -3,12 +3,17 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Mail, Phone, MapPin, Send, CheckCircle2, MessageSquare } from "lucide-react";
 
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+
 export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
 function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,9 +21,25 @@ function ContactPage() {
     message: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    
+    const { error } = await supabase.from("print_inquiries").insert({
+      customer_name: formData.name,
+      customer_email: formData.email,
+      customer_phone: formData.phone,
+      message: formData.message,
+      status: 'pending'
+    });
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      setSubmitted(true);
+      toast.success("Message sent successfully!");
+    }
+    setLoading(false);
   };
 
   if (submitted) {
@@ -90,8 +111,8 @@ function ContactPage() {
                 <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Message*</label>
                 <textarea required rows={5} placeholder="Write your message here" value={formData.message} onChange={e => setFormData(p => ({...p, message: e.target.value}))} className="w-full p-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all resize-none" />
               </div>
-              <button type="submit" className="h-14 px-10 rounded-full bg-gradient-brand text-white font-semibold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all flex items-center gap-3">
-                Submit
+              <button type="submit" disabled={loading} className="h-14 px-10 rounded-full bg-gradient-brand text-white font-semibold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all flex items-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed">
+                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Submit"}
                 <Send className="w-4 h-4" />
               </button>
             </form>

@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { sendVerificationEmail, sendQuoteToAdmin } from "@/lib/email";
+import { supabase } from "@/integrations/supabase/client";
 
 const urgencyOptions = [
   { id: 'none', label: 'No Rush', desc: 'Standard turnaround time (3-5 business days)' },
@@ -372,12 +373,45 @@ function GetQuotePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
+    
+    // Save to database
+    const { error: dbError } = await supabase.from("quotes").insert({
+      customer_name: `${formData.firstName} ${formData.surname || ""}`.trim(),
+      customer_email: formData.email,
+      customer_phone: formData.mobile,
+      product_type: formData.productName,
+      quantity: Number(formData.quantity),
+      specifications: {
+        company: formData.companyName,
+        state: formData.state,
+        postcode: formData.postcode,
+        urgency: formData.urgency,
+        requiredDate: formData.requiredDate,
+        size: formData.size,
+        material: formData.material,
+        thickness: formData.thickness,
+        finish: formData.finish,
+        binding: formData.binding,
+        fold: formData.fold,
+        ...formData
+      },
+      notes: formData.details,
+      status: 'pending'
+    });
+
+    if (dbError) {
+      toast.error(dbError.message);
+      setStatus('idle');
+      return;
+    }
+
     const adminSuccess = await sendQuoteToAdmin(formData);
+    
     setTimeout(() => {
       setStatus('success');
       toast.success("Verified quote request submitted!");
       window.scrollTo({ top: 0, behavior: 'auto' });
-    }, 2000);
+    }, 1000);
   };
 
   const handleVerify = async () => {
