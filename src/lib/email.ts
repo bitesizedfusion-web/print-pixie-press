@@ -46,6 +46,18 @@ export const sendVerificationEmail = async (email: string, code: string) => {
 export const sendQuoteToAdmin = async (formData: any) => {
   console.log(`[Email Service] Notifying Admin of new verified quote: ${formData.productName}`);
   
+  // Extract common fields to avoid duplication in the dynamic list
+  const { firstName, surname, email, mobile, productName, quantity, urgency, requiredDate, details, ...extraDetails } = formData;
+
+  // Build the dynamic specifications list
+  const extraSpecsHtml = Object.entries(extraDetails)
+    .filter(([_, value]) => value && value !== "")
+    .map(([key, value]) => {
+      const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+      return `<p><strong>${label}:</strong> ${value}</p>`;
+    })
+    .join('');
+
   try {
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -58,21 +70,33 @@ export const sendQuoteToAdmin = async (formData: any) => {
         to: ['sandsprinters26@gmail.com'],
         subject: `New Quote Request: ${formData.productName}`,
         html: `
-          <div style="font-family: sans-serif; padding: 20px;">
-            <h2 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">New Quote Request Details</h2>
-            <div style="margin-top: 20px; line-height: 1.6;">
-              <p><strong>Customer:</strong> ${formData.firstName} ${formData.surname || ''}</p>
-              <p><strong>Email:</strong> ${formData.email}</p>
-              <p><strong>Mobile:</strong> ${formData.mobile}</p>
-              <p><strong>Product:</strong> ${formData.productName}</p>
-              <p><strong>Quantity:</strong> ${formData.quantity}</p>
-              <p><strong>Dimensions:</strong> ${formData.width}x${formData.length}x${formData.height} cm</p>
-              <p><strong>Urgency:</strong> ${formData.urgency}</p>
-              ${formData.requiredDate ? `<p><strong>Deadline:</strong> ${formData.requiredDate}</p>` : ''}
-              <p><strong>Details:</strong> ${formData.details || 'N/A'}</p>
+          <div style="font-family: sans-serif; padding: 20px; color: #333;">
+            <h2 style="border-bottom: 2px solid #000; padding-bottom: 10px; color: #000;">New Verified Quote Request</h2>
+            
+            <div style="margin-top: 20px; background: #f9f9f9; padding: 20px; border-radius: 10px;">
+              <h3 style="margin-top: 0; color: #555;">Customer Information</h3>
+              <p><strong>Name:</strong> ${firstName} ${surname || ''}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Mobile:</strong> ${mobile}</p>
             </div>
-            <footer style="margin-top: 30px; font-size: 12px; color: #999;">
-              This request has been verified via email.
+
+            <div style="margin-top: 20px; background: #fff; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
+              <h3 style="margin-top: 0; color: #555;">Project Specifications</h3>
+              <p><strong>Product:</strong> ${productName}</p>
+              <p><strong>Quantity:</strong> ${quantity}</p>
+              ${extraSpecsHtml}
+              <p><strong>Urgency:</strong> ${urgency}</p>
+              ${requiredDate ? `<p><strong>Required Date:</strong> ${requiredDate}</p>` : ''}
+            </div>
+
+            <div style="margin-top: 20px; background: #fff; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
+              <h3 style="margin-top: 0; color: #555;">Additional Details</h3>
+              <p>${details || 'No additional instructions provided.'}</p>
+            </div>
+
+            <footer style="margin-top: 30px; font-size: 12px; color: #999; text-align: center; border-top: 1px solid #eee; padding-top: 20px;">
+              This request was verified via OTP. <br/>
+              &copy; 2026 S&S Printing and Packaging
             </footer>
           </div>
         `,
