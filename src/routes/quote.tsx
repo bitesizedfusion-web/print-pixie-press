@@ -341,7 +341,7 @@ function GetQuotePage() {
         console.log("OTP Sent to " + formData.email + ": " + code);
         toast.success("Verification code sent to your email.");
     } else {
-        toast.error("Failed to send verification email.");
+        toast.error("Failed to send verification email. Please check your network or email service configuration.");
     }
   };
 
@@ -437,6 +437,10 @@ function GetQuotePage() {
 
     const adminSuccess = await sendQuoteToAdmin({ ...formData, images: uploadedUrls });
     
+    if (!adminSuccess) {
+      toast.error("Form submitted but email notifications failed. Please check your email configuration.");
+    }
+
     setTimeout(() => {
       setStatus('success');
       toast.success("Verified quote request submitted!");
