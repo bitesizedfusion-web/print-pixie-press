@@ -1,28 +1,21 @@
 import subprocess
 import os
 
-def run_git_command(command):
-    try:
-        result = subprocess.run(command, check=True, capture_output=True, text=True, shell=True)
+def run_command(command):
+    print(f"Executing: {command}")
+    result = subprocess.run(command, capture_output=True, text=True, shell=True)
+    if result.returncode == 0:
+        print("Success:")
         print(result.stdout)
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing command: {command}")
-        print(e.stderr)
-        return False
-    return True
+    else:
+        print("Error:")
+        print(result.stderr)
+    return result.returncode == 0
 
-# Change directory to the workspace root
-os.chdir(r"c:\Users\Mohammed Shishir\OneDrive\Desktop\websites\austlia prating busines 2")
+# Workspace root
+root = r"c:\Users\Mohammed Shishir\OneDrive\Desktop\websites\austlia prating busines 2"
+os.chdir(root)
 
-print("Checking git status...")
-run_git_command("git status")
-
-print("Staging changes...")
-run_git_command("git add .")
-
-print("Committing changes...")
-commit_message = "feat: Restore Hero section with AnimatedHeading and update button labels to 'Get Quote' and 'Explore Now'"
-run_git_command(f'git commit -m "{commit_message}"')
-
-print("Pushing to GitHub...")
-run_git_command("git push")
+run_command("git add .")
+run_command('git commit -m "feat: Synchronize hero section with user provided reference image layout"')
+run_command("git push origin main")
