@@ -52,47 +52,47 @@ const PRODUCT_CATEGORIES = [
     items: [
       "Custom Boxes (Corrugated / Carton)", "Product Packaging Boxes", 
       "Food Packaging (Boxes / Wrappers)", "Paper Bags", 
-      "Labels for Packaging", "Packaging Sleeves"
+      "Labels for Packaging", "Packaging Sleeves", "Other"
     ]
   }
 ];
 
 const PRODUCT_CONFIGS: Record<string, any> = {
   "Flyers & Leaflets": {
-    sizes: ["A6 (105 x 148 mm)", "A5 (148 x 210 mm)", "A4 (210 x 297 mm)", "DL (99 x 210 mm)", "Customized Size"],
+    sizes: ["A6 (105 x 148 mm)", "A5 (148 x 210 mm)", "A4 (210 x 297 mm)", "DL (99 x 210 mm)", "Customised Size"],
     materials: ["Glossy", "Matte", "Standard", "Cardstock", "Kraft Paper"],
     types: ["Single-Sided", "Double-Sided"],
     purposes: ["Business Promotion", "Event", "Restaurant / Food", "Real Estate", "Education", "Community Notice"]
   },
   "Business Cards": {
-    sizes: ["Standard (90 x 54 mm)", "Square (65 x 65 mm)", "Slim (90 x 45 mm)", "Customized Size"],
+    sizes: ["Standard (90 x 54 mm)", "Square (65 x 65 mm)", "Slim (90 x 45 mm)", "Customised Size"],
     materials: ["Standard Card", "Premium Cardstock", "Recycled Paper", "Kraft Paper", "Plastic / PVC"],
-    thickness: ["300 GSM", "350 GSM", "400 GSM", "Custom"],
+    thickness: ["300 GSM", "350 GSM", "400 GSM", "Customised"],
     finishes: ["Matte", "Glossy", "Velvet / Soft Touch", "Uncoated"],
-    special: ["Spot UV", "Foil (Gold / Silver / Custom)", "Emboss / Deboss", "Rounded Corners", "Edge Painting", "Die-cut Shape"]
+    special: ["Spot UV", "Foil (Gold / Silver / Customised)", "Emboss / Deboss", "Rounded Corners", "Edge Painting", "Die-cut Shape"]
   },
   "Brochures / Pamphlets": {
-    sizes: ["A4 (210 x 297 mm)", "A5 (148 x 210 mm)", "DL (99 x 210 mm)", "Customized Size"],
-    folds: ["Flat (No Fold)", "Bi-fold (Half Fold)", "Tri-fold (3 Panel)", "Z-fold", "Gate Fold", "Custom Fold"],
+    sizes: ["A4 (210 x 297 mm)", "A5 (148 x 210 mm)", "DL (99 x 210 mm)", "Customised Size"],
+    folds: ["Flat (No Fold)", "Bi-fold (Half Fold)", "Tri-fold (3 Panel)", "Z-fold", "Gate Fold", "Customised Fold"],
     materials: ["Standard Paper", "Glossy", "Matte", "Recycled Paper"],
-    thickness: ["120 GSM", "150 GSM", "170 GSM", "200 GSM", "Custom"],
+    thickness: ["120 GSM", "150 GSM", "170 GSM", "200 GSM", "Customised"],
     finishes: ["Matte", "Glossy", "Uncoated", "Laminated"]
   },
   "Posters": {
-    sizes: ["A4 (210 x 297 mm)", "A3 (297 x 420 mm)", "A2 (420 x 594 mm)", "A1 (594 x 841 mm)", "A0 (841 x 1189 mm)", "Customized Size"],
+    sizes: ["A4 (210 x 297 mm)", "A3 (297 x 420 mm)", "A2 (420 x 594 mm)", "A1 (594 x 841 mm)", "A0 (841 x 1189 mm)", "Customised Size"],
     materials: ["Standard Paper", "Glossy", "Matte", "Photo Paper", "Recycled Paper"],
-    thickness: ["150 GSM", "170 GSM", "200 GSM", "250 GSM", "Custom"],
+    thickness: ["150 GSM", "170 GSM", "200 GSM", "250 GSM", "Customised"],
     finishes: ["Matte", "Glossy", "Laminated", "Uncoated"]
   },
   "Stickers & Labels": {
     types: ["Stickers", "Product Labels", "Packaging Labels", "Barcode Labels"],
-    shapes: ["Round", "Square", "Rectangle", "Oval", "Die-cut (Custom Shape)"],
+    shapes: ["Round", "Square", "Rectangle", "Oval", "Die-cut (Customised Shape)"],
     materials: ["Paper", "Vinyl", "Transparent", "Waterproof", "Kraft", "Foil (Gold / Silver)"],
     adhesives: ["Permanent", "Removable", "Strong Adhesive", "Easy Peel"],
     formats: ["Individual Cut", "Sheet", "Roll"]
   },
   "Booklets / Catalogues / Magazines": {
-    sizes: ["A4", "A5", "DL", "Customized Size"],
+    sizes: ["A4", "A5", "DL", "Customised Size"],
     printTypes: ["Black & White", "Full Colour"],
     bindings: ["Saddle Stitch (Stapled)", "Perfect Binding (Spine)", "Spiral Binding", "Wire-O Binding"],
     innerMaterials: ["Standard Paper", "Matte", "Glossy", "Recycled Paper"],
@@ -100,39 +100,39 @@ const PRODUCT_CONFIGS: Record<string, any> = {
     extraFields: ["Number of Pages"]
   },
   "Presentation Folders": {
-    sizes: ["A4 (Fits A4 Documents)", "A5", "Customized Size"],
+    sizes: ["A4 (Fits A4 Documents)", "A5", "Customised Size"],
     materials: ["Standard Card", "Premium Cardstock", "Recycled Paper", "Kraft Paper"],
-    thickness: ["300 GSM", "350 GSM", "400 GSM", "Custom"],
+    thickness: ["300 GSM", "350 GSM", "400 GSM", "Customised"],
     finishes: ["Matte", "Glossy", "Velvet / Soft Touch", "Laminated"]
   },
   "Envelopes": {
-    sizes: ["DL (110 x 220 mm)", "C5 (162 x 229 mm)", "C4 (229 x 324 mm)", "Customized Size"],
+    sizes: ["DL (110 x 220 mm)", "C5 (162 x 229 mm)", "C4 (229 x 324 mm)", "Customised Size"],
     printTypes: ["No Printing (Plain)", "Single Colour Printing", "Full Colour Printing"],
     materials: ["Standard Paper", "Premium Paper", "Recycled Paper", "Kraft Paper"],
-    thickness: ["80 GSM", "90 GSM", "100 GSM", "120 GSM", "Custom"]
+    thickness: ["80 GSM", "90 GSM", "100 GSM", "120 GSM", "Customised"]
   },
   "Notepads": {
-    sizes: ["A4", "A5", "A6", "DL", "Customized Size"],
-    pagesPerPad: ["25 Pages", "50 Pages", "100 Pages", "Custom"],
+    sizes: ["A4", "A5", "A6", "DL", "Customised Size"],
+    pagesPerPad: ["25 Pages", "50 Pages", "100 Pages", "Customised"],
     materials: ["Standard Paper", "Premium Paper", "Recycled Paper"],
     bindings: ["Top Glue", "Side Glue", "Spiral Binding"]
   },
   "Calendars": {
     types: ["Wall Calendar", "Desk Calendar", "Poster Calendar"],
-    sizes: ["A4", "A3", "Customized Size"],
+    sizes: ["A4", "A3", "Customised Size"],
     bindings: ["Spiral Binding", "Saddle Stitch", "Wire-O Binding"],
     materials: ["Matte", "Glossy", "Premium Paper", "Recycled Paper"]
   },
   "Door Hangers": {
-    sizes: ["Standard (90 x 210 mm)", "Large (100 x 300 mm)", "Customized Size"],
+    sizes: ["Standard (90 x 210 mm)", "Large (100 x 300 mm)", "Customised Size"],
     materials: ["Standard Card", "Premium Cardstock", "Recycled Paper", "Kraft Paper", "Synthetic / Waterproof"],
-    thickness: ["250 GSM", "300 GSM", "350 GSM", "400 GSM", "Custom"]
+    thickness: ["250 GSM", "300 GSM", "350 GSM", "400 GSM", "Customised"]
   },
-  "Custom Boxes (Corrugated / Carton)": {
+  "Customised Boxes (Corrugated / Carton)": {
     types: ["Corrugated Box", "Folding Carton", "Rigid Box", "Mailer Box"],
     styles: ["Regular Slotted Carton (RSC)", "Die-cut Box", "Mailer Style (Tuck Top)", "Lid & Base"],
     materials: ["Corrugated Board", "Cardboard", "Kraft Board", "Duplex Board"],
-    thickness: ["Single Wall", "Double Wall", "Custom"],
+    thickness: ["Single Wall", "Double Wall", "Customised"],
     dimensions: true
   },
   "Product Packaging Boxes": {
@@ -149,7 +149,7 @@ const PRODUCT_CONFIGS: Record<string, any> = {
   },
   "Pull-up / Roll-up Banners": {
     types: ["Pull-up Banner", "Roll-up Banner", "Double-Sided Roll-up", "Premium Roll-up"],
-    sizes: ["Standard (850 x 2000 mm)", "1000 x 2000 mm", "1200 x 2000 mm", "Customized Size"],
+    sizes: ["Standard (850 x 2000 mm)", "1000 x 2000 mm", "1200 x 2000 mm", "Customised Size"],
     materials: ["PVC", "Fabric", "Blockout Material"]
   },
   "Food Packaging (Boxes / Wrappers)": {
@@ -162,7 +162,7 @@ const PRODUCT_CONFIGS: Record<string, any> = {
     dimensions: true,
     printTypes: ["Plain (No Printing)", "Single Colour Printing", "Full Colour Printing"],
     materials: ["Kraft Paper", "White Paper", "Recycled Paper", "Premium Paper", "Other"],
-    thickness: ["120 GSM", "150 GSM", "200 GSM", "250 GSM", "Custom"],
+    thickness: ["120 GSM", "150 GSM", "200 GSM", "250 GSM", "Customised"],
     handles: ["Twisted Paper Handle", "Flat Handle", "Rope Handle", "Ribbon Handle", "Die-cut Handle", "No Handle"],
     finishes: ["Matte", "Glossy", "Laminated", "UV Coated", "Foil", "Customised"],
     options: ["Reinforced Base", "Inner Lamination", "Window Cut", "Customised"],
@@ -171,7 +171,7 @@ const PRODUCT_CONFIGS: Record<string, any> = {
   "Packaging Sleeves": {
     types: ["Box Sleeves", "Bottle Sleeves", "Cup Sleeves", "Food Packaging Sleeves"],
     materials: ["Cardstock", "Kraft Paper", "Recycled Paper", "Premium Paper"],
-    thickness: ["250 GSM", "300 GSM", "350 GSM", "400 GSM", "Custom"],
+    thickness: ["250 GSM", "300 GSM", "350 GSM", "400 GSM", "Customised"],
     dimensions: true
   },
   "NCR / Carbonless Forms": {
@@ -192,6 +192,9 @@ const PRODUCT_CONFIGS: Record<string, any> = {
     shapes: ["Round", "Square", "Rectangle", "Oval", "Die-cut"],
     materials: ["Paper", "Vinyl (Waterproof)", "Transparent", "Foil"],
     finishes: ["Matte", "Glossy", "Uncoated"]
+  },
+  "Other": {
+    dimensions: true
   }
 };
 
@@ -591,10 +594,22 @@ function GetQuotePage() {
                         <CustomSelect 
                             label="Select Product Category"
                             groups={PRODUCT_CATEGORIES}
-                            value={formData.productName}
+                            value={PRODUCT_CATEGORIES.some(g => g.items.includes(formData.productName)) ? formData.productName : "Other"}
                             onChange={(val) => handleInputChange("productName", val)}
                             placeholder="Choose a product..."
                         />
+
+                        {formData.productName.toLowerCase().includes("other") && (
+                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden">
+                                <input 
+                                    autoFocus
+                                    placeholder="Please specify your product name..." 
+                                    value={formData.productName === "Other" ? "" : formData.productName} 
+                                    onChange={e => handleInputChange("productName", e.target.value)} 
+                                    className="w-full h-14 px-5 rounded-2xl border border-foreground/20 bg-card outline-none focus:border-foreground transition-all font-medium" 
+                                />
+                            </motion.div>
+                        )}
 
                         {formData.productName && (
                             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-8 rounded-3xl bg-muted/20 border border-border">
@@ -603,83 +618,61 @@ function GetQuotePage() {
                                     <input required type="number" placeholder="Enter quantity..." value={formData.quantity} onChange={e => handleInputChange("quantity", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
                                 </div>
 
-                                {config?.types && (
-                                    <div className="space-y-3">
-                                        <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Product Type</label>
-                                        <select value={formData.type} onChange={e => handleInputChange("type", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium">
-                                            <option value="">Select type...</option>
-                                            {config.types.map((t: string) => <option key={t} value={t}>{t}</option>)}
-                                        </select>
-                                    </div>
-                                )}
+                                {(() => {
+                                    const config = PRODUCT_CONFIGS[formData.productName];
+                                    const CUSTOM_TRIGGERS = ["other", "customise", "customised", "custom"];
+                                    
+                                    const renderEditableSelect = (field: string, label: string, options: string[], placeholder: string) => {
+                                        const val = formData[field] || "";
+                                        const isTrigger = CUSTOM_TRIGGERS.some(t => val.toLowerCase().includes(t.toLowerCase()));
+                                        const isManual = val !== "" && !options.includes(val);
+                                        const showInput = isTrigger || isManual;
 
-                                {config?.sizes && (
-                                    <CustomSelect label="Select Size" options={config.sizes} value={formData.size} onChange={val => handleInputChange("size", val)} placeholder="Select size..." />
-                                )}
+                                        return (
+                                            <div className="space-y-3">
+                                                <CustomSelect 
+                                                    label={label} 
+                                                    options={options} 
+                                                    value={options.includes(val) ? val : (options.find(o => CUSTOM_TRIGGERS.some(t => o.toLowerCase().includes(t.toLowerCase()))) || val)} 
+                                                    onChange={v => handleInputChange(field, v)} 
+                                                    placeholder={placeholder} 
+                                                />
+                                                {showInput && (
+                                                    <motion.div initial={{ opacity: 0, y: -5, height: 0 }} animate={{ opacity: 1, y: 0, height: 'auto' }} className="overflow-hidden">
+                                                        <input 
+                                                            autoFocus={isTrigger}
+                                                            placeholder={`Please specify ${label.toLowerCase()}...`}
+                                                            value={isTrigger ? "" : val}
+                                                            onChange={e => handleInputChange(field, e.target.value)}
+                                                            className="w-full h-12 px-4 rounded-xl border border-foreground/20 bg-background outline-none focus:border-foreground transition-all text-sm font-medium shadow-inner"
+                                                        />
+                                                    </motion.div>
+                                                )}
+                                            </div>
+                                        );
+                                    };
 
-                                {config?.folds && (
-                                    <CustomSelect label="Fold Type" options={config.folds} value={formData.fold} onChange={val => handleInputChange("fold", val)} placeholder="Select fold..." />
-                                )}
+                                    return (
+                                        <>
+                                            {config?.types && renderEditableSelect("type", "Product Details / Type", config.types, "Select type...")}
 
-                                {config?.bindings && (
-                                    <CustomSelect label="Binding Type" options={config.bindings} value={formData.binding} onChange={val => handleInputChange("binding", val)} placeholder="Select binding..." />
-                                )}
-
-                                {config?.handles && (
-                                    <CustomSelect label="Handle Type" options={config.handles} value={formData.handle} onChange={val => handleInputChange("handle", val)} placeholder="Select handle..." />
-                                )}
-
-                                {config?.materials && (
-                                    <CustomSelect label="Material / Paper Type" options={config.materials} value={formData.material} onChange={val => handleInputChange("material", val)} placeholder="Select material..." />
-                                )}
-
-                                {config?.thickness && (
-                                    <CustomSelect label="Thickness (GSM)" options={config.thickness} value={formData.thickness} onChange={val => handleInputChange("thickness", val)} placeholder="Select thickness..." />
-                                )}
-
-                                {config?.finishes && (
-                                    <CustomSelect label="Finish Options" options={config.finishes} value={formData.finish} onChange={val => handleInputChange("finish", val)} placeholder="Select finish..." />
-                                )}
-
-                                {config?.printTypes && (
-                                    <CustomSelect label="Printing Type" options={config.printTypes} value={formData.printType} onChange={val => handleInputChange("printType", val)} placeholder="Select printing type..." />
-                                )}
-
-                                {config?.pagesPerPad && (
-                                    <CustomSelect label="Pages per Pad" options={config.pagesPerPad} value={formData.pagesPerPad} onChange={val => handleInputChange("pagesPerPad", val)} placeholder="Select pages..." />
-                                )}
-                                
-                                {config?.parts && (
-                                    <CustomSelect label="Number of Parts" options={config.parts} value={formData.parts} onChange={val => handleInputChange("parts", val)} placeholder="Select parts..." />
-                                )}
-
-                                {config?.colors && (
-                                    <CustomSelect label="Paper Colors" options={config.colors} value={formData.colors} onChange={val => handleInputChange("colors", val)} placeholder="Select colors..." />
-                                )}
-
-                                {config?.shapes && (
-                                    <CustomSelect label="Select Shape" options={config.shapes} value={formData.shape} onChange={val => handleInputChange("shape", val)} placeholder="Select shape..." />
-                                )}
-
-                                {config?.options && (
-                                    <CustomSelect label="Additional Options" options={config.options} value={formData.options} onChange={val => handleInputChange("options", val)} placeholder="Select options..." />
-                                )}
-
-                                {config?.adhesives && (
-                                    <CustomSelect label="Adhesive Type" options={config.adhesives} value={formData.adhesive} onChange={val => handleInputChange("adhesive", val)} placeholder="Select adhesive..." />
-                                )}
-
-                                {config?.formats && (
-                                    <CustomSelect label="Format" options={config.formats} value={formData.format} onChange={val => handleInputChange("format", val)} placeholder="Select format..." />
-                                )}
-
-                                {config?.special && (
-                                    <CustomSelect label="Special Finishings" options={config.special} value={formData.specialFinish} onChange={val => handleInputChange("specialFinish", val)} placeholder="Add special finish..." />
-                                )}
-
-                                {config?.purposes && (
-                                    <CustomSelect label="Purpose / Use Case" options={config.purposes} value={formData.purpose} onChange={val => handleInputChange("purpose", val)} placeholder="Select purpose..." />
-                                )}
+                                            {config?.sizes && renderEditableSelect("size", "Select Size", config.sizes, "Select size...")}
+                                            {config?.folds && renderEditableSelect("fold", "Fold Type", config.folds, "Select fold...")}
+                                            {config?.bindings && renderEditableSelect("binding", "Binding Type", config.bindings, "Select binding...")}
+                                            {config?.handles && renderEditableSelect("handle", "Handle Type", config.handles, "Select handle...")}
+                                            {config?.materials && renderEditableSelect("material", "Material / Paper Type", config.materials, "Select material...")}
+                                            {config?.thickness && renderEditableSelect("thickness", "Thickness (GSM)", config.thickness, "Select thickness...")}
+                                            {config?.finishes && renderEditableSelect("finish", "Finish Options", config.finishes, "Select finish...")}
+                                            {config?.printTypes && renderEditableSelect("printType", "Printing Type", config.printTypes, "Select printing type...")}
+                                            {config?.pagesPerPad && renderEditableSelect("pagesPerPad", "Pages per Pad", config.pagesPerPad, "Select pages...")}
+                                            {config?.parts && renderEditableSelect("parts", "Number of Parts", config.parts, "Select parts...")}
+                                            {config?.colors && renderEditableSelect("colors", "Paper Colors", config.colors, "Select colors...")}
+                                            {config?.shapes && renderEditableSelect("shape", "Select Shape", config.shapes, "Select shape...")}
+                                            {config?.options && renderEditableSelect("options", "Additional Options", config.options, "Select options...")}
+                                            {config?.adhesives && renderEditableSelect("adhesive", "Adhesive Type", config.adhesives, "Select adhesive...")}
+                                            {config?.formats && renderEditableSelect("format", "Format", config.formats, "Select format...")}
+                                            {config?.special && renderEditableSelect("specialFinish", "Special Finishings", config.special, "Add special finish...")}
+                                            {config?.purposes && renderEditableSelect("purpose", "Purpose / Use Case", config.purposes, "Select purpose...")}
                                 
                                 {config?.dimensions && (
                                     <div className="sm:col-span-2 grid grid-cols-3 gap-4">
