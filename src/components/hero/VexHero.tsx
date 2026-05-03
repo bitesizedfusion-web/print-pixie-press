@@ -6,8 +6,7 @@ import { Menu, X, Home, Info, Package, FileText, Image, PhoneCall, Mail, Message
 
 import { motion, AnimatePresence } from "framer-motion";
 
-const VIDEO_URL =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260403_050628_c4e32401-fab4-4a27-b7a8-6e9291cd5959.mp4";
+const VIDEO_URL = "/videos/hero-bg.mp4";
 
 const navLinks = [
   { to: "/" as const, label: "Home", icon: Home },
