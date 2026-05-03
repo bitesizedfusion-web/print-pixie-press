@@ -159,6 +159,7 @@ const PRODUCT_CONFIGS: Record<string, any> = {
   },
   "Paper Bags": {
     types: ["Shopping Bags", "Gift Bags", "Retail Bags", "Food Carry Bags", "Customised Type"],
+    sizes: ["Customised Size"],
     dimensions: true,
     printTypes: ["Plain (No Printing)", "Single Colour Printing", "Full Colour Printing"],
     materials: ["Kraft Paper", "White Paper", "Recycled Paper", "Premium Paper", "Other"],
@@ -683,13 +684,26 @@ function GetQuotePage() {
                                             {config?.purposes && renderEditableSelect("purpose", "Purpose / Use Case", config.purposes, "Select purpose...")}
                                             
                                             {config?.dimensions && (
-                                                <div className="sm:col-span-2 grid grid-cols-3 gap-4">
-                                                    {['width', 'length', 'height'].map(dim => (
-                                                        <div key={dim} className="space-y-2">
-                                                            <label className="text-[9px] font-mono uppercase text-muted-foreground ml-2">{dim} (cm)</label>
-                                                            <input type="number" placeholder={dim} value={formData[dim]} onChange={e => handleInputChange(dim, e.target.value)} className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all" />
-                                                        </div>
-                                                    ))}
+                                                <div className="sm:col-span-2 space-y-4">
+                                                    <label className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground ml-2">Measurements (cm)</label>
+                                                    <div className="grid grid-cols-3 gap-4">
+                                                        {[
+                                                            { id: 'length', label: 'Length (L)' },
+                                                            { id: 'width', label: 'Width (W)' },
+                                                            { id: 'height', label: 'Height (H)' }
+                                                        ].map(dim => (
+                                                            <div key={dim.id} className="space-y-2">
+                                                                <input 
+                                                                    type="number" 
+                                                                    placeholder={dim.label} 
+                                                                    value={formData[dim.id]} 
+                                                                    onChange={e => handleInputChange(dim.id, e.target.value)} 
+                                                                    className="w-full h-12 px-4 rounded-xl border border-border bg-card outline-none focus:border-foreground transition-all text-sm font-medium" 
+                                                                />
+                                                                <div className="text-[9px] text-center text-muted-foreground font-mono">{dim.label}</div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
                                                 </div>
                                             )}
                                         </>
