@@ -327,6 +327,7 @@ function GetQuotePage() {
   const [otp, setOtp] = useState("");
   const [generatedOtp, setGeneratedOtp] = useState("");
   const [canSubmit, setCanSubmit] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -582,6 +583,13 @@ function GetQuotePage() {
                         </div>
                     </div>
                   </div>
+                  {isEditing && (
+                    <div className="pt-8 border-t border-border flex justify-center">
+                      <button type="button" onClick={() => { setIsEditing(false); setCurrentStep(3); }} className="px-8 h-14 rounded-full bg-foreground text-background font-medium hover:bg-foreground/90 transition-all flex items-center gap-2 shadow-lg">
+                        Save & Return to Review <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
                 </motion.div>
               )}
 
@@ -733,6 +741,13 @@ function GetQuotePage() {
                         </div>
                     </div>
                     <textarea rows={4} placeholder="Additional Details / Special Instructions..." value={formData.details} onChange={e => handleInputChange("details", e.target.value)} className="w-full p-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all resize-none font-medium" />
+                    {isEditing && (
+                      <div className="pt-8 border-t border-border flex justify-center">
+                        <button type="button" onClick={() => { setIsEditing(false); setCurrentStep(3); }} className="px-8 h-14 rounded-full bg-foreground text-background font-medium hover:bg-foreground/90 transition-all flex items-center gap-2 shadow-lg">
+                          Save & Return to Review <ArrowRight className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               )}
@@ -765,10 +780,10 @@ function GetQuotePage() {
                   </div>
                   <div className="p-8 rounded-3xl bg-secondary/30 border border-border relative overflow-hidden group">
                     <div className="absolute top-4 right-6 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button type="button" onClick={() => setCurrentStep(2)} className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center gap-1.5 py-2 px-3 rounded-full bg-background/50 backdrop-blur-sm border border-border/50">
+                        <button type="button" onClick={() => { setCurrentStep(2); setIsEditing(true); }} className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center gap-1.5 py-2 px-3 rounded-full bg-background/50 backdrop-blur-sm border border-border/50">
                            <Sparkles className="w-3 h-3" /> Edit Product
                         </button>
-                        <button type="button" onClick={() => setCurrentStep(1)} className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center gap-1.5 py-2 px-3 rounded-full bg-background/50 backdrop-blur-sm border border-border/50">
+                        <button type="button" onClick={() => { setCurrentStep(1); setIsEditing(true); }} className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground flex items-center gap-1.5 py-2 px-3 rounded-full bg-background/50 backdrop-blur-sm border border-border/50">
                            <User className="w-3 h-3" /> Edit Contact
                         </button>
                     </div>
@@ -781,7 +796,7 @@ function GetQuotePage() {
                             <span className="text-muted-foreground">Product:</span>
                             <div className="flex items-center gap-3">
                                 <span className="font-semibold text-right">{formData.productName}</span>
-                                <button type="button" onClick={() => setCurrentStep(2)} className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground md:opacity-0 group-hover/row:opacity-100 transition-opacity">
+                                <button type="button" onClick={() => { setCurrentStep(2); setIsEditing(true); }} className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground md:opacity-0 group-hover/row:opacity-100 transition-opacity">
                                     <Sparkles className="w-3.5 h-3.5" />
                                 </button>
                             </div>
@@ -790,7 +805,7 @@ function GetQuotePage() {
                             <span className="text-muted-foreground">Quantity:</span>
                             <div className="flex items-center gap-3">
                                 <span className="font-semibold text-right">{formData.quantity}</span>
-                                <button type="button" onClick={() => setCurrentStep(2)} className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground md:opacity-0 group-hover/row:opacity-100 transition-opacity">
+                                <button type="button" onClick={() => { setCurrentStep(2); setIsEditing(true); }} className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground md:opacity-0 group-hover/row:opacity-100 transition-opacity">
                                     <Sparkles className="w-3.5 h-3.5" />
                                 </button>
                             </div>

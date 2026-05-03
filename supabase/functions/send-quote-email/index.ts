@@ -109,8 +109,11 @@ serve(async (req) => {
 
       // Send to Admin
       await sendEmail(ADMIN, `New Quote Request: ${productName} - ${firstName}`, adminHtml);
+      console.log(`Admin email sent for quote: ${productName}`);
+
       // Send to Customer
       await sendEmail(custEmail, `We received your quote request - S&S Printing`, customerHtml);
+      console.log(`Customer confirmation email sent to: ${custEmail}`);
 
       return new Response(JSON.stringify({ success: true }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
