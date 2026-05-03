@@ -13,83 +13,72 @@ const fadeUp = {
   transition: { duration: 0.7 }
 };
 
-const productList = [
+const categorizedProducts = [
   {
-    name: "Flyers & Leaflets",
-    desc: "Promote your business, event or offer with high-quality flyers and leaflets. Available in different sizes, paper types and finishes.",
-    suitable: ["Business promotion", "Events", "Restaurant offers", "Real estate", "Education", "Community notices"],
-    options: ["A6, A5, A4, DL size", "Single side or double side printing", "Glossy, matte or standard paper"],
-    image: "/products/flyers.png"
+    category: "Printing Products",
+    items: [
+      {
+        name: "Flyers & Leaflets",
+        desc: "Promote your business, event or offer with high-quality flyers and leaflets. Available in different sizes, paper types and finishes.",
+        suitable: ["Business promotion", "Events", "Restaurant offers", "Real estate", "Education"],
+        options: ["A6, A5, A4, DL size", "Single or double side printing", "Glossy, matte or standard paper"],
+        image: "/products/flyers.png"
+      },
+      {
+        name: "Business Cards",
+        desc: "Make a strong first impression with professional business cards for your brand or company.",
+        suitable: ["Professionals", "Sales teams", "Consultants", "Contractors"],
+        options: ["Standard or premium cards", "Matte, glossy or laminated finish", "Single or double side printing"],
+        image: "/products/cards.png"
+      },
+      {
+        name: "Brochures / Pamphlets",
+        desc: "Show your products, services or company information with professionally printed brochures and booklets.",
+        suitable: ["Company profiles", "Product catalogues", "Service guides"],
+        options: ["Bi-fold, tri-fold or booklet style", "Different page numbers", "Stapled or folded finish"],
+        image: "/products/brochures.png"
+      },
+      {
+        name: "Stickers & Labels",
+        desc: "Custom stickers and labels for packaging, branding, products and promotions.",
+        suitable: ["Product branding", "Bottle labels", "Logo stickers", "Packaging seals"],
+        options: ["Round, square, rectangle or custom shape", "Glossy or matte finish", "Paper or waterproof material"],
+        image: "/products/stickers.png"
+      },
+      {
+        name: "NCR / Carbonless Forms",
+        desc: "Professional invoice books, receipt books, and purchase order books for your business operations.",
+        suitable: ["Invoices", "Receipts", "Delivery dockets", "Purchase orders"],
+        options: ["Duplicate, Triplicate, Quadruplicate", "A4, A5, A6 sizes", "Numbered and perforated"],
+        image: "https://images.unsplash.com/photo-1554224155-1696413575b9?q=80&w=1000&auto=format&fit=crop"
+      },
+      {
+        name: "Banners & Posters",
+        desc: "Large-format printing including vinyl, fabric, and roll-up banners for maximum visibility.",
+        suitable: ["Exhibitions", "Shop front displays", "Events", "Grand openings"],
+        options: ["Pull-up banners", "Vinyl banners", "Large posters (A0-A3)"],
+        image: "https://images.unsplash.com/photo-1516245834210-c4c142787335?q=80&w=1000&auto=format&fit=crop"
+      }
+    ]
   },
   {
-    name: "Business Cards",
-    desc: "Make a strong first impression with professional business cards for your brand or company.",
-    suitable: ["Business owners", "Professionals", "Sales teams", "Consultants", "Contractors"],
-    options: ["Standard or premium cards", "Matte, glossy or laminated finish", "Single or double side printing"],
-    image: "/products/cards.png"
-  },
-  {
-    name: "Brochures & Booklets",
-    desc: "Show your products, services or company information with professionally printed brochures and booklets.",
-    suitable: ["Company profiles", "Product catalogues", "Service guides", "Training materials"],
-    options: ["Bi-fold, tri-fold or booklet style", "Different page numbers", "Stapled or folded finish"],
-    image: "/products/brochures.png"
-  },
-  {
-    name: "Stickers & Labels",
-    desc: "Custom stickers and labels for packaging, branding, products and promotions.",
-    suitable: ["Food labels", "Product labels", "Bottle labels", "Logo stickers", "Address labels"],
-    options: ["Round, square, rectangle or custom shape", "Glossy or matte finish", "Paper or waterproof material"],
-    image: "/products/stickers.png"
-  },
-  {
-    name: "Paper Bags",
-    desc: "Custom printed paper bags to promote your brand and give your customers a professional packaging experience.",
-    suitable: ["Retail shops", "Restaurants", "Takeaway", "Gifts", "Fashion stores", "Events"],
-    options: ["Different sizes", "With or without handle", "Kraft, white or coloured paper", "Front, back and side printing"],
-    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=1000&auto=format&fit=crop"
-  },
-  {
-    name: "Pizza Boxes",
-    desc: "Custom printed pizza boxes for restaurants, cafés and takeaway businesses.",
-    suitable: ["Pizza shops", "Food delivery", "Takeaway restaurants", "Catering"],
-    options: ["Different box sizes", "Logo and brand printing", "Top, front, side and back printing"],
-    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000&auto=format&fit=crop"
-  },
-  {
-    name: "Packaging Boxes",
-    desc: "Custom packaging boxes for products, gifts, retail and online business orders.",
-    suitable: ["Retail products", "Gift boxes", "Shipping boxes", "Cosmetic boxes", "Food packaging"],
-    options: ["Custom size", "Cardboard or kraft material", "Front, back, top, bottom, left and right side printing"],
-    image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1000&auto=format&fit=crop"
-  },
-  {
-    name: "Books & Magazines",
-    desc: "Professional printing for books, magazines, catalogues and manuals.",
-    suitable: ["Books", "Magazines", "Company catalogues", "Instruction manuals", "School materials"],
-    options: ["Different page sizes", "Colour or black-and-white printing", "Stapled, perfect bound or spiral binding"],
-    image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1000&auto=format&fit=crop"
-  },
-  {
-    name: "Posters & Banners",
-    desc: "Large-format printing for advertising, events and business promotion.",
-    suitable: ["Shop displays", "Events", "Promotions", "Exhibitions", "Notices"],
-    options: ["A3, A2, A1 and custom sizes", "Indoor and outdoor options", "Glossy or matte finish"],
-    image: "https://images.unsplash.com/photo-1516245834210-c4c142787335?q=80&w=1000&auto=format&fit=crop"
-  },
-  {
-    name: "Menus",
-    desc: "Custom printed menus for restaurants, cafés, takeaway shops and food businesses.",
-    suitable: ["Restaurant menus", "Takeaway menus", "Café menus", "Table menus"],
-    options: ["Single page or folded menu", "Laminated or standard finish", "Custom size and design"],
-    image: "https://images.unsplash.com/photo-1546241072-48010ad28c2c?q=80&w=1000&auto=format&fit=crop"
-  },
-  {
-    name: "Custom Printing & Packaging",
-    desc: "Need something special? We can help with custom printing and packaging based on your product, size, design and quantity.",
-    suitable: ["Special business orders", "Branded packaging", "Promotional items", "Custom product boxes"],
-    options: ["Custom size", "Custom material", "Custom design", "Small or bulk quantity"],
-    image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?q=80&w=1000&auto=format&fit=crop"
+    category: "Packaging Products",
+    items: [
+      {
+        name: "Custom Boxes",
+        desc: "High-quality custom printed boxes for products, gifts, retail and shipping.",
+        suitable: ["E-commerce", "Retail packaging", "Gift sets", "Product launches"],
+        options: ["Corrugated or carton board", "Custom dimensions", "Full colour printing"],
+        image: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?q=80&w=1000&auto=format&fit=crop"
+      },
+      {
+        name: "Paper Bags",
+        desc: "Custom printed paper bags to promote your brand and give your customers a professional experience.",
+        suitable: ["Retail shops", "Events", "Gifts", "Fashion stores"],
+        options: ["Kraft, white or coloured paper", "With or without handles", "Different sizes"],
+        image: "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=1000&auto=format&fit=crop"
+      }
+    ]
   }
 ];
 
@@ -109,62 +98,68 @@ function ProductsPage() {
         </div>
       </section>
 
-      <section className="py-16 lg:py-24">
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
-          <div className="space-y-32">
-            {productList.map((p, i) => (
-              <motion.div 
-                key={p.name}
-                {...fadeUp}
-                className={`grid lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
-              >
-                <div className={`space-y-8 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
-                  <div className="aspect-[4/3] overflow-hidden rounded-3xl bg-muted border border-border shadow-sm">
-                    <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
-                  </div>
-                </div>
-                <div className={`space-y-10 ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
-                  <div>
-                    <h2 className="font-heading text-4xl lg:text-5xl mb-6">{p.name}</h2>
-                    <p className="text-xl text-muted-foreground leading-relaxed">{p.desc}</p>
-                  </div>
-                  
-                  <div className="grid sm:grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                      <h4 className="text-[11px] font-mono uppercase tracking-widest text-foreground">Suitable for:</h4>
-                      <ul className="space-y-2">
-                        {p.suitable.map(s => (
-                          <li key={s} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-success" />
-                            {s}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="space-y-4">
-                      <h4 className="text-[11px] font-mono uppercase tracking-widest text-foreground">Options:</h4>
-                      <ul className="space-y-2">
-                        {p.options.map(o => (
-                          <li key={o} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <div className="w-1 h-1 rounded-full bg-border" />
-                            {o}
-                          </li>
-                        ))}
-                      </ul>
+      {categorizedProducts.map((cat, catIdx) => (
+        <section key={cat.category} className="py-16 lg:py-24">
+          <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
+            <div className="mb-20">
+              <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-muted-foreground mb-4 block">Part {catIdx + 1}</span>
+              <h2 className="font-heading text-4xl lg:text-6xl font-light tracking-tight uppercase">{cat.category}</h2>
+            </div>
+            
+            <div className="space-y-32">
+              {cat.items.map((p, i) => (
+                <motion.div 
+                  key={p.name}
+                  {...fadeUp}
+                  className={`grid lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
+                >
+                  <div className={`space-y-8 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
+                    <div className="aspect-[4/3] overflow-hidden rounded-3xl bg-muted border border-border shadow-sm">
+                      <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
                     </div>
                   </div>
-                  
-                  <Link to="/quote" className="inline-flex items-center gap-2 text-sm font-medium text-foreground underline underline-offset-[6px] decoration-border hover:decoration-foreground transition-colors">
-                    Request a Quote for {p.name}
-                    <ArrowUpRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
+                  <div className={`space-y-10 ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
+                    <div>
+                      <h2 className="font-heading text-4xl lg:text-5xl mb-6">{p.name}</h2>
+                      <p className="text-xl text-muted-foreground leading-relaxed">{p.desc}</p>
+                    </div>
+                    
+                    <div className="grid sm:grid-cols-2 gap-8">
+                      <div className="space-y-4">
+                        <h4 className="text-[11px] font-mono uppercase tracking-widest text-foreground">Suitable for:</h4>
+                        <ul className="space-y-2">
+                          {p.suitable.map(s => (
+                            <li key={s} className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-success" />
+                              {s}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="space-y-4">
+                        <h4 className="text-[11px] font-mono uppercase tracking-widest text-foreground">Options:</h4>
+                        <ul className="space-y-2">
+                          {p.options.map(o => (
+                            <li key={o} className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <div className="w-1 h-1 rounded-full bg-border" />
+                              {o}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <Link to="/quote" className="inline-flex items-center gap-2 text-sm font-medium text-foreground underline underline-offset-[6px] decoration-border hover:decoration-foreground transition-colors">
+                      Request a Quote for {p.name}
+                      <ArrowUpRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-
+        </section>
+      ))}
       <section className="bg-hero-bg text-hero-foreground py-24 lg:py-32">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 text-center space-y-12">
           <div className="max-w-2xl mx-auto space-y-6">

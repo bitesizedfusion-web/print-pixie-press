@@ -65,7 +65,7 @@ const whyChooseUs = [
   },
   {
     title: "All Printing in One Place",
-    desc: "Flyers, business cards, brochures, stickers, labels and more.",
+    desc: "Flyers, NCR forms, custom boxes, stickers, banners and more.",
     icon: Layout
   },
   {
@@ -272,7 +272,7 @@ function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
               { title: "Custom Corrugated Packaging", category: "Packaging", img: "/projects/packaging.png", logo: "/logo.jpg" },
               { title: "Corporate Branding Suite", category: "Stationery", img: "/projects/stationery.png", logo: "/logo.jpg" },

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Upload, Ruler, Truck, Sparkles, Package, MapPin, 
   Image as ImageIcon, ChevronRight, User, Building, 
@@ -41,21 +41,19 @@ const PRODUCT_CATEGORIES = [
     name: "Printing Products",
     items: [
       "Flyers & Leaflets", "Business Cards", "Brochures / Pamphlets", "Posters", 
-      "Stickers & Labels", "Booklets / Catalogues / Magazines", 
-      "Presentation Folders", "Envelopes", "Notepads", "Calendars", 
-      "Door Hangers"
+      "Banners (Vinyl / Fabric / Roll-up)", "Stickers & Labels", 
+      "Booklets / Catalogues / Magazines", "NCR / Carbonless Forms", 
+      "Envelopes", "Notepads", "Calendars", "Postcards", 
+      "Door Hangers", "Pull-up / Roll-up Banners"
     ]
   },
   {
     name: "Packaging Products",
     items: [
       "Custom Boxes (Corrugated / Carton)", "Product Packaging Boxes", 
-      "Food Packaging (Boxes / Wrappers)", "Paper Bags", "Packaging Sleeves"
+      "Food Packaging (Boxes / Wrappers)", "Paper Bags", 
+      "Labels for Packaging", "Packaging Sleeves"
     ]
-  },
-  {
-    name: "Large Format",
-    items: ["Banners (Vinyl / Fabric / Roll-up)", "Pull-up / Roll-up Banners"]
   }
 ];
 
@@ -160,15 +158,40 @@ const PRODUCT_CONFIGS: Record<string, any> = {
     finishes: ["Matte", "Glossy", "Food-safe Coating", "Grease-resistant"]
   },
   "Paper Bags": {
-    types: ["Shopping Bags", "Gift Bags", "Retail Bags", "Food Carry Bags"],
-    materials: ["Kraft Paper", "White Paper", "Recycled Paper", "Premium Paper"],
-    handles: ["Twisted Paper Handle", "Flat Handle", "Rope Handle", "Ribbon Handle", "No Handle"]
+    types: ["Shopping Bags", "Gift Bags", "Retail Bags", "Food Carry Bags", "Customised Type"],
+    dimensions: true,
+    printTypes: ["Plain (No Printing)", "Single Colour Printing", "Full Colour Printing"],
+    materials: ["Kraft Paper", "White Paper", "Recycled Paper", "Premium Paper", "Other"],
+    thickness: ["120 GSM", "150 GSM", "200 GSM", "250 GSM", "Custom"],
+    handles: ["Twisted Paper Handle", "Flat Handle", "Rope Handle", "Ribbon Handle", "Die-cut Handle", "No Handle"],
+    finishes: ["Matte", "Glossy", "Laminated", "UV Coated", "Foil", "Customised"],
+    options: ["Reinforced Base", "Inner Lamination", "Window Cut", "Customised"],
+    purposes: ["Retail Use", "Shopping", "Gift Packaging", "Food Packaging", "Event / Promotion", "Branding", "Other"]
   },
   "Packaging Sleeves": {
     types: ["Box Sleeves", "Bottle Sleeves", "Cup Sleeves", "Food Packaging Sleeves"],
     materials: ["Cardstock", "Kraft Paper", "Recycled Paper", "Premium Paper"],
     thickness: ["250 GSM", "300 GSM", "350 GSM", "400 GSM", "Custom"],
     dimensions: true
+  },
+  "NCR / Carbonless Forms": {
+    types: ["Invoice Books", "Receipt Books", "Purchase Order Books", "Delivery Dockets"],
+    sizes: ["A4", "A5", "A6", "DL"],
+    parts: ["2-Part (Duplicate)", "3-Part (Triplicate)", "4-Part (Quadruplicate)"],
+    colors: ["White/Yellow", "White/Pink/Yellow", "Custom Colors"],
+    bindings: ["Padded at Head", "Padded at Left", "Perforated with Crocodile Board Cover"]
+  },
+  "Postcards": {
+    sizes: ["Standard (148 x 105 mm)", "Large (210 x 148 mm)", "DL (210 x 99 mm)"],
+    materials: ["Standard Glossy", "Premium Matte", "Recycled Cardstock"],
+    thickness: ["300 GSM", "350 GSM", "400 GSM"],
+    finishes: ["Gloss Lamination (Front)", "Matte Lamination (Front)", "Uncoated (Back for Writing)"]
+  },
+  "Labels for Packaging": {
+    types: ["Product Labels", "Shipping Labels", "Warning Labels"],
+    shapes: ["Round", "Square", "Rectangle", "Oval", "Die-cut"],
+    materials: ["Paper", "Vinyl (Waterproof)", "Transparent", "Foil"],
+    finishes: ["Matte", "Glossy", "Uncoated"]
   }
 };
 
@@ -300,6 +323,11 @@ function GetQuotePage() {
   const [status, setStatus] = useState<'idle' | 'verifying' | 'submitting' | 'success'>('idle');
   const [otp, setOtp] = useState("");
   const [generatedOtp, setGeneratedOtp] = useState("");
+  const [canSubmit, setCanSubmit] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentStep, status]);
   
   const [formData, setFormData] = useState<any>({
     firstName: "", surname: "", companyName: "", email: "", mobile: "", state: "", postcode: "",
@@ -353,6 +381,7 @@ function GetQuotePage() {
         }
         setStatus('verifying');
         generateAndSendOtp();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
     }
     if (currentStep === 2) {
@@ -362,6 +391,10 @@ function GetQuotePage() {
         }
     }
     setCurrentStep(p => Math.min(p + 1, 3));
+    if (currentStep === 2) {
+      setCanSubmit(false);
+      setTimeout(() => setCanSubmit(true), 500); // 500ms delay to prevent double-click submission
+    }
     window.scrollTo({ top: 0, behavior: 'auto' });
   };
 
@@ -372,7 +405,7 @@ function GetQuotePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (currentStep !== 3) return; // Prevent submission from other steps
+    if (currentStep !== 3 || status === 'submitting' || !canSubmit) return; // Prevent premature submission
     
     setStatus('submitting');
     
@@ -486,8 +519,8 @@ function GetQuotePage() {
 
   if (status === 'verifying') {
     return (
-        <div className="min-h-screen bg-background flex flex-col items-center pt-24 md:pt-40 p-6">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md w-full bg-card border border-border rounded-3xl p-10 lg:p-12 text-center shadow-2xl border-t-4 border-t-foreground">
+        <div className="min-h-[80vh] bg-background flex flex-col items-center justify-center pt-24 md:pt-40 p-6">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md w-full bg-card border border-border rounded-3xl p-10 lg:p-12 text-center shadow-2xl border-t-4 border-t-foreground relative z-10">
                 <div className="w-16 h-16 rounded-2xl bg-foreground/5 text-foreground flex items-center justify-center mx-auto mb-6"><MailCheck className="w-8 h-8" /></div>
                 <h2 className="font-heading text-3xl mb-4">Verify Identity</h2>
                 <p className="text-muted-foreground mb-8">Enter the 4-digit code sent to <span className="text-foreground font-medium">{formData.email}</span>.</p>
@@ -615,9 +648,21 @@ function GetQuotePage() {
                                 {config?.pagesPerPad && (
                                     <CustomSelect label="Pages per Pad" options={config.pagesPerPad} value={formData.pagesPerPad} onChange={val => handleInputChange("pagesPerPad", val)} placeholder="Select pages..." />
                                 )}
+                                
+                                {config?.parts && (
+                                    <CustomSelect label="Number of Parts" options={config.parts} value={formData.parts} onChange={val => handleInputChange("parts", val)} placeholder="Select parts..." />
+                                )}
+
+                                {config?.colors && (
+                                    <CustomSelect label="Paper Colors" options={config.colors} value={formData.colors} onChange={val => handleInputChange("colors", val)} placeholder="Select colors..." />
+                                )}
 
                                 {config?.shapes && (
                                     <CustomSelect label="Select Shape" options={config.shapes} value={formData.shape} onChange={val => handleInputChange("shape", val)} placeholder="Select shape..." />
+                                )}
+
+                                {config?.options && (
+                                    <CustomSelect label="Additional Options" options={config.options} value={formData.options} onChange={val => handleInputChange("options", val)} placeholder="Select options..." />
                                 )}
 
                                 {config?.adhesives && (
@@ -673,8 +718,17 @@ function GetQuotePage() {
                                             <div className={`text-[10px] mt-1 ${formData.urgency === o.id ? "text-background/70" : "text-muted-foreground"}`}>{o.desc}</div>
                                         </button>
                                         {o.id === 'required' && formData.urgency === 'required' && (
-                                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden">
-                                                <input type="date" required value={formData.requiredDate} onChange={e => handleInputChange("requiredDate", e.target.value)} className="w-full h-14 px-5 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium" />
+                                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden mt-2">
+                                                <div className="relative group">
+                                                    <Calendar className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-foreground transition-colors pointer-events-none" />
+                                                    <input 
+                                                        type="date" 
+                                                        required 
+                                                        value={formData.requiredDate} 
+                                                        onChange={e => handleInputChange("requiredDate", e.target.value)} 
+                                                        className="w-full h-14 pl-5 pr-12 rounded-2xl border border-border bg-card outline-none focus:border-foreground transition-all font-medium appearance-none" 
+                                                    />
+                                                </div>
                                             </motion.div>
                                         )}
                                     </div>
@@ -697,9 +751,9 @@ function GetQuotePage() {
                 >
                   <div className="space-y-8">
                     <h3 className="font-heading text-2xl border-b border-border pb-4">Upload Design / Images</h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                         {imageSlots.map(s => (
-                            <label key={s.id} className="group relative aspect-square rounded-2xl border-2 border-dashed border-border bg-background hover:bg-muted/50 transition-all cursor-pointer overflow-hidden flex flex-col items-center justify-center p-4">
+                            <label key={s.id} onClick={(e) => e.stopPropagation()} className="group relative aspect-square rounded-2xl border-2 border-dashed border-border bg-background hover:bg-muted/50 transition-all cursor-pointer overflow-hidden flex flex-col items-center justify-center p-4">
                                 {previews[s.id] ? (
                                     <img src={previews[s.id]!} alt={s.label} className="absolute inset-0 w-full h-full object-cover" />
                                 ) : (
