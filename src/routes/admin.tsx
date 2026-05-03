@@ -15,7 +15,8 @@ import {
   Printer,
   ShieldCheck,
   Loader2,
-  MessageSquare
+  MessageSquare,
+  Mail
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -37,6 +38,7 @@ const NAV = [
   { to: "/admin/orders" as const, label: "Orders", icon: ShoppingCart },
   { to: "/admin/quotes" as const, label: "Quotes", icon: FileText },
   { to: "/admin/inquiries" as const, label: "Messages", icon: MessageSquare },
+  { to: "/admin/newsletter" as const, label: "Newsletter", icon: Mail },
   { to: "/admin/customers" as const, label: "Customers", icon: Users },
   { to: "/admin/products" as const, label: "Products", icon: Package },
   { to: "/admin/inventory" as const, label: "Inventory", icon: Boxes },

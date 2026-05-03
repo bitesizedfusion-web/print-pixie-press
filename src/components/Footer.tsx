@@ -1,6 +1,40 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 export function Footer() {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from("newsletter_subscribers")
+        .insert([{ email }]);
+
+      if (error) {
+        if (error.code === '23505') { // Unique constraint
+          toast.info("You're already subscribed!");
+        } else {
+          toast.error("Failed to subscribe. Please try again.");
+        }
+      } else {
+        toast.success("Welcome! You've successfully subscribed.");
+        setEmail("");
+      }
+    } catch (err) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <footer className="bg-gradient-footer text-white relative overflow-hidden">
       {/* Top accent bar */}
@@ -22,14 +56,12 @@ export function Footer() {
         {/* Columns */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-16">
           <div className="col-span-2 md:col-span-1">
-
             <p className="text-sm text-white/85 leading-relaxed max-w-xs">
               Your trusted partner for high-quality custom printing and packaging solutions across Australia.
             </p>
           </div>
 
           <div>
-
             <div className="space-y-3">
               {[
                 { to: "/" as const, label: "Home" },
@@ -49,7 +81,6 @@ export function Footer() {
           </div>
 
           <div>
-
             <div className="space-y-3">
               {[
                 { to: "/about" as const, label: "About Us" },
@@ -79,17 +110,21 @@ export function Footer() {
             <p className="text-sm text-white/55 leading-relaxed mb-4">
               Studio updates, new stocks, and occasional offers.
             </p>
-            <form className="flex items-center border-b border-white/10 focus-within:border-foreground transition-colors">
+            <form onSubmit={handleSubscribe} className="flex items-center border-b border-white/10 focus-within:border-white transition-colors">
               <input
+                required
                 type="email"
                 placeholder="you@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 bg-transparent h-10 text-sm text-white/85 placeholder:text-white/55 focus:outline-none"
               />
               <button
-                type="button"
-                className="text-[11px] font-mono uppercase tracking-[0.14em] text-white/85 hover:text-white/55 transition-colors"
+                type="submit"
+                disabled={loading}
+                className="text-[11px] font-mono uppercase tracking-[0.14em] text-white/85 hover:text-white/55 transition-colors disabled:opacity-50"
               >
-                Join →
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Join →"}
               </button>
             </form>
           </div>
