@@ -14,7 +14,8 @@ import {
   Clock, 
   Truck, 
   XCircle,
-  Download
+  Download,
+  Printer
 } from "lucide-react";
 import { toast } from "sonner";
 import {

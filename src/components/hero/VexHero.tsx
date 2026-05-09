@@ -194,7 +194,7 @@ export function VexHero() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
-                whileActive={{ scale: 0.95 }}
+                whileTap={{ scale: 0.95 }}
                 transition={{ delay: 0.8, duration: 0.8 }}
                 className="inline-flex items-center px-8 py-4 rounded-2xl bg-black/40 backdrop-blur-2xl border border-white/10 shadow-2xl mt-4 cursor-pointer group"
               >

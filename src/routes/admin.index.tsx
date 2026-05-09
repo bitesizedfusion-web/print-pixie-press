@@ -79,7 +79,7 @@ function AdminDashboard() {
       const combinedActivity = [
         ...orders.slice(0, 5).map(o => ({ ...o, type: 'order' })),
         ...quotes.slice(0, 5).map(q => ({ ...q, type: 'quote' }))
-      ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      ].sort((a, b) => new Date(b.created_at ?? 0).getTime() - new Date(a.created_at ?? 0).getTime());
 
       setStats({
         totalOrders: orders.length,
