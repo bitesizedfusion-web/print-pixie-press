@@ -266,6 +266,24 @@ export type Database = {
           },
         ]
       }
+      newsletter_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           artwork_url: string | null
@@ -393,35 +411,65 @@ export type Database = {
       print_inquiries: {
         Row: {
           created_at: string
-          email: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string | null
           id: string
           message: string
-          name: string
-          phone: string | null
           status: string
-          subject: string
+          subject: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
-          email: string
+          customer_email: string
+          customer_name: string
+          customer_phone?: string | null
           id?: string
           message: string
-          name: string
-          phone?: string | null
           status?: string
-          subject: string
+          subject?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
-          email?: string
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string | null
           id?: string
           message?: string
-          name?: string
-          phone?: string | null
           status?: string
-          subject?: string
+          subject?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      printing_machines: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          notes: string | null
+          status: string
+          type: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          notes?: string | null
+          status?: string
+          type?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          status?: string
+          type?: string | null
           updated_at?: string
         }
         Relationships: []
