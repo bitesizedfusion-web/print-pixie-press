@@ -495,6 +495,51 @@ export type Database = {
         }
         Relationships: []
       }
+      quotes: {
+        Row: {
+          created_at: string | null
+          customer_email: string
+          customer_name: string
+          customer_phone: string | null
+          file_url: string | null
+          id: string
+          notes: string | null
+          product_type: string
+          quantity: number
+          specifications: Json | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          customer_email: string
+          customer_name: string
+          customer_phone?: string | null
+          file_url?: string | null
+          id?: string
+          notes?: string | null
+          product_type: string
+          quantity: number
+          specifications?: Json | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string | null
+          file_url?: string | null
+          id?: string
+          notes?: string | null
+          product_type?: string
+          quantity?: number
+          specifications?: Json | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       suppliers: {
         Row: {
           active: boolean
