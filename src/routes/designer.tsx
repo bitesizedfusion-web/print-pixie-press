@@ -21,6 +21,7 @@ const DesignerCanvas = lazy(() =>
 );
 
 export const Route = createFileRoute("/designer")({
+  ssr: false,
   head: () => ({
     meta: [
       { title: "Free Online Print Designer — Create Flyers, Posters & Cards | S&S Printing and Packaging" },

@@ -8,6 +8,11 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import netlify from "@netlify/vite-plugin-tanstack-start";
 
 export default defineConfig({
+  vite: {
+    ssr: {
+      noExternal: [/konva/, /react-konva/, /use-image/],
+    },
+  },
   cloudflare: false,
   plugins: [netlify()],
 });
