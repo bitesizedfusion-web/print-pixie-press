@@ -9,6 +9,13 @@ function createSupabaseClient() {
   const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
 
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+    if (typeof window === 'undefined') {
+      console.warn('Supabase environment variables are missing on the server. SSR may be limited.');
+      // Return a dummy client or partial client to avoid crashing the server
+      return createClient<Database>('https://placeholder.supabase.co', 'placeholder', {
+        auth: { persistSession: false }
+      });
+    }
     throw new Error(
       'Missing Supabase environment variables. Ensure SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY (or VITE_ prefixed versions) are set in your .env file.'
     );

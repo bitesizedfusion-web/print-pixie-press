@@ -29,6 +29,24 @@ export const Route = createRootRoute({
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
+  errorComponent: ({ error }) => {
+    console.error('Root error caught:', error);
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background px-4">
+        <div className="text-center bg-card border border-border p-8 rounded-2xl max-w-lg shadow-2xl">
+          <h1 className="font-heading text-4xl font-bold text-destructive mb-4">Application Error</h1>
+          <p className="text-muted-foreground mb-6">Something went wrong. This might be due to missing configuration or a temporary server issue.</p>
+          <pre className="text-left text-xs bg-muted p-4 rounded-lg overflow-auto max-h-48 font-mono mb-6">
+            {error instanceof Error ? error.message : String(error)}
+          </pre>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <button onClick={() => window.location.reload()} className="bg-cta text-cta-foreground px-6 py-2.5 rounded-full font-semibold hover:bg-cta-hover transition-all">Try Again</button>
+            <a href="/" className="bg-muted text-foreground px-6 py-2.5 rounded-full font-semibold hover:bg-border transition-all">Go Home</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
 });
 
 function NotFoundComponent() {
