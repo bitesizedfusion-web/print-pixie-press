@@ -7,13 +7,13 @@ import { ArrowUpRight } from "lucide-react";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — S&S Printing and Packaging" },
+      { title: "Pricing — S&S Printers" },
       {
         name: "description",
         content:
           "Transparent pricing for every product. Flyers from $35, posters from $45. All prices include GST.",
       },
-      { property: "og:title", content: "Pricing — S&S Printing and Packaging" },
+      { property: "og:title", content: "Pricing — S&S Printers" },
       { property: "og:description", content: "Transparent printing pricing." },
     ],
   }),
@@ -42,8 +42,8 @@ function PricingPage() {
             <span className="italic text-muted-foreground">to the cent.</span>
           </h1>
           <p className="mt-10 max-w-xl text-base text-muted-foreground leading-relaxed">
-            No quote forms, no hidden setup fees. All prices include GST and a
-            free file check. Express tier available on every product.
+            No quote forms, no hidden setup fees. All prices include GST and a free file check.
+            Express tier available on every product.
           </p>
         </div>
       </section>
@@ -113,9 +113,7 @@ function PricingPage() {
                       key={row.size}
                       className="border-b border-border last:border-0 hover:bg-muted/40 transition-colors"
                     >
-                      <td className="px-6 py-5 text-sm font-medium text-foreground">
-                        {row.size}
-                      </td>
+                      <td className="px-6 py-5 text-sm font-medium text-foreground">{row.size}</td>
                       {quantities.map((q) => (
                         <td
                           key={q}

@@ -3,25 +3,20 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { 
-  Loader2, 
-  RefreshCw, 
-  Search, 
-  Filter, 
-  FileText, 
-  CheckCircle2, 
-  Clock, 
+import {
+  Loader2,
+  RefreshCw,
+  Search,
+  Filter,
+  FileText,
+  CheckCircle2,
+  Clock,
   XCircle,
   Eye,
-  MessageSquare
+  MessageSquare,
 } from "lucide-react";
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -72,7 +67,10 @@ function QuotesPage() {
   }, []);
 
   const updateStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from("quotes").update({ status: status as any }).eq("id", id);
+    const { error } = await supabase
+      .from("quotes")
+      .update({ status: status as any })
+      .eq("id", id);
     if (error) return toast.error(error.message);
     toast.success(`Quote status updated to ${status}`);
     load();
@@ -81,8 +79,9 @@ function QuotesPage() {
 
   const filtered = quotes.filter((q) => {
     const matchesFilter = filter === "all" || q.status === filter;
-    const matchesSearch = q.customer_name.toLowerCase().includes(search.toLowerCase()) || 
-                         (q.product_type || "").toLowerCase().includes(search.toLowerCase());
+    const matchesSearch =
+      q.customer_name.toLowerCase().includes(search.toLowerCase()) ||
+      (q.product_type || "").toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
@@ -91,11 +90,13 @@ function QuotesPage() {
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="font-heading text-3xl font-bold text-foreground">Quote Requests</h1>
-          <p className="text-sm text-muted-foreground mt-1">Manage and respond to custom printing quotes</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Manage and respond to custom printing quotes
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={load} disabled={loading}>
-            <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} /> Refresh
+            <RefreshCw className={`h-4 w-4 mr-2 ${loading ? "animate-spin" : ""}`} /> Refresh
           </Button>
         </div>
       </header>
@@ -103,9 +104,9 @@ function QuotesPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-card/30 backdrop-blur-sm p-4 rounded-2xl border border-border">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input 
-            type="text" 
-            placeholder="Search by name or product..." 
+          <input
+            type="text"
+            placeholder="Search by name or product..."
             className="w-full pl-10 pr-4 py-2 bg-background/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cta/50"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -120,7 +121,11 @@ function QuotesPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Statuses</SelectItem>
-            {STATUSES.map((s) => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}
+            {STATUSES.map((s) => (
+              <SelectItem key={s} value={s} className="capitalize">
+                {s}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
@@ -150,18 +155,26 @@ function QuotesPage() {
                     </div>
                     <div>
                       <p className="font-bold text-foreground">{quote.customer_name}</p>
-                      <p className="text-xs text-muted-foreground">{new Date(quote.created_at).toLocaleDateString()}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(quote.created_at).toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex-1 md:px-8">
-                    <p className="font-bold text-foreground text-sm uppercase tracking-wider">{quote.product_type}</p>
+                    <p className="font-bold text-foreground text-sm uppercase tracking-wider">
+                      {quote.product_type}
+                    </p>
                     <p className="text-xs text-muted-foreground">Quantity: {quote.quantity}</p>
                   </div>
 
                   <div className="flex items-center gap-4 md:gap-8">
                     <StatusBadge status={quote.status} />
-                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
                       <Eye className="h-4 w-4" />
                     </Button>
                   </div>
@@ -183,58 +196,97 @@ function QuotesPage() {
           {selected && (
             <div className="space-y-6 p-2">
               <DialogHeader>
-                <DialogTitle className="font-heading text-2xl">
-                  Quote Request Details
-                </DialogTitle>
+                <DialogTitle className="font-heading text-2xl">Quote Request Details</DialogTitle>
               </DialogHeader>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-cta border-b border-cta/20 pb-2">Contact Info</h4>
+                  <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-cta border-b border-cta/20 pb-2">
+                    Contact Info
+                  </h4>
                   <DetailField label="Customer" value={selected.customer_name} />
                   <DetailField label="Email" value={selected.customer_email} />
                   <DetailField label="Phone" value={selected.customer_phone ?? "—"} />
                 </div>
                 <div className="space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-cta border-b border-cta/20 pb-2">Project Info</h4>
+                  <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-cta border-b border-cta/20 pb-2">
+                    Project Info
+                  </h4>
                   <DetailField label="Product" value={selected.product_type ?? "—"} />
                   <DetailField label="Quantity" value={selected.quantity?.toString() ?? "—"} />
-                  <DetailField label="Date Requested" value={new Date(selected.created_at).toLocaleString()} />
+                  <DetailField
+                    label="Date Requested"
+                    value={new Date(selected.created_at).toLocaleString()}
+                  />
                 </div>
               </div>
 
               <div className="space-y-4">
-                <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-cta border-b border-cta/20 pb-2">Specifications</h4>
+                <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-cta border-b border-cta/20 pb-2">
+                  Specifications
+                </h4>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                   {Object.entries(selected.specifications || {}).map(([key, val]: [string, any]) => {
-                     if (typeof val === 'object' || !val) return null;
-                     return (
-                        <div key={key} className="bg-accent/10 p-2 rounded-lg border border-border/30">
-                          <p className="text-[10px] uppercase font-bold text-muted-foreground">{key}</p>
+                  {Object.entries(selected.specifications || {}).map(
+                    ([key, val]: [string, any]) => {
+                      if (typeof val === "object" || !val) return null;
+                      return (
+                        <div
+                          key={key}
+                          className="bg-accent/10 p-2 rounded-lg border border-border/30"
+                        >
+                          <p className="text-[10px] uppercase font-bold text-muted-foreground">
+                            {key}
+                          </p>
                           <p className="text-xs font-semibold text-foreground truncate">{val}</p>
                         </div>
-                     )
-                   })}
+                      );
+                    },
+                  )}
                 </div>
               </div>
 
               <div className="space-y-4">
-                <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-cta border-b border-cta/20 pb-2">Uploaded Files</h4>
+                <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-cta border-b border-cta/20 pb-2">
+                  Uploaded Files
+                </h4>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {selected.specifications?.image_urls && Object.entries(selected.specifications.image_urls).map(([key, url]: [string, any]) => (
-                    <a key={key} href={url} target="_blank" rel="noreferrer" className="group relative aspect-square rounded-xl overflow-hidden border border-border bg-muted/20 hover:border-cta/50 transition-all">
-                      <img src={url} alt={key} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[10px] text-white font-bold uppercase">View Full</div>
-                      <div className="absolute bottom-0 left-0 right-0 p-1 bg-black/60 text-white text-[8px] text-center truncate">{key}</div>
-                    </a>
-                  ))}
-                  {!selected.specifications?.image_urls && <p className="text-xs text-muted-foreground col-span-full italic">No files uploaded</p>}
+                  {selected.specifications?.image_urls &&
+                    Object.entries(selected.specifications.image_urls).map(
+                      ([key, url]: [string, any]) => (
+                        <a
+                          key={key}
+                          href={url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group relative aspect-square rounded-xl overflow-hidden border border-border bg-muted/20 hover:border-cta/50 transition-all"
+                        >
+                          <img
+                            src={url}
+                            alt={key}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[10px] text-white font-bold uppercase">
+                            View Full
+                          </div>
+                          <div className="absolute bottom-0 left-0 right-0 p-1 bg-black/60 text-white text-[8px] text-center truncate">
+                            {key}
+                          </div>
+                        </a>
+                      ),
+                    )}
+                  {!selected.specifications?.image_urls && (
+                    <p className="text-xs text-muted-foreground col-span-full italic">
+                      No files uploaded
+                    </p>
+                  )}
                 </div>
               </div>
 
               {selected.notes && (
                 <div className="bg-accent/20 p-4 rounded-xl border border-border/50">
-                  <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Additional Notes</p>
+                  <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">
+                    Additional Notes
+                  </p>
                   <p className="text-sm text-foreground">{selected.notes}</p>
                 </div>
               )}
@@ -242,12 +294,19 @@ function QuotesPage() {
               <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-muted-foreground">Status:</span>
-                  <Select value={selected.status} onValueChange={(v) => updateStatus(selected.id, v)}>
+                  <Select
+                    value={selected.status}
+                    onValueChange={(v) => updateStatus(selected.id, v)}
+                  >
                     <SelectTrigger className="w-40 bg-background/50 border-border rounded-xl">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {STATUSES.map((s) => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}
+                      {STATUSES.map((s) => (
+                        <SelectItem key={s} value={s} className="capitalize">
+                          {s}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -271,14 +330,16 @@ function QuotesPage() {
 function DetailField({ label, value }: { label: string; value: string }) {
   return (
     <div className="bg-accent/5 p-3 rounded-xl border border-border/20">
-      <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">{label}</p>
+      <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">
+        {label}
+      </p>
       <p className="text-sm font-semibold text-foreground mt-1">{value}</p>
     </div>
   );
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const map: Record<string, { class: string, icon: any }> = {
+  const map: Record<string, { class: string; icon: any }> = {
     pending: { class: "bg-muted text-muted-foreground", icon: Clock },
     reviewed: { class: "bg-blue-500/15 text-blue-600", icon: Eye },
     quoted: { class: "bg-success/15 text-success", icon: CheckCircle2 },
@@ -286,9 +347,11 @@ function StatusBadge({ status }: { status: string }) {
   };
   const config = map[status] ?? map.pending;
   const Icon = config.icon;
-  
+
   return (
-    <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase ${config.class}`}>
+    <div
+      className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase ${config.class}`}
+    >
       <Icon className="h-3 w-3" />
       {status}
     </div>

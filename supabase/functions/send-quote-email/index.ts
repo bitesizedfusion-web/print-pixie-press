@@ -6,7 +6,7 @@ const corsHeaders = {
 };
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-const FROM = "S&S Printing and Packaging <noreply@phonefixandmore.com>";
+const FROM = "S&S Printers <noreply@phonefixandmore.com>";
 const ADMIN = "sandsprinters26@gmail.com";
 
 async function sendEmail(to: string, subject: string, html: string) {
@@ -36,7 +36,7 @@ serve(async (req) => {
     if (type === "otp") {
       const html = `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;border:1px solid #eee;border-radius:12px;">
-          <h2 style="margin:0 0 8px;">S&S Printing and Packaging</h2>
+          <h2 style="margin:0 0 8px;">S&S Printers</h2>
           <p style="color:#666;">Your verification code:</p>
           <div style="background:#f8f9fa;padding:24px;text-align:center;border-radius:12px;margin:20px 0;">
             <span style="font-size:36px;font-weight:bold;letter-spacing:12px;font-family:monospace;">${code}</span>
@@ -50,7 +50,19 @@ serve(async (req) => {
     }
 
     if (type === "quote") {
-      const { firstName, surname, email: custEmail, mobile, productName, quantity, urgency, requiredDate, details, images, ...extras } = formData;
+      const {
+        firstName,
+        surname,
+        email: custEmail,
+        mobile,
+        productName,
+        quantity,
+        urgency,
+        requiredDate,
+        details,
+        images,
+        ...extras
+      } = formData;
       const extrasHtml = Object.entries(extras)
         .filter(([_, v]) => v && v !== "")
         .map(([k, v]) => {
@@ -59,14 +71,20 @@ serve(async (req) => {
         })
         .join("");
 
-      const imagesHtml = images && Object.keys(images).length > 0 
-        ? `<div style="margin-top:20px;">
+      const imagesHtml =
+        images && Object.keys(images).length > 0
+          ? `<div style="margin-top:20px;">
             <h3>Design Files</h3>
             <div style="display:grid;grid-template-cols:1fr 1fr;gap:10px;">
-              ${Object.entries(images).map(([k, url]) => `<a href="${url}" target="_blank" style="display:block;padding:10px;background:#eee;border-radius:5px;text-decoration:none;color:#000;font-size:12px;">View ${k}</a>`).join("")}
+              ${Object.entries(images)
+                .map(
+                  ([k, url]) =>
+                    `<a href="${url}" target="_blank" style="display:block;padding:10px;background:#eee;border-radius:5px;text-decoration:none;color:#000;font-size:12px;">View ${k}</a>`,
+                )
+                .join("")}
             </div>
            </div>`
-        : "";
+          : "";
 
       const adminHtml = `
         <div style="font-family:sans-serif;padding:20px;color:#333;">
@@ -91,12 +109,12 @@ serve(async (req) => {
             <p>${details || "—"}</p>
           </div>
         </div>`;
-      
+
       const customerHtml = `
         <div style="font-family:sans-serif;padding:40px;color:#333;max-width:600px;margin:0 auto;border:1px solid #eee;border-radius:20px;">
           <h2 style="color:#000;">Quote Received!</h2>
           <p>Hi ${firstName},</p>
-          <p>Thank you for choosing <strong>S&S Printing and Packaging</strong>. We have received your request for <strong>${productName}</strong>.</p>
+          <p>Thank you for choosing <strong>S&S Printers</strong>. We have received your request for <strong>${productName}</strong>.</p>
           <p>Our team is currently reviewing your specifications and will get back to you with a competitive quote shortly.</p>
           <div style="background:#f8f9fa;padding:20px;border-radius:10px;margin:24px 0;">
             <p style="margin:0;font-size:14px;"><strong>Product:</strong> ${productName}</p>
@@ -104,7 +122,7 @@ serve(async (req) => {
           </div>
           <p style="font-size:14px;color:#666;">If you have any urgent questions, feel free to reply to this email or call us.</p>
           <hr style="border:none;border-top:1px solid #eee;margin:30px 0;" />
-          <p style="font-size:12px;color:#999;">S&S Printing and Packaging — Premium Quality Guaranteed.</p>
+          <p style="font-size:12px;color:#999;">S&S Printers — Premium Quality Guaranteed.</p>
         </div>`;
 
       // Send to Admin

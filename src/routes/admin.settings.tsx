@@ -6,7 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const Route = createFileRoute("/admin/settings")({
   component: SettingsPage,
@@ -26,7 +32,9 @@ function SettingsPage() {
 
   const load = async () => {
     setLoading(true);
-    const { data: profiles } = await supabase.from("profiles").select("user_id, email, display_name");
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("user_id, email, display_name");
     const { data: roles } = await supabase.from("user_roles").select("user_id, role");
     const merged: UserWithRole[] = (profiles ?? []).map((p) => ({
       user_id: p.user_id,
@@ -38,12 +46,16 @@ function SettingsPage() {
     setLoading(false);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const setRole = async (userId: string, role: string) => {
     // Delete existing roles, insert new
     await supabase.from("user_roles").delete().eq("user_id", userId);
-    const { error } = await supabase.from("user_roles").insert({ user_id: userId, role: role as "admin" | "staff" | "customer" });
+    const { error } = await supabase
+      .from("user_roles")
+      .insert({ user_id: userId, role: role as "admin" | "staff" | "customer" });
     if (error) return toast.error(error.message);
     toast.success(`Role updated to ${role}`);
     load();
@@ -59,41 +71,60 @@ function SettingsPage() {
           <h3 className="font-heading font-bold">Team & Roles</h3>
         </div>
         <p className="text-xs text-muted-foreground mb-4">
-          Promote customers to <span className="font-bold text-foreground">staff</span> (full CRM access except expenses & products)
-          or <span className="font-bold text-foreground">admin</span> (everything).
+          Promote customers to <span className="font-bold text-foreground">staff</span> (full CRM
+          access except expenses & products) or{" "}
+          <span className="font-bold text-foreground">admin</span> (everything).
         </p>
 
         {loading ? (
-          <div className="flex justify-center py-8"><Loader2 className="h-5 w-5 animate-spin text-cta" /></div>
+          <div className="flex justify-center py-8">
+            <Loader2 className="h-5 w-5 animate-spin text-cta" />
+          </div>
         ) : (
           <DataTable
             rows={rows}
             rowKey={(r) => r.user_id}
             empty="No users yet"
             columns={[
-              { key: "display_name", label: "Name", render: (r) => (
-                <div>
-                  <p className="font-medium">{r.display_name ?? "—"}</p>
-                  <p className="text-xs text-muted-foreground">{r.email}</p>
-                </div>
-              )},
-              { key: "role", label: "Role", render: (r) => (
-                <Select
-                  value={r.role}
-                  onValueChange={(v) => setRole(r.user_id, v)}
-                  disabled={r.user_id === user?.id}
-                >
-                  <SelectTrigger className="w-32 h-8"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="customer">Customer</SelectItem>
-                    <SelectItem value="staff">Staff</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                  </SelectContent>
-                </Select>
-              )},
-              { key: "self", label: "", align: "right", render: (r) => (
-                r.user_id === user?.id ? <span className="text-xs text-muted-foreground italic">(you)</span> : null
-              )},
+              {
+                key: "display_name",
+                label: "Name",
+                render: (r) => (
+                  <div>
+                    <p className="font-medium">{r.display_name ?? "—"}</p>
+                    <p className="text-xs text-muted-foreground">{r.email}</p>
+                  </div>
+                ),
+              },
+              {
+                key: "role",
+                label: "Role",
+                render: (r) => (
+                  <Select
+                    value={r.role}
+                    onValueChange={(v) => setRole(r.user_id, v)}
+                    disabled={r.user_id === user?.id}
+                  >
+                    <SelectTrigger className="w-32 h-8">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="customer">Customer</SelectItem>
+                      <SelectItem value="staff">Staff</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
+                ),
+              },
+              {
+                key: "self",
+                label: "",
+                align: "right",
+                render: (r) =>
+                  r.user_id === user?.id ? (
+                    <span className="text-xs text-muted-foreground italic">(you)</span>
+                  ) : null,
+              },
             ]}
           />
         )}
@@ -102,7 +133,7 @@ function SettingsPage() {
       <div className="bg-card border border-border rounded-xl p-5">
         <h3 className="font-heading font-bold mb-2">Business Info</h3>
         <p className="text-xs text-muted-foreground mb-4">
-          S&S Printing and Packaging — Online printing serving Australia-wide.
+          S&S Printers — Online printing serving Australia-wide.
         </p>
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
@@ -114,11 +145,15 @@ function SettingsPage() {
             <p className="font-mono mt-1">$12.50 AUD</p>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Standard Turnaround</p>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">
+              Standard Turnaround
+            </p>
             <p className="font-mono mt-1">3–5 days</p>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Express Surcharge</p>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">
+              Express Surcharge
+            </p>
             <p className="font-mono mt-1">+30%</p>
           </div>
         </div>

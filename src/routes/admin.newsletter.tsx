@@ -1,15 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { 
-  Mail, 
-  Calendar, 
-  Trash2, 
-  Search,
-  Download,
-  Loader2,
-  Users
-} from "lucide-react";
+import { Mail, Calendar, Trash2, Search, Download, Loader2, Users } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -21,7 +13,11 @@ export const Route = createFileRoute("/admin/newsletter")({
 function AdminNewsletterPage() {
   const [search, setSearch] = useState("");
 
-  const { data: subscribers, isLoading, refetch } = useQuery({
+  const {
+    data: subscribers,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["newsletter-subscribers"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -37,10 +33,7 @@ function AdminNewsletterPage() {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to remove this subscriber?")) return;
 
-    const { error } = await supabase
-      .from("newsletter_subscribers")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("newsletter_subscribers").delete().eq("id", id);
 
     if (error) {
       toast.error(error.message);
@@ -50,22 +43,22 @@ function AdminNewsletterPage() {
     }
   };
 
-  const filtered = subscribers?.filter(s => 
-    s.email.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = subscribers?.filter((s) => s.email.toLowerCase().includes(search.toLowerCase()));
 
   const exportCSV = () => {
     if (!subscribers) return;
     const csv = [
       ["Email", "Date Subscribed"],
-      ...subscribers.map(s => [s.email, new Date(s.created_at).toLocaleDateString()])
-    ].map(e => e.join(",")).join("\n");
+      ...subscribers.map((s) => [s.email, new Date(s.created_at).toLocaleDateString()]),
+    ]
+      .map((e) => e.join(","))
+      .join("\n");
 
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = `newsletter_subscribers_${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `newsletter_subscribers_${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
   };
 
@@ -113,9 +106,15 @@ function AdminNewsletterPage() {
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-border bg-muted/20">
-                <th className="px-6 py-4 text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Subscriber Email</th>
-                <th className="px-6 py-4 text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Subscribed On</th>
-                <th className="px-6 py-4 text-[11px] font-mono uppercase tracking-widest text-muted-foreground text-right">Actions</th>
+                <th className="px-6 py-4 text-[11px] font-mono uppercase tracking-widest text-muted-foreground">
+                  Subscriber Email
+                </th>
+                <th className="px-6 py-4 text-[11px] font-mono uppercase tracking-widest text-muted-foreground">
+                  Subscribed On
+                </th>
+                <th className="px-6 py-4 text-[11px] font-mono uppercase tracking-widest text-muted-foreground text-right">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">

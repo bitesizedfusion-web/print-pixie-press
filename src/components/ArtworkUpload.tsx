@@ -121,14 +121,26 @@ async function analyseImage(file: File): Promise<ImageAnalysis> {
   fCtx.drawImage(baseCanvas, 0, 0, 1, finalHeight, 0, bleed, bleed, finalHeight);
   fCtx.drawImage(
     baseCanvas,
-    finalWidth - 1, 0, 1, finalHeight,
-    finalWidth + bleed, bleed, bleed, finalHeight,
+    finalWidth - 1,
+    0,
+    1,
+    finalHeight,
+    finalWidth + bleed,
+    bleed,
+    bleed,
+    finalHeight,
   );
   fCtx.drawImage(baseCanvas, 0, 0, finalWidth, 1, bleed, 0, finalWidth, bleed);
   fCtx.drawImage(
     baseCanvas,
-    0, finalHeight - 1, finalWidth, 1,
-    bleed, finalHeight + bleed, finalWidth, bleed,
+    0,
+    finalHeight - 1,
+    finalWidth,
+    1,
+    bleed,
+    finalHeight + bleed,
+    finalWidth,
+    bleed,
   );
   fCtx.drawImage(baseCanvas, bleed, bleed);
 
@@ -154,9 +166,7 @@ async function analyseImage(file: File): Promise<ImageAnalysis> {
   }
 
   const convertedDataUrl = finalCanvas.toDataURL("image/jpeg", 0.92);
-  const finalDpi = Math.round(
-    Math.min(finalWidth / A4_WIDTH_IN, finalHeight / A4_HEIGHT_IN),
-  );
+  const finalDpi = Math.round(Math.min(finalWidth / A4_WIDTH_IN, finalHeight / A4_HEIGHT_IN));
 
   return {
     originalWidth: ow,
@@ -171,10 +181,7 @@ async function analyseImage(file: File): Promise<ImageAnalysis> {
   };
 }
 
-function buildChecklist(
-  file: File,
-  analysis: ImageAnalysis | null,
-): ArtworkChecklistItem[] {
+function buildChecklist(file: File, analysis: ImageAnalysis | null): ArtworkChecklistItem[] {
   const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
   const isPdf = ext === "pdf";
   const sizeMb = bytesToMb(file.size);
@@ -244,7 +251,7 @@ export function ArtworkUpload({ value, onChange }: Props) {
   const processFile = useCallback(
     (file: File) => {
       const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
-      const acceptedExts = ACCEPTED.map(a => a.ext);
+      const acceptedExts = ACCEPTED.map((a) => a.ext);
 
       if (!acceptedExts.includes(ext)) {
         onChange({
@@ -311,7 +318,7 @@ export function ArtworkUpload({ value, onChange }: Props) {
 
   const removeFile = () => onChange(emptyArtwork());
 
-  const acceptAttr = ACCEPTED.map(a => `.${a.ext}`).join(",");
+  const acceptAttr = ACCEPTED.map((a) => `.${a.ext}`).join(",");
 
   return (
     <div className="space-y-3">
@@ -323,7 +330,7 @@ export function ArtworkUpload({ value, onChange }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onDragOver={e => {
+            onDragOver={(e) => {
               e.preventDefault();
               setDragOver(true);
             }}
@@ -466,13 +473,9 @@ export function ArtworkUpload({ value, onChange }: Props) {
 
 function ChecklistIcon({ status }: { status: ArtworkChecklistItem["status"] }) {
   if (status === "pass")
-    return (
-      <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-    );
+    return <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />;
   if (status === "warn")
-    return (
-      <AlertTriangle className="h-4 w-4 text-warning-foreground mt-0.5 flex-shrink-0" />
-    );
+    return <AlertTriangle className="h-4 w-4 text-warning-foreground mt-0.5 flex-shrink-0" />;
   return <X className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />;
 }
 

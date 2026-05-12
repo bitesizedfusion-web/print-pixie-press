@@ -3,27 +3,22 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { 
-  Loader2, 
-  RefreshCw, 
-  Search, 
-  Filter, 
-  MoreHorizontal, 
-  Eye, 
-  CheckCircle2, 
-  Clock, 
-  Truck, 
+import {
+  Loader2,
+  RefreshCw,
+  Search,
+  Filter,
+  MoreHorizontal,
+  Eye,
+  CheckCircle2,
+  Clock,
+  Truck,
   XCircle,
   Download,
-  Printer
+  Printer,
 } from "lucide-react";
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -76,7 +71,10 @@ function OrdersPage() {
   }, []);
 
   const updateStatus = async (id: string, status: string) => {
-    const { error } = await supabase.from("orders").update({ status: status as any }).eq("id", id);
+    const { error } = await supabase
+      .from("orders")
+      .update({ status: status as any })
+      .eq("id", id);
     if (error) return toast.error(error.message);
     toast.success(`Status updated to ${status}`);
     load();
@@ -93,8 +91,9 @@ function OrdersPage() {
 
   const filtered = orders.filter((o) => {
     const matchesFilter = filter === "all" || o.status === filter;
-    const matchesSearch = o.order_number.toLowerCase().includes(search.toLowerCase()) || 
-                         o.customer_name.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch =
+      o.order_number.toLowerCase().includes(search.toLowerCase()) ||
+      o.customer_name.toLowerCase().includes(search.toLowerCase());
     return matchesFilter && matchesSearch;
   });
 
@@ -107,7 +106,7 @@ function OrdersPage() {
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={load} disabled={loading}>
-            <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} /> Refresh
+            <RefreshCw className={`h-4 w-4 mr-2 ${loading ? "animate-spin" : ""}`} /> Refresh
           </Button>
           <Button variant="cta" size="sm">
             <Download className="h-4 w-4 mr-2" /> Export CSV
@@ -119,9 +118,9 @@ function OrdersPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-card/30 backdrop-blur-sm p-4 rounded-2xl border border-border">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input 
-            type="text" 
-            placeholder="Search order or name..." 
+          <input
+            type="text"
+            placeholder="Search order or name..."
             className="w-full pl-10 pr-4 py-2 bg-background/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-cta/50"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -136,7 +135,11 @@ function OrdersPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Statuses</SelectItem>
-            {STATUSES.map((s) => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}
+            {STATUSES.map((s) => (
+              <SelectItem key={s} value={s} className="capitalize">
+                {s}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
@@ -165,8 +168,12 @@ function OrdersPage() {
                       <Clock className="h-6 w-6" />
                     </div>
                     <div>
-                      <p className="font-mono text-sm font-bold text-foreground">#{order.order_number}</p>
-                      <p className="text-xs text-muted-foreground">{new Date(order.created_at).toLocaleDateString()}</p>
+                      <p className="font-mono text-sm font-bold text-foreground">
+                        #{order.order_number}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {new Date(order.created_at).toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
 
@@ -177,11 +184,19 @@ function OrdersPage() {
 
                   <div className="flex items-center gap-4 md:gap-8">
                     <div className="hidden sm:block text-right">
-                      <p className="font-mono font-bold text-foreground">${Number(order.total).toFixed(2)}</p>
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{order.paid ? 'Paid' : 'Unpaid'}</p>
+                      <p className="font-mono font-bold text-foreground">
+                        ${Number(order.total).toFixed(2)}
+                      </p>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-widest">
+                        {order.paid ? "Paid" : "Unpaid"}
+                      </p>
                     </div>
                     <StatusBadge status={order.status} />
-                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
                       <Eye className="h-4 w-4" />
                     </Button>
                   </div>
@@ -207,25 +222,36 @@ function OrdersPage() {
                   Order <span className="text-cta font-mono">#{selected.order_number}</span>
                 </DialogTitle>
               </DialogHeader>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <DetailField label="Customer" value={selected.customer_name} />
                   <DetailField label="Email" value={selected.customer_email} />
                   <DetailField label="Phone" value={selected.customer_phone ?? "—"} />
-                  <DetailField label="Date" value={new Date(selected.created_at).toLocaleString()} />
+                  <DetailField
+                    label="Date"
+                    value={new Date(selected.created_at).toLocaleString()}
+                  />
                 </div>
                 <div className="space-y-4">
                   <DetailField label="Amount" value={`$${Number(selected.total).toFixed(2)}`} />
-                  <DetailField label="Payment" value={selected.paid ? "Fully Paid" : "Payment Pending"} />
+                  <DetailField
+                    label="Payment"
+                    value={selected.paid ? "Fully Paid" : "Payment Pending"}
+                  />
                   <DetailField label="Address" value={selected.delivery_address ?? "—"} />
-                  <DetailField label="Tracking" value={selected.tracking_number ?? "Not assigned"} />
+                  <DetailField
+                    label="Tracking"
+                    value={selected.tracking_number ?? "Not assigned"}
+                  />
                 </div>
               </div>
 
               {selected.notes && (
                 <div className="bg-accent/20 p-4 rounded-xl border border-border/50">
-                  <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Internal Notes</p>
+                  <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">
+                    Internal Notes
+                  </p>
                   <p className="text-sm text-foreground">{selected.notes}</p>
                 </div>
               )}
@@ -233,12 +259,19 @@ function OrdersPage() {
               <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border">
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-muted-foreground">Status:</span>
-                  <Select value={selected.status} onValueChange={(v) => updateStatus(selected.id, v)}>
+                  <Select
+                    value={selected.status}
+                    onValueChange={(v) => updateStatus(selected.id, v)}
+                  >
                     <SelectTrigger className="w-40 bg-background/50 border-border rounded-xl">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {STATUSES.map((s) => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}
+                      {STATUSES.map((s) => (
+                        <SelectItem key={s} value={s} className="capitalize">
+                          {s}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -267,14 +300,16 @@ function OrdersPage() {
 function DetailField({ label, value }: { label: string; value: string }) {
   return (
     <div className="bg-accent/10 p-3 rounded-xl border border-border/30">
-      <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">{label}</p>
+      <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">
+        {label}
+      </p>
       <p className="text-sm font-semibold text-foreground mt-1">{value}</p>
     </div>
   );
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const map: Record<string, { class: string, icon: any }> = {
+  const map: Record<string, { class: string; icon: any }> = {
     pending: { class: "bg-muted text-muted-foreground", icon: Clock },
     confirmed: { class: "bg-blue-500/15 text-blue-600", icon: CheckCircle2 },
     printing: { class: "bg-cta/15 text-cta", icon: Printer },
@@ -285,9 +320,11 @@ function StatusBadge({ status }: { status: string }) {
   };
   const config = map[status] ?? map.pending;
   const Icon = config.icon;
-  
+
   return (
-    <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase ${config.class}`}>
+    <div
+      className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase ${config.class}`}
+    >
       <Icon className="h-3 w-3" />
       {status}
     </div>

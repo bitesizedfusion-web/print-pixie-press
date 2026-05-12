@@ -15,8 +15,15 @@ export function PriceCalculator() {
 
   const voice = useVoiceInput({ lang: "en-AU" });
 
-  const product = products.find(p => p.id === productId)!;
-  const result = calculatePrice({ productId, size, quantity, paperType: paper, doubleSided: false, express: turnaround === "express" });
+  const product = products.find((p) => p.id === productId)!;
+  const result = calculatePrice({
+    productId,
+    size,
+    quantity,
+    paperType: paper,
+    doubleSided: false,
+    express: turnaround === "express",
+  });
 
   const handleVoiceClick = () => {
     if (!voice.supported) {
@@ -90,8 +97,8 @@ export function PriceCalculator() {
             {voice.listening
               ? "Listening… speak now"
               : voiceHint
-              ? `Heard: "${voiceHint}"`
-              : `Try: "A3 poster 100 copies express"`}
+                ? `Heard: "${voiceHint}"`
+                : `Try: "A3 poster 100 copies express"`}
           </p>
         </div>
       </div>
@@ -99,30 +106,62 @@ export function PriceCalculator() {
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">Product</label>
-          <select value={productId} onChange={e => { setProductId(e.target.value); const p = products.find(x => x.id === e.target.value); if (p) setSize(p.sizes[0]); }}
-            className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus:ring-2 focus:ring-cta/50 focus:border-cta outline-none">
-            {products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+          <select
+            value={productId}
+            onChange={(e) => {
+              setProductId(e.target.value);
+              const p = products.find((x) => x.id === e.target.value);
+              if (p) setSize(p.sizes[0]);
+            }}
+            className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus:ring-2 focus:ring-cta/50 focus:border-cta outline-none"
+          >
+            {products.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
           </select>
         </div>
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">Size</label>
-          <select value={size} onChange={e => setSize(e.target.value)}
-            className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus:ring-2 focus:ring-cta/50 focus:border-cta outline-none">
-            {product.sizes.map(s => <option key={s} value={s}>{s}</option>)}
+          <select
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
+            className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus:ring-2 focus:ring-cta/50 focus:border-cta outline-none"
+          >
+            {product.sizes.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
           </select>
         </div>
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">Paper Type</label>
-          <select value={paper} onChange={e => setPaper(e.target.value)}
-            className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus:ring-2 focus:ring-cta/50 focus:border-cta outline-none">
-            {paperTypes.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+          <select
+            value={paper}
+            onChange={(e) => setPaper(e.target.value)}
+            className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus:ring-2 focus:ring-cta/50 focus:border-cta outline-none"
+          >
+            {paperTypes.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
           </select>
         </div>
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">Quantity</label>
-          <select value={quantity} onChange={e => setQuantity(Number(e.target.value))}
-            className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus:ring-2 focus:ring-cta/50 focus:border-cta outline-none">
-            {quantities.map(q => <option key={q} value={q}>{q}</option>)}
+          <select
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+            className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm focus:ring-2 focus:ring-cta/50 focus:border-cta outline-none"
+          >
+            {quantities.map((q) => (
+              <option key={q} value={q}>
+                {q}
+              </option>
+            ))}
           </select>
         </div>
         <div className="sm:col-span-2">
@@ -131,9 +170,12 @@ export function PriceCalculator() {
             {[
               { id: "standard" as const, label: "Standard 3–5 Days" },
               { id: "express" as const, label: "Express 1–2 Days (+30%)" },
-            ].map(t => (
-              <button key={t.id} onClick={() => setTurnaround(t.id)}
-                className={`flex-1 h-10 rounded-md border text-sm font-medium transition-all ${turnaround === t.id ? 'border-cta bg-cta/10 text-cta' : 'border-input bg-background text-foreground hover:border-cta/50'}`}>
+            ].map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setTurnaround(t.id)}
+                className={`flex-1 h-10 rounded-md border text-sm font-medium transition-all ${turnaround === t.id ? "border-cta bg-cta/10 text-cta" : "border-input bg-background text-foreground hover:border-cta/50"}`}
+              >
                 {t.label}
               </button>
             ))}
@@ -143,9 +185,13 @@ export function PriceCalculator() {
       <div className="mt-6 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
           <span className="text-sm text-muted-foreground">Total estimate:</span>
-          <span className="ml-2 font-mono text-3xl font-bold text-cta">AUD ${result.total.toFixed(2)}</span>
+          <span className="ml-2 font-mono text-3xl font-bold text-cta">
+            AUD ${result.total.toFixed(2)}
+          </span>
         </div>
-        <Button variant="cta" size="lg">Add to Cart</Button>
+        <Button variant="cta" size="lg">
+          Add to Cart
+        </Button>
       </div>
     </div>
   );

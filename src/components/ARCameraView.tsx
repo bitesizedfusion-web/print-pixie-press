@@ -38,7 +38,9 @@ export function ARCameraView({
   // Poster overlay transform
   const [posterScale, setPosterScale] = useState(0.6); // relative to viewport min-dim
   const [posterPos, setPosterPos] = useState({ x: 0, y: 0 });
-  const dragRef = useRef<{ startX: number; startY: number; baseX: number; baseY: number } | null>(null);
+  const dragRef = useRef<{ startX: number; startY: number; baseX: number; baseY: number } | null>(
+    null,
+  );
 
   // ---- Camera lifecycle -------------------------------------------------
   const startCamera = useCallback(async (mode: "environment" | "user") => {
@@ -225,10 +227,7 @@ export function ARCameraView({
         </div>
 
         {/* Camera viewport */}
-        <div
-          ref={containerRef}
-          className="relative flex-1 overflow-hidden touch-none select-none"
-        >
+        <div ref={containerRef} className="relative flex-1 overflow-hidden touch-none select-none">
           <video
             ref={videoRef}
             playsInline

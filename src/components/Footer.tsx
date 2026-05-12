@@ -14,12 +14,11 @@ export function Footer() {
 
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from("newsletter_subscribers")
-        .insert([{ email }]);
+      const { error } = await supabase.from("newsletter_subscribers").insert([{ email }]);
 
       if (error) {
-        if (error.code === '23505') { // Unique constraint
+        if (error.code === "23505") {
+          // Unique constraint
           toast.info("You're already subscribed!");
         } else {
           toast.error("Failed to subscribe. Please try again.");
@@ -46,18 +45,15 @@ export function Footer() {
       <div className="relative max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-24 pb-10">
         {/* Big wordmark */}
         <div className="border-b border-white/10 pb-12 mb-12">
-          <img 
-            src="/logo.jpg" 
-            alt="S&S Printing and Packaging" 
-            className="h-16 w-auto invert mix-blend-screen" 
-          />
+          <img src="/logo.jpg" alt="S&S Printers" className="h-16 w-auto invert mix-blend-screen" />
         </div>
 
         {/* Columns */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-16">
           <div className="col-span-2 md:col-span-1">
             <p className="text-sm text-white/85 leading-relaxed max-w-xs">
-              Your trusted partner for high-quality custom printing and packaging solutions across Australia.
+              Your trusted partner for high-quality custom printing and packaging solutions across
+              Australia.
             </p>
           </div>
 
@@ -110,7 +106,10 @@ export function Footer() {
             <p className="text-sm text-white/55 leading-relaxed mb-4">
               Studio updates, new stocks, and occasional offers.
             </p>
-            <form onSubmit={handleSubscribe} className="flex items-center border-b border-white/10 focus-within:border-white transition-colors">
+            <form
+              onSubmit={handleSubscribe}
+              className="flex items-center border-b border-white/10 focus-within:border-white transition-colors"
+            >
               <input
                 required
                 type="email"
@@ -133,7 +132,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/55">
-            © 2026 S&S Printing and Packaging · Australia
+            © 2026 S&S Printers · Australia
           </p>
           <div className="flex gap-6">
             <Link

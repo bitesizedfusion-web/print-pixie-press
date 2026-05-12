@@ -1,7 +1,17 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useRef, useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Upload, Image as ImageIcon, Loader2, Check, ShoppingCart, Trash2, Eye, Frame, Camera } from "lucide-react";
+import {
+  Upload,
+  Image as ImageIcon,
+  Loader2,
+  Check,
+  ShoppingCart,
+  Trash2,
+  Eye,
+  Frame,
+  Camera,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,7 +26,11 @@ export const Route = createFileRoute("/poster-designer")({
   head: () => ({
     meta: [
       { title: "Design Your Own Poster — Upload, Preview & Order | PrintHub" },
-      { name: "description", content: "Upload your image, choose a poster size (A4, A3, A2, A1), see a live preview and order in minutes. Australia-wide delivery." },
+      {
+        name: "description",
+        content:
+          "Upload your image, choose a poster size (A4, A3, A2, A1), see a live preview and order in minutes. Australia-wide delivery.",
+      },
     ],
   }),
   component: PosterDesignerPage,
@@ -142,13 +156,11 @@ function PosterDesignerPage() {
     try {
       const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
       const path = `${crypto.randomUUID()}.${ext}`;
-      const { error } = await supabase.storage
-        .from("poster-uploads")
-        .upload(path, file, {
-          cacheControl: "3600",
-          upsert: false,
-          contentType: file.type,
-        });
+      const { error } = await supabase.storage.from("poster-uploads").upload(path, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type,
+      });
       if (error) throw error;
       const { data } = supabase.storage.from("poster-uploads").getPublicUrl(path);
       setUploadedUrl(data.publicUrl);
@@ -210,7 +222,11 @@ function PosterDesignerPage() {
       {/* Header */}
       <section className="bg-hero-bg text-hero-foreground hero-pattern py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <h1 className="font-heading text-4xl sm:text-5xl font-extrabold">
               Design Your <span className="text-cta">Custom Poster</span>
             </h1>
@@ -332,7 +348,8 @@ function PosterDesignerPage() {
                     <div className="w-full h-full border-2 border-dashed border-border rounded-lg flex flex-col items-center justify-center bg-background/50">
                       <ImageIcon className="h-12 w-12 text-muted-foreground/40 mb-3" />
                       <p className="text-sm text-muted-foreground px-6">
-                        Upload your image to see it as {previewMode === "wall" ? "a wall mockup" : "a poster"}
+                        Upload your image to see it as{" "}
+                        {previewMode === "wall" ? "a wall mockup" : "a poster"}
                       </p>
                       <p className="text-xs text-muted-foreground/60 mt-2 font-mono">
                         {selectedSize.label} • {selectedSize.dims}
@@ -347,7 +364,9 @@ function PosterDesignerPage() {
             <div className="space-y-6">
               {/* Upload */}
               <div>
-                <h2 className="font-heading text-xl font-bold mb-3 text-foreground">1. Upload your image</h2>
+                <h2 className="font-heading text-xl font-bold mb-3 text-foreground">
+                  1. Upload your image
+                </h2>
                 <div
                   onDrop={handleDrop}
                   onDragOver={(e) => e.preventDefault()}
@@ -379,8 +398,8 @@ function PosterDesignerPage() {
                         {uploading
                           ? "Uploading..."
                           : uploadedUrl
-                          ? fileName
-                          : "Click or drop your image"}
+                            ? fileName
+                            : "Click or drop your image"}
                       </p>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         JPG, PNG or WEBP — up to 10 MB
@@ -392,7 +411,9 @@ function PosterDesignerPage() {
 
               {/* Size */}
               <div>
-                <h2 className="font-heading text-xl font-bold mb-3 text-foreground">2. Choose poster size</h2>
+                <h2 className="font-heading text-xl font-bold mb-3 text-foreground">
+                  2. Choose poster size
+                </h2>
                 <div className="grid grid-cols-2 gap-3">
                   {POSTER_SIZES.map((s) => {
                     const active = s.id === sizeId;
@@ -408,8 +429,12 @@ function PosterDesignerPage() {
                         }`}
                       >
                         <div className="flex items-baseline justify-between">
-                          <span className="font-heading font-bold text-lg text-foreground">{s.label}</span>
-                          <span className="font-mono text-sm text-cta font-semibold">${s.basePrice}</span>
+                          <span className="font-heading font-bold text-lg text-foreground">
+                            {s.label}
+                          </span>
+                          <span className="font-mono text-sm text-cta font-semibold">
+                            ${s.basePrice}
+                          </span>
                         </div>
                         <p className="text-xs text-muted-foreground mt-1">{s.dims}</p>
                       </button>
@@ -420,7 +445,9 @@ function PosterDesignerPage() {
 
               {/* Finish */}
               <div>
-                <h2 className="font-heading text-xl font-bold mb-3 text-foreground">3. Paper finish</h2>
+                <h2 className="font-heading text-xl font-bold mb-3 text-foreground">
+                  3. Paper finish
+                </h2>
                 <div className="space-y-2">
                   {PAPER_FINISHES.map((f) => {
                     const active = f.id === finishId;
@@ -430,11 +457,15 @@ function PosterDesignerPage() {
                         type="button"
                         onClick={() => setFinishId(f.id)}
                         className={`w-full text-left p-3 rounded-lg border-2 transition-all flex items-center justify-between ${
-                          active ? "border-cta bg-cta/5" : "border-border bg-card hover:border-cta/40"
+                          active
+                            ? "border-cta bg-cta/5"
+                            : "border-border bg-card hover:border-cta/40"
                         }`}
                       >
                         <span className="text-sm font-medium text-foreground">{f.label}</span>
-                        <span className="text-xs font-mono text-muted-foreground">×{f.multiplier}</span>
+                        <span className="text-xs font-mono text-muted-foreground">
+                          ×{f.multiplier}
+                        </span>
                       </button>
                     );
                   })}
@@ -443,7 +474,10 @@ function PosterDesignerPage() {
 
               {/* Quantity */}
               <div>
-                <Label htmlFor="qty" className="font-heading text-xl font-bold mb-3 block text-foreground">
+                <Label
+                  htmlFor="qty"
+                  className="font-heading text-xl font-bold mb-3 block text-foreground"
+                >
                   4. Quantity
                 </Label>
                 <Input
@@ -452,7 +486,9 @@ function PosterDesignerPage() {
                   min={1}
                   max={500}
                   value={quantity}
-                  onChange={(e) => setQuantity(Math.max(1, Math.min(500, Number(e.target.value) || 1)))}
+                  onChange={(e) =>
+                    setQuantity(Math.max(1, Math.min(500, Number(e.target.value) || 1)))
+                  }
                   className="max-w-[160px]"
                 />
               </div>
@@ -477,7 +513,9 @@ function PosterDesignerPage() {
                 </div>
                 <div className="border-t border-border pt-2 mt-2 flex justify-between items-baseline">
                   <span className="font-heading font-bold text-foreground">Total</span>
-                  <span className="font-mono font-bold text-2xl text-cta">${pricing.total.toFixed(2)}</span>
+                  <span className="font-mono font-bold text-2xl text-cta">
+                    ${pricing.total.toFixed(2)}
+                  </span>
                 </div>
               </div>
 

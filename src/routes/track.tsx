@@ -4,8 +4,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
-  Search, Package, Truck, CheckCircle2, Clock, FileCheck, Printer,
-  MapPin, Phone, Mail, AlertCircle, Sparkles,
+  Search,
+  Package,
+  Truck,
+  CheckCircle2,
+  Clock,
+  FileCheck,
+  Printer,
+  MapPin,
+  Phone,
+  Mail,
+  AlertCircle,
+  Sparkles,
 } from "lucide-react";
 
 export const Route = createFileRoute("/track")({
@@ -29,13 +39,7 @@ export const Route = createFileRoute("/track")({
 });
 
 /* ===== Mock order data ===== */
-type StageId =
-  | "placed"
-  | "approved"
-  | "printing"
-  | "qa"
-  | "dispatched"
-  | "delivered";
+type StageId = "placed" | "approved" | "printing" | "qa" | "dispatched" | "delivered";
 
 interface Stage {
   id: StageId;
@@ -45,12 +49,17 @@ interface Stage {
 }
 
 const STAGES: Stage[] = [
-  { id: "placed",     label: "Order Placed",   description: "We received your order", icon: FileCheck },
-  { id: "approved",   label: "File Approved",  description: "Pre-flight check passed", icon: CheckCircle2 },
-  { id: "printing",   label: "Printing",       description: "Job is on press",        icon: Printer },
-  { id: "qa",         label: "Quality Check",  description: "Final inspection",       icon: Sparkles },
-  { id: "dispatched", label: "Dispatched",     description: "Out for delivery",       icon: Truck },
-  { id: "delivered",  label: "Delivered",      description: "Order complete",         icon: Package },
+  { id: "placed", label: "Order Placed", description: "We received your order", icon: FileCheck },
+  {
+    id: "approved",
+    label: "File Approved",
+    description: "Pre-flight check passed",
+    icon: CheckCircle2,
+  },
+  { id: "printing", label: "Printing", description: "Job is on press", icon: Printer },
+  { id: "qa", label: "Quality Check", description: "Final inspection", icon: Sparkles },
+  { id: "dispatched", label: "Dispatched", description: "Out for delivery", icon: Truck },
+  { id: "delivered", label: "Delivered", description: "Order complete", icon: Package },
 ];
 
 interface MockOrder {
@@ -82,16 +91,28 @@ const SAMPLE_ORDERS: Record<string, MockOrder> = {
     eta: "Fri 25 Apr · by 5:00 PM",
     currentStage: "printing",
     history: [
-      { stage: "placed",   timestamp: "Mon 21 Apr · 10:32 AM", note: "Payment received via Visa •••• 4242" },
-      { stage: "approved", timestamp: "Mon 21 Apr · 11:18 AM", note: "Artwork passed pre-flight at 300 DPI CMYK" },
-      { stage: "printing", timestamp: "Tue 22 Apr · 09:05 AM", note: "Job sent to HP Indigo press #3" },
+      {
+        stage: "placed",
+        timestamp: "Mon 21 Apr · 10:32 AM",
+        note: "Payment received via Visa •••• 4242",
+      },
+      {
+        stage: "approved",
+        timestamp: "Mon 21 Apr · 11:18 AM",
+        note: "Artwork passed pre-flight at 300 DPI CMYK",
+      },
+      {
+        stage: "printing",
+        timestamp: "Tue 22 Apr · 09:05 AM",
+        note: "Job sent to HP Indigo press #3",
+      },
     ],
   },
   "PH-1043": {
     id: "PH-1043",
     product: "Brochures · Tri-fold · 170gsm Matte",
     quantity: 500,
-    total: 312.40,
+    total: 312.4,
     customer: "Mei Chen",
     destination: "South Yarra VIC 3141",
     courier: "StarTrack Premium",
@@ -100,18 +121,26 @@ const SAMPLE_ORDERS: Record<string, MockOrder> = {
     eta: "Mon 28 Apr · by 6:00 PM",
     currentStage: "dispatched",
     history: [
-      { stage: "placed",     timestamp: "Wed 23 Apr · 02:11 PM", note: "Order confirmed" },
-      { stage: "approved",   timestamp: "Wed 23 Apr · 03:00 PM", note: "Pre-flight check passed" },
-      { stage: "printing",   timestamp: "Thu 24 Apr · 08:40 AM", note: "Printing complete · 4 hrs run time" },
-      { stage: "qa",         timestamp: "Thu 24 Apr · 02:30 PM", note: "QA passed by operator JR" },
-      { stage: "dispatched", timestamp: "Fri 25 Apr · 07:15 AM", note: "Picked up by StarTrack — tracking ST1043AU88102" },
+      { stage: "placed", timestamp: "Wed 23 Apr · 02:11 PM", note: "Order confirmed" },
+      { stage: "approved", timestamp: "Wed 23 Apr · 03:00 PM", note: "Pre-flight check passed" },
+      {
+        stage: "printing",
+        timestamp: "Thu 24 Apr · 08:40 AM",
+        note: "Printing complete · 4 hrs run time",
+      },
+      { stage: "qa", timestamp: "Thu 24 Apr · 02:30 PM", note: "QA passed by operator JR" },
+      {
+        stage: "dispatched",
+        timestamp: "Fri 25 Apr · 07:15 AM",
+        note: "Picked up by StarTrack — tracking ST1043AU88102",
+      },
     ],
   },
   "PH-1044": {
     id: "PH-1044",
     product: "Pull-up Banner · 850×2000mm",
     quantity: 1,
-    total: 132.50,
+    total: 132.5,
     customer: "Liam O'Connor",
     destination: "Fortitude Valley QLD 4006",
     courier: "Toll IPEC",
@@ -120,12 +149,20 @@ const SAMPLE_ORDERS: Record<string, MockOrder> = {
     eta: "Mon 21 Apr · delivered",
     currentStage: "delivered",
     history: [
-      { stage: "placed",     timestamp: "Wed 16 Apr · 09:45 AM", note: "Order confirmed" },
-      { stage: "approved",   timestamp: "Wed 16 Apr · 10:20 AM", note: "Pre-flight check passed" },
-      { stage: "printing",   timestamp: "Thu 17 Apr · 11:00 AM", note: "Printed on 13oz vinyl" },
-      { stage: "qa",         timestamp: "Fri 18 Apr · 09:00 AM", note: "QA passed · banner & stand assembled" },
-      { stage: "dispatched", timestamp: "Fri 18 Apr · 03:20 PM", note: "Out for delivery via Toll IPEC" },
-      { stage: "delivered",  timestamp: "Mon 21 Apr · 11:32 AM", note: "Signed for at reception" },
+      { stage: "placed", timestamp: "Wed 16 Apr · 09:45 AM", note: "Order confirmed" },
+      { stage: "approved", timestamp: "Wed 16 Apr · 10:20 AM", note: "Pre-flight check passed" },
+      { stage: "printing", timestamp: "Thu 17 Apr · 11:00 AM", note: "Printed on 13oz vinyl" },
+      {
+        stage: "qa",
+        timestamp: "Fri 18 Apr · 09:00 AM",
+        note: "QA passed · banner & stand assembled",
+      },
+      {
+        stage: "dispatched",
+        timestamp: "Fri 18 Apr · 03:20 PM",
+        note: "Out for delivery via Toll IPEC",
+      },
+      { stage: "delivered", timestamp: "Mon 21 Apr · 11:32 AM", note: "Signed for at reception" },
     ],
   },
 };
@@ -155,10 +192,7 @@ function TrackPage() {
   const [error, setError] = useState<string | null>(null);
   const [searching, setSearching] = useState(false);
 
-  const order = useMemo(
-    () => (submittedId ? lookupOrder(submittedId) : null),
-    [submittedId],
-  );
+  const order = useMemo(() => (submittedId ? lookupOrder(submittedId) : null), [submittedId]);
 
   // Re-sync when URL ?id changes externally
   useEffect(() => {
@@ -199,7 +233,8 @@ function TrackPage() {
             Where's my <span className="text-gradient">order</span>?
           </h1>
           <p className="mt-4 text-hero-foreground/70 max-w-xl mx-auto">
-            Enter the order ID from your confirmation email to see live status updates and your estimated delivery date.
+            Enter the order ID from your confirmation email to see live status updates and your
+            estimated delivery date.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-8 max-w-xl mx-auto">
@@ -209,14 +244,20 @@ function TrackPage() {
                 <input
                   type="text"
                   value={input}
-                  onChange={e => setInput(e.target.value)}
+                  onChange={(e) => setInput(e.target.value)}
                   placeholder="e.g. PH-1042"
                   maxLength={20}
                   className="w-full bg-transparent text-hero-foreground placeholder:text-hero-foreground/40 text-sm py-2 outline-none font-mono"
                   aria-label="Order ID"
                 />
               </div>
-              <Button type="submit" variant="cta" size="lg" disabled={searching} className="sm:w-auto w-full">
+              <Button
+                type="submit"
+                variant="cta"
+                size="lg"
+                disabled={searching}
+                className="sm:w-auto w-full"
+              >
                 {searching ? "Searching…" : "Track Order"}
               </Button>
             </div>
@@ -240,7 +281,9 @@ function TrackPage() {
                   >
                     {id}
                   </button>
-                  {i < Object.keys(SAMPLE_ORDERS).length - 1 && <span className="text-hero-foreground/30"> · </span>}
+                  {i < Object.keys(SAMPLE_ORDERS).length - 1 && (
+                    <span className="text-hero-foreground/30"> · </span>
+                  )}
                 </span>
               ))}
             </p>
@@ -275,7 +318,8 @@ function EmptyState() {
       </div>
       <h2 className="font-heading text-xl font-bold text-foreground">Track any order</h2>
       <p className="text-sm text-muted-foreground mt-1.5 max-w-md mx-auto">
-        Your order ID was sent in your confirmation email. It starts with <span className="font-mono text-foreground">PH-</span> followed by 4 digits.
+        Your order ID was sent in your confirmation email. It starts with{" "}
+        <span className="font-mono text-foreground">PH-</span> followed by 4 digits.
       </p>
     </motion.div>
   );
@@ -296,7 +340,8 @@ function NotFoundState({ id }: { id: string }) {
         Order <span className="font-mono">{id}</span> not found
       </h2>
       <p className="text-sm text-muted-foreground mt-2">
-        Double-check the ID from your confirmation email, or contact our team and we'll find it for you.
+        Double-check the ID from your confirmation email, or contact our team and we'll find it for
+        you.
       </p>
       <div className="mt-6 flex flex-wrap gap-2 justify-center">
         <Link to="/contact">
@@ -313,7 +358,7 @@ function NotFoundState({ id }: { id: string }) {
 }
 
 function OrderDetail({ order }: { order: MockOrder }) {
-  const currentIndex = STAGES.findIndex(s => s.id === order.currentStage);
+  const currentIndex = STAGES.findIndex((s) => s.id === order.currentStage);
   const isDelivered = order.currentStage === "delivered";
   const progress = ((currentIndex + 1) / STAGES.length) * 100;
 
@@ -328,19 +373,27 @@ function OrderDetail({ order }: { order: MockOrder }) {
       <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
         <div className="bg-gradient-to-br from-accent/40 to-card p-5 sm:p-6 flex flex-wrap items-start justify-between gap-4 border-b border-border">
           <div>
-            <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">Order ID</p>
-            <p className="font-heading text-2xl font-extrabold text-foreground mt-1 font-mono">{order.id}</p>
-            <p className="text-sm text-muted-foreground mt-1">{order.product} · Qty {order.quantity}</p>
+            <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+              Order ID
+            </p>
+            <p className="font-heading text-2xl font-extrabold text-foreground mt-1 font-mono">
+              {order.id}
+            </p>
+            <p className="text-sm text-muted-foreground mt-1">
+              {order.product} · Qty {order.quantity}
+            </p>
           </div>
           <div className="text-right">
             <span
               className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold ${
-                isDelivered
-                  ? "bg-success/15 text-success"
-                  : "bg-cta/10 text-cta"
+                isDelivered ? "bg-success/15 text-success" : "bg-cta/10 text-cta"
               }`}
             >
-              {isDelivered ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Clock className="h-3.5 w-3.5" />}
+              {isDelivered ? (
+                <CheckCircle2 className="h-3.5 w-3.5" />
+              ) : (
+                <Clock className="h-3.5 w-3.5" />
+              )}
               {STAGES[currentIndex].label}
             </span>
             <p className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground mt-2">
@@ -379,11 +432,7 @@ function OrderDetail({ order }: { order: MockOrder }) {
                         : "bg-accent text-muted-foreground"
                   }`}
                 >
-                  {done ? (
-                    <CheckCircle2 className="h-5 w-5" />
-                  ) : (
-                    <Icon className="h-5 w-5" />
-                  )}
+                  {done ? <CheckCircle2 className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
                 </div>
                 <p
                   className={`text-[10px] sm:text-xs font-semibold mt-2 ${
@@ -408,7 +457,7 @@ function OrderDetail({ order }: { order: MockOrder }) {
           </div>
           <ol className="relative border-l-2 border-border ml-2 space-y-5">
             {order.history.map((h, i) => {
-              const stage = STAGES.find(s => s.id === h.stage);
+              const stage = STAGES.find((s) => s.id === h.stage);
               if (!stage) return null;
               const Icon = stage.icon;
               const isLatest = i === order.history.length - 1;
@@ -422,9 +471,7 @@ function OrderDetail({ order }: { order: MockOrder }) {
                 >
                   <span
                     className={`absolute -left-[30px] top-0 h-7 w-7 rounded-full flex items-center justify-center ring-4 ring-background ${
-                      isLatest
-                        ? "bg-cta text-cta-foreground"
-                        : "bg-success/20 text-success"
+                      isLatest ? "bg-cta text-cta-foreground" : "bg-success/20 text-success"
                     }`}
                   >
                     <Icon className="h-3.5 w-3.5" />

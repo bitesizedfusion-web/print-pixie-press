@@ -32,11 +32,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
   const addItem = (item: CartItem) => {
-    setItems(prev => [...prev, { ...item, id: crypto.randomUUID() }]);
+    setItems((prev) => [...prev, { ...item, id: crypto.randomUUID() }]);
   };
 
   const removeItem = (id: string) => {
-    setItems(prev => prev.filter(i => i.id !== id));
+    setItems((prev) => prev.filter((i) => i.id !== id));
   };
 
   const clearCart = () => setItems([]);

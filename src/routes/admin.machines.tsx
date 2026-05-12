@@ -21,18 +21,43 @@ function AdminMachinesPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[
-          { name: "Heidelberg Speedmaster XL 106", status: "Online", load: "75%", temp: "42°C", health: "Good" },
-          { name: "HP Indigo 12000 Digital Press", status: "Maintenance", load: "0%", temp: "28°C", health: "Attention" },
-          { name: "Komori Lithrone G40", status: "Online", load: "40%", temp: "38°C", health: "Excellent" },
+          {
+            name: "Heidelberg Speedmaster XL 106",
+            status: "Online",
+            load: "75%",
+            temp: "42°C",
+            health: "Good",
+          },
+          {
+            name: "HP Indigo 12000 Digital Press",
+            status: "Maintenance",
+            load: "0%",
+            temp: "28°C",
+            health: "Attention",
+          },
+          {
+            name: "Komori Lithrone G40",
+            status: "Online",
+            load: "40%",
+            temp: "38°C",
+            health: "Excellent",
+          },
         ].map((m) => (
-          <div key={m.name} className="bg-card border border-border rounded-2xl p-6 shadow-soft hover:shadow-prime transition-all duration-300">
+          <div
+            key={m.name}
+            className="bg-card border border-border rounded-2xl p-6 shadow-soft hover:shadow-prime transition-all duration-300"
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center">
                 <Printer className="h-6 w-6 text-cta" />
               </div>
-              <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                m.status === 'Online' ? 'bg-success/10 text-success' : 'bg-warning/10 text-warning'
-              }`}>
+              <span
+                className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                  m.status === "Online"
+                    ? "bg-success/10 text-success"
+                    : "bg-warning/10 text-warning"
+                }`}
+              >
                 {m.status}
               </span>
             </div>
@@ -48,7 +73,11 @@ function AdminMachinesPage() {
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">System Health</span>
-                <span className={`font-semibold ${m.health === 'Excellent' ? 'text-success' : 'text-cta'}`}>{m.health}</span>
+                <span
+                  className={`font-semibold ${m.health === "Excellent" ? "text-success" : "text-cta"}`}
+                >
+                  {m.health}
+                </span>
               </div>
             </div>
             <div className="mt-6 pt-4 border-t border-border">
@@ -65,7 +94,8 @@ function AdminMachinesPage() {
         <div>
           <h4 className="font-bold text-warning mb-1">Maintenance Required</h4>
           <p className="text-sm text-warning/80">
-            The HP Indigo 12000 requires its scheduled maintenance in 48 hours. Please ensure parts are available.
+            The HP Indigo 12000 requires its scheduled maintenance in 48 hours. Please ensure parts
+            are available.
           </p>
         </div>
       </div>

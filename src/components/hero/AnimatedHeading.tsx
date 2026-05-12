@@ -33,8 +33,7 @@ export function AnimatedHeading({
         return (
           <span key={lineIndex} className="block">
             {Array.from(line).map((char, charIndex) => {
-              const delay =
-                lineIndex * lineLength * charDelay + charIndex * charDelay;
+              const delay = lineIndex * lineLength * charDelay + charIndex * charDelay;
               return (
                 <span
                   key={charIndex}

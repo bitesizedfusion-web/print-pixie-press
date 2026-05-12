@@ -53,7 +53,9 @@ export function DataTable<T>({ columns, rows, rowKey, empty, onRowClick }: Props
                     key={c.key}
                     className={`px-5 py-3 ${c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : "text-left"} ${c.className ?? ""}`}
                   >
-                    {c.render ? c.render(row) : ((row as Record<string, unknown>)[c.key] as ReactNode) ?? "—"}
+                    {c.render
+                      ? c.render(row)
+                      : (((row as Record<string, unknown>)[c.key] as ReactNode) ?? "—")}
                   </td>
                 ))}
               </tr>
@@ -82,7 +84,9 @@ export function StatusBadge({ status }: { status: string }) {
     inactive: "bg-muted text-muted-foreground",
   };
   return (
-    <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${map[status] ?? "bg-muted text-muted-foreground"}`}>
+    <span
+      className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${map[status] ?? "bg-muted text-muted-foreground"}`}
+    >
       {status}
     </span>
   );

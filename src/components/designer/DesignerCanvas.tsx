@@ -1,5 +1,14 @@
 // Client-only Konva canvas. Imported dynamically from the route to avoid SSR.
-import { Stage, Layer, Rect, Text, Image as KonvaImage, Transformer, Circle, Line } from "react-konva";
+import {
+  Stage,
+  Layer,
+  Rect,
+  Text,
+  Image as KonvaImage,
+  Transformer,
+  Circle,
+  Line,
+} from "react-konva";
 import { useEffect, useRef } from "react";
 import useImage from "use-image";
 import type Konva from "konva";

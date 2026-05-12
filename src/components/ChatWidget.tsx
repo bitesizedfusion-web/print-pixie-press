@@ -1,5 +1,15 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { MessageCircle, X, Send, Loader2, Sparkles, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
+import {
+  MessageCircle,
+  X,
+  Send,
+  Loader2,
+  Sparkles,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
@@ -7,12 +17,7 @@ import { useVoiceInput } from "@/hooks/use-voice-input";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
-const STARTERS = [
-  "Get a quote",
-  "How do I order?",
-  "দাম জানতে চাই",
-  "मुझे पोस्टर चाहिए",
-];
+const STARTERS = ["Get a quote", "How do I order?", "দাম জানতে চাই", "मुझे पोस्टर चाहिए"];
 
 const GREETING: Msg = {
   role: "assistant",
@@ -43,8 +48,12 @@ export function ChatWidget() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const lastSpokenRef = useRef<string>("");
 
-  const { supported: voiceSupported, listening, start: startListening, stop: stopListening } =
-    useVoiceInput({ lang: "en-AU" });
+  const {
+    supported: voiceSupported,
+    listening,
+    start: startListening,
+    stop: stopListening,
+  } = useVoiceInput({ lang: "en-AU" });
 
   // Initial TTS support detection
   const ttsSupported = typeof window !== "undefined" && "speechSynthesis" in window;
@@ -176,7 +185,9 @@ export function ChatWidget() {
 
   const handleMic = () => {
     if (!voiceSupported) {
-      toast.error("Voice input isn't supported in this browser. Try Chrome on Android or Safari on iOS.");
+      toast.error(
+        "Voice input isn't supported in this browser. Try Chrome on Android or Safari on iOS.",
+      );
       return;
     }
     if (listening) {
@@ -210,7 +221,9 @@ export function ChatWidget() {
                 <div>
                   <div className="font-heading font-bold text-sm">PrintBot AI · Voice</div>
                   <div className="text-xs text-cta-foreground/80 flex items-center gap-1.5">
-                    <span className={`w-1.5 h-1.5 rounded-full ${speaking ? "bg-yellow-300 animate-pulse" : listening ? "bg-red-400 animate-pulse" : "bg-green-400 animate-pulse"}`} />
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full ${speaking ? "bg-yellow-300 animate-pulse" : listening ? "bg-red-400 animate-pulse" : "bg-green-400 animate-pulse"}`}
+                    />
                     {speaking ? "Speaking…" : listening ? "Listening…" : "Online · 24/7"}
                   </div>
                 </div>
@@ -223,7 +236,11 @@ export function ChatWidget() {
                     title={voiceReplies ? "Mute voice replies" : "Enable voice replies"}
                     className="p-1.5 rounded-md hover:bg-white/10 transition-colors"
                   >
-                    {voiceReplies ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+                    {voiceReplies ? (
+                      <Volume2 className="h-4 w-4" />
+                    ) : (
+                      <VolumeX className="h-4 w-4" />
+                    )}
                   </button>
                 )}
                 <button
@@ -324,7 +341,11 @@ export function ChatWidget() {
                 aria-label="Send"
                 className="w-9 h-9 rounded-full bg-cta text-cta-foreground flex items-center justify-center hover:bg-cta-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
               >
-                {isStreaming ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                {isStreaming ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
               </button>
             </form>
           </motion.div>

@@ -1,6 +1,20 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, ShoppingBag, Phone, Mail, MessageCircle, Home, Info, Package, FileText, Image, PhoneCall, Send } from "lucide-react";
+import {
+  Menu,
+  X,
+  ShoppingBag,
+  Phone,
+  Mail,
+  MessageCircle,
+  Home,
+  Info,
+  Package,
+  FileText,
+  Image,
+  PhoneCall,
+  Send,
+} from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -35,25 +49,38 @@ export function Navbar() {
         scrolled
           ? "bg-white border-b border-border shadow-md"
           : isHeroPage
-          ? "bg-transparent border-b border-transparent"
-          : "bg-white border-b border-border"
+            ? "bg-transparent border-b border-transparent"
+            : "bg-white border-b border-border"
       }`}
     >
       {/* Top accent bar */}
       <div className="h-[3px] w-full bg-gradient-brand" />
 
       {/* Top Bar for Desktop - Contact Links */}
-      <div className={`hidden lg:block border-b transition-colors ${onDark ? "border-white/10 bg-black/10" : "border-border/40 bg-muted/30"}`}>
+      <div
+        className={`hidden lg:block border-b transition-colors ${onDark ? "border-white/10 bg-black/10" : "border-border/40 bg-muted/30"}`}
+      >
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 h-9 flex items-center justify-end gap-6 text-[11px] font-mono uppercase tracking-wider">
-          <a href="mailto:sandsprinters26@gmail.com" className={`flex items-center gap-1.5 transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"}`}>
+          <a
+            href="mailto:sandsprinters26@gmail.com"
+            className={`flex items-center gap-1.5 transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"}`}
+          >
             <Mail className="w-3 h-3" />
             sandsprinters26@gmail.com
           </a>
-          <a href="tel:0412345678" className={`flex items-center gap-1.5 transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"}`}>
+          <a
+            href="tel:0412345678"
+            className={`flex items-center gap-1.5 transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"}`}
+          >
             <Phone className="w-3 h-3" />
             0412 345 678
           </a>
-          <a href="https://wa.me/61412345678" target="_blank" rel="noreferrer" className={`flex items-center gap-1.5 transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"}`}>
+          <a
+            href="https://wa.me/61412345678"
+            target="_blank"
+            rel="noreferrer"
+            className={`flex items-center gap-1.5 transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"}`}
+          >
             <MessageCircle className="w-3 h-3" />
             WhatsApp
           </a>
@@ -64,10 +91,10 @@ export function Navbar() {
         <div className="flex items-center justify-between h-[72px]">
           {/* Logo */}
           <Link to="/" className="group flex items-center gap-2">
-            <img 
-              src="/logo.jpg" 
-              alt="S&S Printing and Packaging" 
-              className={`h-12 w-auto transition-all ${onDark ? "invert mix-blend-screen" : "mix-blend-multiply"}`} 
+            <img
+              src="/logo.jpg"
+              alt="S&S Printers"
+              className={`h-12 w-auto transition-all ${onDark ? "invert mix-blend-screen" : "mix-blend-multiply"}`}
             />
           </Link>
 
@@ -81,13 +108,20 @@ export function Navbar() {
                   to={link.to}
                   className={`relative px-4 py-2 text-[12px] font-medium tracking-tight transition-colors ${
                     onDark
-                      ? active ? "text-white" : "text-white/60 hover:text-white"
-                      : active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                      ? active
+                        ? "text-white"
+                        : "text-white/60 hover:text-white"
+                      : active
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   {link.label}
                   {active && (
-                    <motion.span layoutId="nav-active" className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[2px] w-6 rounded-full bg-gradient-brand" />
+                    <motion.span
+                      layoutId="nav-active"
+                      className="absolute left-1/2 -translate-x-1/2 bottom-0 h-[2px] w-6 rounded-full bg-gradient-brand"
+                    />
                   )}
                 </Link>
               );
@@ -102,7 +136,7 @@ export function Navbar() {
             >
               Get a Quote
             </Link>
-            
+
             <Link
               to="/cart"
               className={`relative p-2 rounded-full transition-colors ${onDark ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"}`}
@@ -137,7 +171,7 @@ export function Navbar() {
           >
             <div className="flex flex-col h-full pt-24 px-8 pb-10">
               {/* Close Button */}
-              <button 
+              <button
                 onClick={() => setMobileOpen(false)}
                 className="absolute top-6 right-6 p-3 rounded-full bg-muted text-foreground"
               >
@@ -165,7 +199,10 @@ export function Navbar() {
                         location.pathname === link.to ? "text-foreground" : "text-muted-foreground"
                       }`}
                     >
-                      <link.icon className={`w-8 h-8 ${location.pathname === link.to ? "text-gradient-brand" : "text-muted-foreground/40"}`} strokeWidth={1.5} />
+                      <link.icon
+                        className={`w-8 h-8 ${location.pathname === link.to ? "text-gradient-brand" : "text-muted-foreground/40"}`}
+                        strokeWidth={1.5}
+                      />
                       {link.label}
                     </Link>
                   </motion.div>
@@ -173,30 +210,43 @@ export function Navbar() {
               </div>
 
               {/* Bottom Actions & Contacts */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
                 className="space-y-8"
               >
-                <Link 
-                  to="/quote" 
-                  onClick={() => setMobileOpen(false)} 
+                <Link
+                  to="/quote"
+                  onClick={() => setMobileOpen(false)}
                   className="h-14 w-full flex items-center justify-center rounded-2xl bg-gradient-brand text-white font-semibold text-lg shadow-xl shadow-brand/20"
                 >
                   Get a Quote
                 </Link>
 
                 <div className="space-y-4">
-                  <div className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">Get in touch</div>
+                  <div className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">
+                    Get in touch
+                  </div>
                   <div className="flex items-center gap-6 text-foreground">
-                    <a href="tel:0412345678" className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                    <a
+                      href="tel:0412345678"
+                      className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center"
+                    >
                       <Phone className="w-5 h-5" />
                     </a>
-                    <a href="mailto:sandsprinters26@gmail.com" className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                    <a
+                      href="mailto:sandsprinters26@gmail.com"
+                      className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center"
+                    >
                       <Mail className="w-5 h-5" />
                     </a>
-                    <a href="https://wa.me/61412345678" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                    <a
+                      href="https://wa.me/61412345678"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center"
+                    >
                       <MessageCircle className="w-5 h-5" />
                     </a>
                   </div>

@@ -16,7 +16,7 @@ import {
   ShieldCheck,
   Loader2,
   MessageSquare,
-  Mail
+  Mail,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,7 +26,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "Admin Dashboard — S&S Printing and Packaging" },
+      { title: "Admin Dashboard — S&S Printers" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -102,7 +102,9 @@ function AdminLayout() {
       <div className="min-h-screen flex items-center justify-center bg-background px-4">
         <div className="bg-card border border-border rounded-2xl p-8 max-w-md text-center">
           <ShieldCheck className="h-12 w-12 mx-auto mb-3 text-cta" />
-          <h1 className="font-heading text-2xl font-bold text-foreground mb-2">Admin access required</h1>
+          <h1 className="font-heading text-2xl font-bold text-foreground mb-2">
+            Admin access required
+          </h1>
           <p className="text-sm text-muted-foreground mb-6">
             You're signed in as <span className="font-mono">{user.email}</span> but don't have admin
             permissions. If you're the business owner, claim the admin role below.
@@ -127,28 +129,39 @@ function AdminLayout() {
     <div className="min-h-screen flex bg-background">
       {/* Mobile Overlay */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside className={`
+      <aside
+        className={`
         fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border flex flex-col transition-transform duration-300
         lg:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-      `}>
+      `}
+      >
         <div className="p-5 border-b border-border flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-xl bg-gradient-cta flex items-center justify-center shadow-lg shadow-cta/20">
               <Printer className="h-5 w-5 text-cta-foreground" />
             </div>
             <div>
-              <p className="font-heading font-bold text-sm text-foreground leading-tight">S&S Printing</p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Prime Admin</p>
+              <p className="font-heading font-bold text-sm text-foreground leading-tight">
+                S&S Printing
+              </p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                Prime Admin
+              </p>
             </div>
           </Link>
-          <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(false)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          >
             <Activity className="h-5 w-5" />
           </Button>
         </div>

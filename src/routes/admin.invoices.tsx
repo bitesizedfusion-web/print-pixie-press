@@ -35,12 +35,17 @@ function InvoicesPage() {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase.from("invoices").select("*").order("issue_date", { ascending: false });
+    const { data } = await supabase
+      .from("invoices")
+      .select("*")
+      .order("issue_date", { ascending: false });
     setRows((data ?? []) as Invoice[]);
     setLoading(false);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,21 +56,33 @@ function InvoicesPage() {
     const due = new Date();
     due.setDate(due.getDate() + 14);
     const invoiceNum = `INV-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.floor(Math.random() * 9000 + 1000)}`;
-    const { error } = await supabase.from("invoices").insert([{
-      invoice_number: invoiceNum,
-      customer_name: form.customer_name,
-      customer_email: form.customer_email,
-      subtotal, gst, total,
-      due_date: due.toISOString().slice(0, 10),
-      status: "sent" as const,
-    }]);
+    const { error } = await supabase.from("invoices").insert([
+      {
+        invoice_number: invoiceNum,
+        customer_name: form.customer_name,
+        customer_email: form.customer_email,
+        subtotal,
+        gst,
+        total,
+        due_date: due.toISOString().slice(0, 10),
+        status: "sent" as const,
+      },
+    ]);
     if (error) toast.error(error.message);
-    else { toast.success("Invoice created"); setOpen(false); setForm({ customer_name: "", customer_email: "", subtotal: 0 }); load(); }
+    else {
+      toast.success("Invoice created");
+      setOpen(false);
+      setForm({ customer_name: "", customer_email: "", subtotal: 0 });
+      load();
+    }
     setBusy(false);
   };
 
   const markPaid = async (id: string) => {
-    const { error } = await supabase.from("invoices").update({ status: "paid", paid_date: new Date().toISOString().slice(0, 10) }).eq("id", id);
+    const { error } = await supabase
+      .from("invoices")
+      .update({ status: "paid", paid_date: new Date().toISOString().slice(0, 10) })
+      .eq("id", id);
     if (error) return toast.error(error.message);
     toast.success("Invoice marked as paid");
     load();
@@ -78,15 +95,47 @@ function InvoicesPage() {
         subtitle={`${rows.length} invoice${rows.length !== 1 ? "s" : ""}`}
         action={
           <Dialog open={open} onOpenChange={setOpen}>
-            <Button variant="cta" size="sm" onClick={() => setOpen(true)}><Plus className="h-4 w-4 mr-2" /> New Invoice</Button>
+            <Button variant="cta" size="sm" onClick={() => setOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" /> New Invoice
+            </Button>
             <DialogContent>
-              <DialogHeader><DialogTitle>Create Invoice</DialogTitle></DialogHeader>
+              <DialogHeader>
+                <DialogTitle>Create Invoice</DialogTitle>
+              </DialogHeader>
               <form onSubmit={submit} className="space-y-3">
-                <div className="space-y-1"><Label>Customer Name</Label><Input value={form.customer_name} onChange={(e) => setForm({ ...form, customer_name: e.target.value })} required /></div>
-                <div className="space-y-1"><Label>Email</Label><Input type="email" value={form.customer_email} onChange={(e) => setForm({ ...form, customer_email: e.target.value })} required /></div>
-                <div className="space-y-1"><Label>Subtotal (AUD ex-GST)</Label><Input type="number" step="0.01" value={form.subtotal} onChange={(e) => setForm({ ...form, subtotal: Number(e.target.value) })} required /></div>
-                <p className="text-xs text-muted-foreground">GST (10%) and total will be calculated automatically.</p>
-                <Button type="submit" variant="cta" className="w-full" disabled={busy}>{busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create"}</Button>
+                <div className="space-y-1">
+                  <Label>Customer Name</Label>
+                  <Input
+                    value={form.customer_name}
+                    onChange={(e) => setForm({ ...form, customer_name: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label>Email</Label>
+                  <Input
+                    type="email"
+                    value={form.customer_email}
+                    onChange={(e) => setForm({ ...form, customer_email: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label>Subtotal (AUD ex-GST)</Label>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    value={form.subtotal}
+                    onChange={(e) => setForm({ ...form, subtotal: Number(e.target.value) })}
+                    required
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  GST (10%) and total will be calculated automatically.
+                </p>
+                <Button type="submit" variant="cta" className="w-full" disabled={busy}>
+                  {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create"}
+                </Button>
               </form>
             </DialogContent>
           </Dialog>
@@ -94,27 +143,58 @@ function InvoicesPage() {
       />
 
       {loading ? (
-        <div className="flex justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-cta" /></div>
+        <div className="flex justify-center py-12">
+          <Loader2 className="h-6 w-6 animate-spin text-cta" />
+        </div>
       ) : (
         <DataTable
           rows={rows}
           rowKey={(r) => r.id}
           empty="No invoices yet"
           columns={[
-            { key: "invoice_number", label: "Invoice #", render: (r) => <span className="font-mono text-xs">{r.invoice_number}</span> },
-            { key: "customer_name", label: "Customer", render: (r) => (
-              <div>
-                <p className="font-medium">{r.customer_name}</p>
-                <p className="text-xs text-muted-foreground">{r.customer_email}</p>
-              </div>
-            )},
+            {
+              key: "invoice_number",
+              label: "Invoice #",
+              render: (r) => <span className="font-mono text-xs">{r.invoice_number}</span>,
+            },
+            {
+              key: "customer_name",
+              label: "Customer",
+              render: (r) => (
+                <div>
+                  <p className="font-medium">{r.customer_name}</p>
+                  <p className="text-xs text-muted-foreground">{r.customer_email}</p>
+                </div>
+              ),
+            },
             { key: "status", label: "Status", render: (r) => <StatusBadge status={r.status} /> },
-            { key: "issue_date", label: "Issued", render: (r) => <span className="text-xs">{r.issue_date}</span> },
-            { key: "due_date", label: "Due", render: (r) => <span className="text-xs">{r.due_date ?? "—"}</span> },
-            { key: "total", label: "Total", align: "right", render: (r) => <span className="font-mono">${Number(r.total).toFixed(2)}</span> },
-            { key: "actions", label: "", align: "right", render: (r) => (
-              r.status !== "paid" && <Button variant="ghost" size="sm" onClick={() => markPaid(r.id)}>Mark paid</Button>
-            )},
+            {
+              key: "issue_date",
+              label: "Issued",
+              render: (r) => <span className="text-xs">{r.issue_date}</span>,
+            },
+            {
+              key: "due_date",
+              label: "Due",
+              render: (r) => <span className="text-xs">{r.due_date ?? "—"}</span>,
+            },
+            {
+              key: "total",
+              label: "Total",
+              align: "right",
+              render: (r) => <span className="font-mono">${Number(r.total).toFixed(2)}</span>,
+            },
+            {
+              key: "actions",
+              label: "",
+              align: "right",
+              render: (r) =>
+                r.status !== "paid" && (
+                  <Button variant="ghost" size="sm" onClick={() => markPaid(r.id)}>
+                    Mark paid
+                  </Button>
+                ),
+            },
           ]}
         />
       )}
